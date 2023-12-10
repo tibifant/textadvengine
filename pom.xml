@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>study.coco</groupId>
-    <artifactId>ce-2-exam</artifactId>
+    <artifactId>text-adventure</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
