@@ -1,0 +1,61 @@
+dunkelraum:
+  is_starting_room: Yes
+  text: |
+    du kommst in einen dunklen raum
+  responses:
+    - hammer:
+      - description: ~hammer aufnehmen
+      - only_visible_if_item_equals: [hammer, 0]
+      - give_item: hammer
+    - haemmern:
+      - only_visible_if_item_equals: [hammer, 1]
+      - only_visible_if_state_var_equals: [gehaemmert_dunkelraum, 1]
+      - set_state_var: [gehaemmert_dunkelraum, 1]
+    - haemmern:
+      - only_visible_if_item_equals: [hammer, 1]
+      - only_visible_if_state_var_equals: [schon_gehaemmert_dunkelraum, 1]
+      - goto: schon_gehaemmert
+    - dachgeschoss:
+      - description: ins ~dachgeschoss gehen
+      - goto: dachgeschoss
+    - geruempelkammer:
+      - description: dem modrigen geruch folgen
+      - goto: geruempelkammer
+
+gehaemmert_dunkelraum:
+  text: |
+    das ist schon genug behaemmert
+  responses:
+    - x:
+      - accept_any_input
+      - goto: dunkelraum
+
+dachgeschoss:
+  text: oh noes, ich bin im dach.
+  responses:
+    - haemmern:
+      - only_visible_if_item_equals: [hammer, 1]
+      - goto_message_state: oha, jetzt ist das behaemmert.
+        target_state: dunkelraum
+    - verlassen:
+      - goto: dunkelraum
+
+geruempelkammer:
+  text: hier riecht es nach verschimmelter milch.
+  responses:
+    - x:
+      - only_visible_if_item_equals: [hammer, 1]
+      - auto_forward_to: gehaemmerter_dunkelraum
+    - licht einschalten:
+      - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 0]
+      - set_state_var: [geruempelkammer_licht_an, 1]
+      - goto_message_state_once: es werde licht!
+    - licht ausschalten:
+      - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 1]
+      - set_state_var: [geruempelkammer_licht_an, 0]
+    - bohrer:
+      - description: ~bohrer aufnehmen
+      - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 1]
+      - only_visible_if_item_equals: [bohrer, 0]
+      - give_item: bohrer
+      - goto_message_state: oiii, das ist aber ein cooler bohrer.
