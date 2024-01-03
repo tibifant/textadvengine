@@ -29,13 +29,7 @@ public class ScreenFactory {
   }
 
   private Screen assembleScreenFromMap(String screenName, Map<String, Object> parsedScreen) {
-    return new Screen(stringToColoredText((String)parsedScreen.get("text")), assembleResponseListFromMap(screenName, (Map)parsedScreen.get("responses")));
-  }
-
-  private static List<ColoredText> stringToColoredText(String string) {
-    List<ColoredText> text = new ArrayList<>();
-    text.add(new ColoredText(string, Color.White));
-    return text;
+    return new Screen((String)parsedScreen.get("text"), assembleResponseListFromMap(screenName, (Map)parsedScreen.get("responses")));
   }
 
   private static List<Response> assembleResponseListFromMap(String screenName, Map<String, Object> responses) {
@@ -50,5 +44,9 @@ public class ScreenFactory {
     String targetScreen = screenName; // may be overwritten later.
 
 
+  }
+
+  private static Screen createMessageState(Map<String, Object> parsedScreen) {
+    
   }
 }

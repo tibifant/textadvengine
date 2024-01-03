@@ -9,11 +9,11 @@ dunkelraum:
       - give_item: hammer
     - haemmern:
       - only_visible_if_item_equals: [hammer, 1]
-      - only_visible_if_state_var_equals: [gehaemmert_dunkelraum, 1]
+      - only_visible_if_state_var_equals: [gehaemmert_dunkelraum, 0]
       - set_state_var: [gehaemmert_dunkelraum, 1]
     - haemmern:
       - only_visible_if_item_equals: [hammer, 1]
-      - only_visible_if_state_var_equals: [schon_gehaemmert_dunkelraum, 1]
+      - only_visible_if_state_var_equals: [gehaemmert_dunkelraum, 1]
       - goto: schon_gehaemmert
     - dachgeschoss:
       - description: ins ~dachgeschoss gehen
