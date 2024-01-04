@@ -2,9 +2,7 @@ package study.coco;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +11,11 @@ public class Engine {
   private ScreenFactory screenFactory;
   private Screen activeScreen;
   private GameState gameState;
+  private BufferedReader inputReader;
 
   public Engine() {
+    inputReader = new BufferedReader(new InputStreamReader(System.in));
+
     screenFactory = new ScreenFactory();
     loadInitialGameState();
   }
@@ -40,11 +41,12 @@ public class Engine {
   }
 
   public void clearScreen() {
-    // TODO: !
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
   }
 
   public void printInvalidResponseError() {
-    // TODO: !
+    ColoredText.print("Invalid Response.\n", Color.Red);
   }
 
   public void loadScreen(String screenName)
@@ -66,7 +68,15 @@ public class Engine {
   }
 
   private String readResponse() {
-    return ""; // TODO: !
+    try {
+      return inputReader.readLine();
+    } catch (IOException e) {
+      System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!");
+      e.printStackTrace();
+      System.out.flush();
+      System.exit(-1);
+      return "yeah, sure, we'll return after System.exit, because that's definetely a thing.";
+    }
   }
 
   public void update()

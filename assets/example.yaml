@@ -13,7 +13,7 @@ dunkelraum:
     - haemmern:
       - only_visible_if_item_equals: [hammer, 1]
       - only_visible_if_state_var_equals: [gehaemmert_dunkelraum, 1]
-      - goto: schon_gehaemmert
+      - goto: gehaemmert_dunkelraum
     - dachgeschoss:
       - description: ins ~dachgeschoss gehen
       - goto: dachgeschoss
@@ -44,7 +44,7 @@ geruempelkammer:
   responses:
     - x:
       - only_visible_if_item_equals: [hammer, 1]
-      - auto_forward_to: gehaemmerter_dunkelraum
+      - auto_forward_to: gehaemmert_dunkelraum
     - licht einschalten:
       - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 0]
       - set_state_var: [geruempelkammer_licht_an, 1]
@@ -58,3 +58,9 @@ geruempelkammer:
       - only_visible_if_item_equals: [bohrer, 0]
       - give_item: bohrer
       - goto_message_state: oiii, das ist aber ein cooler bohrer.
+    - verlassen:
+      - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 0]
+      - goto: dunkelraum
+    - verlassen:
+      - only_visible_if_state_var_equals: [geruempelkammer_licht_an, 1]
+      - goto_message_state: ich sollte erst das licht ausschalten.

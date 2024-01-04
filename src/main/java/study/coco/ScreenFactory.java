@@ -107,9 +107,9 @@ public class ScreenFactory {
             String messageScreenTarget = screenName;
 
             if (containedValues.containsKey(GotoMessageStateAttributeTargetState))
-              containedValues.get(GotoMessageStateAttributeTargetState);
+              messageScreenTarget = (String)containedValues.get(GotoMessageStateAttributeTargetState);
 
-            targetScreen = createMessageScreen(message, targetScreen, containedValues.containsKey(GotoMessageStateOnceAttribute));
+            targetScreen = createMessageScreen(message, messageScreenTarget, containedValues.containsKey(GotoMessageStateOnceAttribute));
           } else {
             throw new InvalidParameterException("Unexpected attribute in " + screenName + ": '" + containedValues + "'.");
           }

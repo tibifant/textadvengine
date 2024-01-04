@@ -26,7 +26,7 @@ public class Screen {
     boolean anyMatched = false;
 
     for (Response r : responses) {
-      if (r.keywordMatches(response)) {
+      if (r.isValid(gameState) && r.keywordMatches(response)) {
         anyMatched = true;
         r.performAction(gameState);
         throw new ScreenTransitionException(r.getTargetScreenName());
@@ -44,6 +44,7 @@ public class Screen {
     ColoredText.print("\n\n", Color.White);
 
     for (Response r : responses)
-      r.print();
+      if (r.isValid(null))
+        r.print();
   }
 }

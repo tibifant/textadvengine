@@ -21,8 +21,6 @@ public class ColoredTextElement {
   public void print() {
     for (var t : text)
       t.print();
-
-    ColoredText.print("\n", Color.White);
   }
 
   public boolean isEmpty() {

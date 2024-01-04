@@ -14,6 +14,6 @@ public class CmpStateVarResponseDecorator implements IResponseDecorator {
 
   @Override
   public boolean isValid(GameState gameState) {
-    return gameState.getItemCount(stateVar) == cmpValue;
+    return gameState.getStateVar(stateVar) == cmpValue;
   }
 }

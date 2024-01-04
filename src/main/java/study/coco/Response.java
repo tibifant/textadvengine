@@ -20,8 +20,12 @@ public class Response {
   public void activate(GameState gameState) throws ScreenTransitionException {
     isValid = false;
 
-    for (var d : decorators)
-      d.isValid(gameState);
+    for (var d : decorators) {
+      if (!d.isValid(gameState)) {
+        isValid = false;
+        return;
+      }
+    }
 
     isValid = true;
   }
@@ -36,7 +40,7 @@ public class Response {
   }
 
   public boolean keywordMatches(String response) {
-    return keyword == response;
+    return keyword.equals(response);
   }
 
   public String getTargetScreenName() {

@@ -9,10 +9,15 @@ public class AutoForwardAfterFirstResponseDecorator implements IResponseDecorato
   }
 
   @Override
-  public void onChoose(GameState gameState) {  }
+  public void onChoose(GameState gameState) { }
 
   @Override
   public boolean isValid(GameState gameState) throws ScreenTransitionException {
-    throw new ScreenTransitionException(targetScreen);
+    if (chosenCount != 0) {
+      throw new ScreenTransitionException(targetScreen);
+    } else {
+      chosenCount++;
+      return true;
+    }
   }
 }
