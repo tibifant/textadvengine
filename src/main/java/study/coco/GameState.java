@@ -1,11 +1,12 @@
 package study.coco;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GameState {
 
-  private Map<String, Integer> stateVars;
-  private Map<String, Item> items;
+  private Map<String, Integer> stateVars = new HashMap<>();
+  private Map<String, Item> items = new HashMap<>();
 
   public int getItemCount(String itemName) {
     return !items.containsKey(itemName) ? 0 : items.get(itemName).getCount();

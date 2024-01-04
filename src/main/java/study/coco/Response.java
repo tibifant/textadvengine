@@ -50,5 +50,7 @@ public class Response {
       ColoredText.print(" - ", Color.White);
       description.print();
     }
+
+    ColoredText.print("\n", Color.White);
   }
 }

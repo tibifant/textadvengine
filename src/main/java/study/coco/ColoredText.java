@@ -13,6 +13,8 @@ public class ColoredText {
     print(text, color);
   }
 
+  public boolean isEmpty() { return text.isEmpty(); }
+
   public static void print(String text, Color color) {
     System.out.print(text);
   }

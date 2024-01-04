@@ -26,6 +26,6 @@ public class ColoredTextElement {
   }
 
   public boolean isEmpty() {
-    return text.size() == 0;
+    return text.size() == 0 || (text.size() == 1 && text.get(0).isEmpty());
   }
 }

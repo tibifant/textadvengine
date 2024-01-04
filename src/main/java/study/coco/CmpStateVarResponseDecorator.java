@@ -2,11 +2,11 @@ package study.coco;
 
 public class CmpStateVarResponseDecorator implements IResponseDecorator {
   private String stateVar;
-  private int value;
+  private int cmpValue;
 
   public CmpStateVarResponseDecorator(String stateVar, int value) {
     this.stateVar = stateVar;
-    this.value = value;
+    this.cmpValue = value;
   }
 
   @Override
@@ -14,6 +14,6 @@ public class CmpStateVarResponseDecorator implements IResponseDecorator {
 
   @Override
   public boolean isValid(GameState gameState) {
-    return gameState.getItemCount(stateVar) == value;
+    return gameState.getItemCount(stateVar) == cmpValue;
   }
 }

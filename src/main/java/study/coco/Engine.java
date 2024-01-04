@@ -1,5 +1,11 @@
 package study.coco;
 
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Map;
 
 public class Engine {
@@ -9,13 +15,28 @@ public class Engine {
   private GameState gameState;
 
   public Engine() {
-    loadInitialGameState();
     screenFactory = new ScreenFactory();
+    loadInitialGameState();
   }
 
   private void loadInitialGameState() {
     gameState = new GameState();
-    // TODO: !
+
+    // Parse Config File.
+    try {
+      Yaml yaml = new Yaml();
+      Map<String, Object> configData = yaml.load(new FileInputStream(new File("assets/config.yaml")));
+
+      for (var element : ((List)configData.get("items"))) {
+        var item = ((Map<String, Integer>)element).entrySet().stream().findFirst().get();
+        gameState.setItemCount(item.getKey(), item.getValue());
+      }
+
+      loadScreen((String) configData.get("initial_screen"));
+    } catch (Exception e) {
+      System.out.println("Failed to parse config file with Exception '" + e.toString() + "'");
+      e.printStackTrace();
+    }
   }
 
   public void clearScreen() {

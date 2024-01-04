@@ -18,12 +18,13 @@ public class ScreenFactory {
     File assetsDirectory = new File("assets");
 
     for (var file : assetsDirectory.listFiles())
-      if (file.getPath().endsWith(".yaml"))
+      if (file.getPath().endsWith(".yaml") && !file.getAbsolutePath().endsWith(File.separator + "config.yaml"))
         parseScreenFromFile(file);
   }
 
   private void parseScreenFromFile(File file) {
     try {
+      System.out.println("Parsing file '" + file.getAbsolutePath() + "'.");
       InputStream inputStream = new FileInputStream(file);
       Map<String, Object> allScreens = new Yaml().load(inputStream);
 
@@ -58,6 +59,8 @@ public class ScreenFactory {
   }
 
   final String GotoMessageStateAttribute = "goto_message_state";
+  final String GotoMessageStateOnceAttribute = "goto_message_state_once";
+  final String GotoMessageStateAttributeTargetState = "target_state";
 
   private Response parseResponse(String screenName, String responseKeyword, List responseContents) {
     List<IResponseDecorator> decorators = new ArrayList<>();
@@ -86,19 +89,27 @@ public class ScreenFactory {
             case GotoMessageStateAttribute:
               targetScreen = createMessageScreen((String)item.getValue(), screenName);
               break;
+            case GotoMessageStateOnceAttribute:
+              targetScreen = createMessageScreen((String)item.getValue(), screenName, true);
+              break;
             default:
               decorators.add(parseDecorator(screenName, item.getKey(), item.getValue()));
           }
         } else { // multi-key decorators.
-          if (containedValues.containsKey(GotoMessageStateAttribute)) {
-            String message = (String)containedValues.get(GotoMessageStateAttribute);
+          if (containedValues.containsKey(GotoMessageStateAttribute) || containedValues.containsKey(GotoMessageStateOnceAttribute)) {
+            String message;
+
+            if (containedValues.containsKey(GotoMessageStateAttribute))
+              message = (String)containedValues.get(GotoMessageStateAttribute);
+            else
+              message = (String)containedValues.get(GotoMessageStateOnceAttribute);
+
             String messageScreenTarget = screenName;
 
-            final String GotoMessageStateAttributeTargetState = "target_state";
             if (containedValues.containsKey(GotoMessageStateAttributeTargetState))
               containedValues.get(GotoMessageStateAttributeTargetState);
 
-            targetScreen = createMessageScreen(message, targetScreen);
+            targetScreen = createMessageScreen(message, targetScreen, containedValues.containsKey(GotoMessageStateOnceAttribute));
           } else {
             throw new InvalidParameterException("Unexpected attribute in " + screenName + ": '" + containedValues + "'.");
           }
@@ -155,10 +166,20 @@ public class ScreenFactory {
   }
 
   private String createMessageScreen(String message, String targetState) {
+    return createMessageScreen(message, targetState, false);
+  }
+
+  private String createMessageScreen(String message, String targetState, boolean showOnlyOnce) {
+    List<IResponseDecorator> decorators = new ArrayList<>();
+    if (showOnlyOnce)
+      decorators.add(new AutoForwardAfterFirstResponseDecorator(targetState));
+
     List<Response> responses = new ArrayList<>();
-    responses.add(new AcceptAnyInputResponse(new ArrayList<>(), targetState));
+    responses.add(new AcceptAnyInputResponse(decorators, targetState));
+
     String stateName = "message_state_" + messageStateCount++;
     screens.put(stateName, new Screen(new ColoredTextElement(message), responses));
+
     return stateName;
   }
 

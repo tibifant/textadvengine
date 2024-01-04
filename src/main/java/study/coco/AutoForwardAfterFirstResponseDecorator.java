@@ -1,9 +1,10 @@
 package study.coco;
 
-public class AutoForwardResponseDecorator implements IResponseDecorator {
+public class AutoForwardAfterFirstResponseDecorator implements IResponseDecorator {
   private String targetScreen;
+  private int chosenCount = 0;
 
-  public AutoForwardResponseDecorator(String targetScreen) {
+  public AutoForwardAfterFirstResponseDecorator(String targetScreen) {
     this.targetScreen = targetScreen;
   }
 
