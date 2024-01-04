@@ -1,0 +1,31 @@
+package study.coco;
+
+import java.util.Map;
+
+public class GameState {
+
+  private Map<String, Integer> stateVars;
+  private Map<String, Item> items;
+
+  public int getItemCount(String itemName) {
+    return !items.containsKey(itemName) ? 0 : items.get(itemName).getCount();
+  }
+
+  public void setItemCount(String itemName, int count) {
+    if (!items.containsKey(itemName))
+      items.put(itemName, new Item(new ColoredTextElement(itemName), count));
+    else
+      items.get(itemName).setCount(count);
+  }
+
+  public int getStateVar(String stateVar) {
+    return !stateVars.containsKey(stateVar) ? 0 : stateVars.get(stateVar);
+  }
+
+  public void setStateVar(String stateVar, int value) {
+    if (!stateVars.containsKey(stateVar))
+      stateVars.put(stateVar, value);
+    else
+      stateVars.replace(stateVar, value);
+  }
+}

@@ -5,48 +5,164 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.security.InvalidParameterException;
+import java.util.*;
+
 public class ScreenFactory {
   private Map<String, Screen> screens;
+  private int messageStateCount = 0;
 
   public ScreenFactory() {
-    mapScreens();
+    screens = new HashMap<>();
+
+    File assetsDirectory = new File("assets");
+
+    for (var file : assetsDirectory.listFiles())
+      if (file.getPath().endsWith(".yaml"))
+        parseScreenFromFile(file);
   }
 
-  private void mapScreens() {
+  private void parseScreenFromFile(File file) {
     try {
-      InputStream inputStream = new FileInputStream(new File("assets/example.yaml"));
+      InputStream inputStream = new FileInputStream(file);
       Map<String, Object> allScreens = new Yaml().load(inputStream);
 
       for (var kvp : allScreens.entrySet())
-        screens.put(kvp.getKey(), assembleScreenFromMap(kvp.getKey(), (Map)kvp.getValue()));
+        screens.put(kvp.getKey(), parseScreen(kvp.getKey(), (Map)kvp.getValue()));
 
     } catch (Exception e) {
-      System.out.println("Exception thrown: " + e.toString());
+      System.out.println("Failed to parse Screens from '" + file.getAbsolutePath() + "' with Exception: " + e.toString());
+      e.printStackTrace();
     }
   }
 
-  private Screen assembleScreenFromMap(String screenName, Map<String, Object> parsedScreen) {
-    return new Screen((String)parsedScreen.get("text"), assembleResponseListFromMap(screenName, (Map)parsedScreen.get("responses")));
+  private Screen parseScreen(String screenName, Map<String, Object> parsedScreen) {
+    String text = "";
+    List<Response> responses = new ArrayList<>();
+
+    for (var item : parsedScreen.entrySet()) {
+      switch (item.getKey())
+      {
+        case "text": text = (String)item.getValue(); break;
+        case "responses":
+          for (var r : ((List)item.getValue())) {
+            var entry = (Map.Entry<String, List>)((Map)r).entrySet().stream().findFirst().get();
+            responses.add(parseResponse(screenName, entry.getKey(), entry.getValue()));
+          }
+          break;
+        default: throw new InvalidParameterException("Unexpected key: '" + item.getKey() + "'.");
+      }
+    }
+
+    return new Screen(new ColoredTextElement(text), responses);
   }
 
-  private static List<Response> assembleResponseListFromMap(String screenName, Map<String, Object> responses) {
-    List<Response> validResponses = new ArrayList<>();
-    for (var kvp : responses.entrySet())
-      validResponses.add(assembleResponseFromMap(screenName, kvp.getKey(), (Map)kvp.getValue()));
+  final String GotoMessageStateAttribute = "goto_message_state";
 
-    return validResponses;
-  }
+  private Response parseResponse(String screenName, String responseKeyword, List responseContents) {
+    List<IResponseDecorator> decorators = new ArrayList<>();
 
-  private static Response assembleResponseFromMap(String screenName, String keyword, Map<String, Object> map) {
     String targetScreen = screenName; // may be overwritten later.
+    String descriptionText = "";
+    boolean isAcceptAnyResponse = false;
 
+    for (var value : responseContents) {
+      if (value instanceof String) { // single string decorator names.
+        switch ((String)value) {
+          case "accept_any_input": isAcceptAnyResponse = true; break;
+          default: throw new InvalidParameterException("Unexpected single string decorator name: '" + (String)value + "'.");
+        }
+      } else {
+        var containedValues = ((Map) value);
+        if (containedValues.size() == 1) { // single key decorators (most of them).
+          var item = (Map.Entry<String, Object>) (containedValues.entrySet().stream().findFirst().get());
+          switch (item.getKey()) {
+            case "goto":
+              targetScreen = (String) item.getValue();
+              break;
+            case "description":
+              descriptionText = (String) item.getValue();
+              break;
+            case GotoMessageStateAttribute:
+              targetScreen = createMessageScreen((String)item.getValue(), screenName);
+              break;
+            default:
+              decorators.add(parseDecorator(screenName, item.getKey(), item.getValue()));
+          }
+        } else { // multi-key decorators.
+          if (containedValues.containsKey(GotoMessageStateAttribute)) {
+            String message = (String)containedValues.get(GotoMessageStateAttribute);
+            String messageScreenTarget = screenName;
 
+            final String GotoMessageStateAttributeTargetState = "target_state";
+            if (containedValues.containsKey(GotoMessageStateAttributeTargetState))
+              containedValues.get(GotoMessageStateAttributeTargetState);
+
+            targetScreen = createMessageScreen(message, targetScreen);
+          } else {
+            throw new InvalidParameterException("Unexpected attribute in " + screenName + ": '" + containedValues + "'.");
+          }
+        }
+      }
+    }
+
+    if (isAcceptAnyResponse)
+      return new AcceptAnyInputResponse(decorators, targetScreen);
+    else
+      return new Response(responseKeyword, decorators, targetScreen, new ColoredTextElement(descriptionText));
   }
 
-  private static Screen createMessageState(Map<String, Object> parsedScreen) {
-    
+  private IResponseDecorator parseDecorator(String screenName, String decoratorName, Object decoratorContents) {
+    switch (decoratorName) {
+      case "only_visible_if_item_equals": {
+        List contents = (List) decoratorContents;
+        String itemName = (String) contents.get(0);
+        int cmpValue = (Integer) contents.get(1);
+        return new CmpItemResponseDecorator(itemName, cmpValue);
+      }
+      case "give_item": {
+        if (decoratorContents instanceof String) {
+          String itemName = (String) decoratorContents;
+          return new GiveItemResponseDecorator(itemName, 1);
+        } else if (decoratorContents instanceof List) {
+          List contents = (List)decoratorContents;
+          String itemName = (String)contents.get(0);
+          int addedItemCount = (Integer)contents.get(1);
+          return new GiveItemResponseDecorator(itemName, addedItemCount);
+        }
+        throw new InvalidParameterException("Unexpected type for decorator '" + decoratorName + "': " + decoratorContents.getClass().getName() + ".");
+      }
+      case "only_visible_if_state_var_equals": {
+        List contents = (List)decoratorContents;
+        String stateVarName = (String) contents.get(0);
+        int cmpValue = (Integer) contents.get(1);
+        return new CmpStateVarResponseDecorator(stateVarName, cmpValue);
+      }
+      case "set_state_var": {
+        List contents = (List)decoratorContents;
+        String stateVarName = (String)contents.get(0);
+        int stateVarValue = (Integer)contents.get(1);
+        return new SetStateVarResponseDecorator(stateVarName, stateVarValue);
+      }
+      case "auto_forward_to": {
+        String targetScreen = (String)decoratorContents;
+        return new AutoForwardResponseDecorator(targetScreen);
+      }
+      default: {
+        throw new InvalidParameterException("Unexpected decorator name: '" + decoratorName + "'.");
+      }
+    }
+  }
+
+  private String createMessageScreen(String message, String targetState) {
+    List<Response> responses = new ArrayList<>();
+    responses.add(new AcceptAnyInputResponse(new ArrayList<>(), targetState));
+    String stateName = "message_state_" + messageStateCount++;
+    screens.put(stateName, new Screen(new ColoredTextElement(message), responses));
+    return stateName;
+  }
+
+  public Screen getScreen(String screenName) {
+    return screens.get(screenName);
   }
 }

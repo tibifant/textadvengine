@@ -10,12 +10,10 @@ public class CmpStateVarResponseDecorator implements IResponseDecorator {
   }
 
   @Override
-  public void onChoose(Engine engine) {
-
-  }
+  public void onChoose(GameState engine) { }
 
   @Override
-  public boolean isValid(Engine engine) {
-    return engine.getItemCount(stateVar) == value;
+  public boolean isValid(GameState gameState) {
+    return gameState.getItemCount(stateVar) == value;
   }
 }

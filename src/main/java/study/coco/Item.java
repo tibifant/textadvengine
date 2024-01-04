@@ -13,7 +13,7 @@ public class Item {
     return count;
   }
 
-  public void incrementCount(int count) {
-    this.count += count;
+  public void setCount(int count) {
+    this.count = count;
   }
 }

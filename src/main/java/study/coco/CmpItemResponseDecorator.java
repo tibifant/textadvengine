@@ -2,20 +2,18 @@ package study.coco;
 
 public class CmpItemResponseDecorator implements IResponseDecorator {
   private String item;
-  private int count;
+  private int cmpValue;
 
-  public CmpItemResponseDecorator(String item, int count) {
+  public CmpItemResponseDecorator(String item, int cmpValue) {
     this.item = item;
-    this.count = count;
+    this.cmpValue = cmpValue;
   }
 
   @Override
-  public void onChoose(Engine engine) {
-
-  }
+  public void onChoose(GameState gameState) { }
 
   @Override
-  public boolean isValid(Engine engine) {
-    return engine.getItemCount(item) == count;
+  public boolean isValid(GameState gameState) {
+    return gameState.getItemCount(item) == cmpValue;
   }
 }

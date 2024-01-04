@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColoredTextElement {
-  private List<ColoredText> coloredText;
+  private List<ColoredText> text;
 
   public ColoredTextElement(String text) {
-    coloredText = stringToColoredTextElement(text);
+    this.text = stringToColoredTextElement(text);
   }
 
 
@@ -16,5 +16,16 @@ public class ColoredTextElement {
     text.add(new ColoredText(string, Color.White));
 
     return text;
+  }
+
+  public void print() {
+    for (var t : text)
+      t.print();
+
+    ColoredText.print("\n", Color.White);
+  }
+
+  public boolean isEmpty() {
+    return text.size() == 0;
   }
 }

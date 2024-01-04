@@ -1,16 +1,49 @@
 package study.coco;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Screen {
   private ColoredTextElement text;
-  private List<Response> validResponses;
+  private List<Response> responses;
 
-  public Screen(String text, List<Response> validResponses) {
-    this.text = new ColoredTextElement(text);
-    this.validResponses = validResponses;
+  public Screen(ColoredTextElement text, List<Response> validResponses) {
+    this.text = text;
+    this.responses = validResponses;
+  }
+
+  public void activate(GameState gameState) throws ScreenTransitionException {
+    for (var r : responses) {
+      try {
+        r.activate(gameState);
+      } catch (ScreenTransitionException e) {
+        r.performAction(gameState);
+        throw e;
+      }
+    }
+  }
+
+  public void submitResponse(String response, GameState gameState) throws ScreenTransitionException, InvalidResponseException {
+    boolean anyMatched = false;
+
+    for (Response r : responses) {
+      if (r.keywordMatches(response)) {
+        anyMatched = true;
+        r.performAction(gameState);
+        throw new ScreenTransitionException(r.getTargetScreenName());
+      }
+    }
+
+    if (!anyMatched)
+      throw new InvalidResponseException();
+  }
+
+  public void print()
+  {
+    text.print();
+
+    ColoredText.print("\n\n", Color.White);
+
+    for (Response r : responses)
+      r.print();
   }
 }

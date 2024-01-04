@@ -1,5 +1,4 @@
 dunkelraum:
-  is_starting_room: Yes
   text: |
     du kommst in einen dunklen raum
   responses:

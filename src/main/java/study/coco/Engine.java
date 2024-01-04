@@ -4,36 +4,62 @@ import java.util.Map;
 
 public class Engine {
 
-  private Map<String, Integer> stateVars;
-  private Map<String, Item> items;
   private ScreenFactory screenFactory;
   private Screen activeScreen;
+  private GameState gameState;
 
   public Engine() {
+    loadInitialGameState();
     screenFactory = new ScreenFactory();
   }
 
-  // loadConfigData, loadAllScreens etc.
-
-  public int getItemCount(String itemName) {
-    return !items.containsKey(itemName) ? 0 : items.get(itemName).getCount();
+  private void loadInitialGameState() {
+    gameState = new GameState();
+    // TODO: !
   }
 
-  public int getStateVarValue(String stateVar) {
-    return !stateVars.containsKey(stateVar) ? 0 : stateVars.get(stateVar);
+  public void clearScreen() {
+    // TODO: !
   }
 
-  public void incrementItem(String itemName, int count) {
-    if (!items.containsKey(itemName))
-      items.put(itemName, new Item(new ColoredTextElement(itemName), count));
-    else
-      items.get(itemName).incrementCount(count);
+  public void printInvalidResponseError() {
+    // TODO: !
   }
 
-  public void setStateVar(String stateVar, int value) {
-    if (!stateVars.containsKey(stateVar))
-      stateVars.put(stateVar, value);
-    else
-      stateVars.replace(stateVar, value);
+  public void loadScreen(String screenName)
+  {
+    // Handle meta-screens that automatically forward to the next screen without user input.
+    while (true)
+    {
+      try {
+        activeScreen = screenFactory.getScreen(screenName);
+        activeScreen.activate(gameState);
+        break;
+      } catch (ScreenTransitionException e) {
+        screenName = e.getTargetScreenName();
+      }
+    }
+
+    clearScreen();
+    activeScreen.print();
+  }
+
+  private String readResponse() {
+    return ""; // TODO: !
+  }
+
+  public void update()
+  {
+    while (true) {
+      try {
+        activeScreen.submitResponse(readResponse(), gameState);
+      }
+      catch (ScreenTransitionException e) {
+        loadScreen(e.getTargetScreenName());
+      }
+      catch (InvalidResponseException e) {
+        printInvalidResponseError();
+      }
+    }
   }
 }

@@ -10,6 +10,10 @@ public class ColoredText {
   }
 
   public void print() {
-    System.out.println(text);
+    print(text, color);
+  }
+
+  public static void print(String text, Color color) {
+    System.out.print(text);
   }
 }

@@ -10,12 +10,12 @@ public class SetStateVarResponseDecorator implements IResponseDecorator {
   }
 
   @Override
-  public void onChoose(Engine engine) {
-    engine.setStateVar(stateVar, value);
+  public void onChoose(GameState gameState) {
+    gameState.setStateVar(stateVar, value);
   }
 
   @Override
-  public boolean isValid(Engine engine) {
+  public boolean isValid(GameState gameState) {
     return true;
   }
 }
