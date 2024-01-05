@@ -2,6 +2,7 @@ package study.coco;
 
 import org.yaml.snakeyaml.Yaml;
 
+import javax.naming.NameNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -143,6 +144,18 @@ public class ScreenFactory {
         }
         throw new InvalidParameterException("Unexpected type for decorator '" + decoratorName + "': " + decoratorContents.getClass().getName() + ".");
       }
+      case "remove_item": {
+        if (decoratorContents instanceof String) {
+          String itemName = (String) decoratorContents;
+          return new RemoveItemResponseDecorator(itemName, 1);
+        } else if (decoratorContents instanceof List) {
+          List contents = (List)decoratorContents;
+          String itemName = (String)contents.get(0);
+          int subtractedItemCount = (Integer)contents.get(1);
+          return new GiveItemResponseDecorator(itemName, subtractedItemCount);
+        }
+        throw new InvalidParameterException("Unexpected type for decorator '" + decoratorName + "': " + decoratorContents.getClass().getName() + ".");
+      }
       case "only_visible_if_state_var_equals": {
         List contents = (List)decoratorContents;
         String stateVarName = (String) contents.get(0);
@@ -181,6 +194,13 @@ public class ScreenFactory {
     screens.put(stateName, new Screen(new ColoredTextElement(message), responses));
 
     return stateName;
+  }
+
+  public void validate(GameState gameState) throws NameNotFoundException {
+    StaticObjectKeyValidator validator = new StaticObjectKeyValidator(gameState, screens.keySet());
+    
+    for (var screen : screens.values())
+      screen.validate(validator);
   }
 
   public Screen getScreen(String screenName) {

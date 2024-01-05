@@ -13,10 +13,17 @@ public class GameState {
   }
 
   public void setItemCount(String itemName, int count) {
+    if (count < 0)
+      count = 0;
+      
     if (!items.containsKey(itemName))
       items.put(itemName, new Item(new ColoredTextElement(itemName), count));
     else
       items.get(itemName).setCount(count);
+  }
+
+  public boolean containsItemName(String itemName) {
+    return items.containsKey(itemName);
   }
 
   public int getStateVar(String stateVar) {
@@ -28,5 +35,9 @@ public class GameState {
       stateVars.put(stateVar, value);
     else
       stateVars.replace(stateVar, value);
+  }
+
+  public boolean containsStateVarName(String stateVarName) {
+    return stateVars.containsKey(stateVarName);
   }
 }

@@ -2,6 +2,7 @@ package study.coco;
 
 import org.yaml.snakeyaml.Yaml;
 
+import javax.naming.NameNotFoundException;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -18,19 +19,38 @@ public class Engine {
 
     screenFactory = new ScreenFactory();
     loadInitialGameState();
+
+    // optional.
+    try {
+      screenFactory.validate(gameState);
+    } catch (NameNotFoundException e) {
+      System.out.println(e.getMessage());
+      System.exit(-1);
+    }
   }
 
   private void loadInitialGameState() {
     gameState = new GameState();
 
     // Parse Config File.
+    parseConfig();
+  }
+
+  private void parseConfig() {
     try {
       Yaml yaml = new Yaml();
       Map<String, Object> configData = yaml.load(new FileInputStream(new File("assets/config.yaml")));
 
+      // Items
       for (var element : ((List)configData.get("items"))) {
         var item = ((Map<String, Integer>)element).entrySet().stream().findFirst().get();
         gameState.setItemCount(item.getKey(), item.getValue());
+      }
+
+      // StateVars
+      for (var element : ((List)configData.get("state_vars"))) {
+        var item = ((Map<String, Integer>)element).entrySet().stream().findFirst().get();
+        gameState.setStateVar(item.getKey(), item.getValue());
       }
 
       loadScreen((String) configData.get("initial_screen"));

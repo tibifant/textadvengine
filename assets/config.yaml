@@ -1,3 +1,9 @@
 items:
- - knife: 1
+  - knife: 1
+  - hammer: 0
+  - bohrer: 0
+state_vars:
+  - hammer_erhalten: 0
+  - gehaemmert_dunkelraum: 0
+  - geruempelkammer_licht_an: 0
 initial_screen: dachgeschoss

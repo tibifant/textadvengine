@@ -1,5 +1,6 @@
 package study.coco;
 
+import javax.naming.NameNotFoundException;
 import java.util.List;
 
 public class Response {
@@ -56,5 +57,12 @@ public class Response {
     }
 
     ColoredText.print("\n", Color.White);
+  }
+
+  public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {
+    validator.validateScreenName(targetScreen);
+
+    for (var d : decorators)
+      d.validate(validator);
   }
 }

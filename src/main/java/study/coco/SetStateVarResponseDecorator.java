@@ -1,5 +1,7 @@
 package study.coco;
 
+import javax.naming.NameNotFoundException;
+
 public class SetStateVarResponseDecorator implements IResponseDecorator {
   private String stateVar;
   private int value;
@@ -10,12 +12,17 @@ public class SetStateVarResponseDecorator implements IResponseDecorator {
   }
 
   @Override
+  public boolean isValid(GameState gameState) {
+    return true;
+  }
+
+  @Override
   public void onChoose(GameState gameState) {
     gameState.setStateVar(stateVar, value);
   }
 
   @Override
-  public boolean isValid(GameState gameState) {
-    return true;
+  public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {
+    validator.validateStateVarName(stateVar);
   }
 }

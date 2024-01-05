@@ -5,6 +5,8 @@ dunkelraum:
     - hammer:
       - description: ~hammer aufnehmen
       - only_visible_if_item_equals: [hammer, 0]
+      - only_visible_if_state_var_equals: [hammer_erhalten, 0]
+      - set_state_var: [hammer_erhalten, 1]
       - give_item: hammer
     - haemmern:
       - only_visible_if_item_equals: [hammer, 1]
@@ -36,6 +38,7 @@ dachgeschoss:
       - only_visible_if_item_equals: [hammer, 1]
       - goto_message_state: oha, jetzt ist das behaemmert.
         target_state: dunkelraum
+      - remove_item: hammer
     - verlassen:
       - goto: dunkelraum
 

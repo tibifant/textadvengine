@@ -2,22 +2,24 @@ package study.coco;
 
 import javax.naming.NameNotFoundException;
 
-public class CmpItemResponseDecorator implements IResponseDecorator {
+public class RemoveItemResponseDecorator implements IResponseDecorator {
   private String item;
-  private int cmpValue;
+  private int count;
 
-  public CmpItemResponseDecorator(String item, int cmpValue) {
+  public RemoveItemResponseDecorator(String item, int count) {
     this.item = item;
-    this.cmpValue = cmpValue;
+    this.count = count;
   }
 
   @Override
   public boolean isValid(GameState gameState) {
-    return gameState.getItemCount(item) == cmpValue;
+    return true;
   }
 
   @Override
-  public void onChoose(GameState gameState) { }
+  public void onChoose(GameState gameState) {
+    gameState.setItemCount(item, gameState.getItemCount(item) - count);
+  }
 
   @Override
   public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {

@@ -1,5 +1,6 @@
 package study.coco;
 
+import javax.naming.NameNotFoundException;
 import java.util.List;
 
 public class Screen {
@@ -46,5 +47,10 @@ public class Screen {
     for (Response r : responses)
       if (r.isValid(null))
         r.print();
+  }
+
+  public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {
+    for (var r : responses)
+      r.validate(validator);
   }
 }
