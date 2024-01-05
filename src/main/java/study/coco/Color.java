@@ -1,7 +1,20 @@
 package study.coco;
 
 public enum Color {
-  White,
-  Red,
-  Blue,
+  BLACK,
+  DARKRED,
+  DARKGREEN,
+  DARKYELLOW,
+  DARKBLUE,
+  DARKMAGENTA,
+  DARKCYAN,
+  BRIGHTGRAY,
+  DARKGRAY,
+  BRIGHTRED,
+  BRIGHTGREEN,
+  BRIGHTYELLOW,
+  BRIGHTBLUE,
+  BRIGHTMAGENTA,
+  BRIGHTCYAN,
+  WHITE
 }

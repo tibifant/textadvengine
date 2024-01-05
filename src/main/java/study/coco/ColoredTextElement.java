@@ -13,7 +13,7 @@ public class ColoredTextElement {
 
   private static List<ColoredText> stringToColoredTextElement(String string) {
     List<ColoredText> text = new ArrayList<>();
-    text.add(new ColoredText(string, Color.White));
+    text.add(new ColoredText(string, Color.WHITE));
 
     return text;
   }

@@ -42,7 +42,7 @@ public class Screen {
   {
     text.print();
 
-    ColoredText.print("\n\n", Color.White);
+    ColoredText.print("\n\n", Color.WHITE);
 
     for (Response r : responses)
       if (r.isValid(null))

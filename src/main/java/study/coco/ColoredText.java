@@ -16,6 +16,8 @@ public class ColoredText {
   public boolean isEmpty() { return text.isEmpty(); }
 
   public static void print(String text, Color color) {
+    System.out.print("\u001B[" + (color.ordinal() < 8 ? (30 + color.ordinal()) : (90 - 8 + color.ordinal())) + "m");
     System.out.print(text);
+    System.out.print("\u001B[0m");
   }
 }

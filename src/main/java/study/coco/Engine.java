@@ -33,10 +33,6 @@ public class Engine {
     gameState = new GameState();
 
     // Parse Config File.
-    parseConfig();
-  }
-
-  private void parseConfig() {
     try {
       Yaml yaml = new Yaml();
       Map<String, Object> configData = yaml.load(new FileInputStream(new File("assets/config.yaml")));
@@ -66,7 +62,7 @@ public class Engine {
   }
 
   public void printInvalidResponseError() {
-    ColoredText.print("Invalid Response.\n", Color.Red);
+    ColoredText.print("Invalid Response.\n", Color.BRIGHTRED);
   }
 
   public void loadScreen(String screenName)

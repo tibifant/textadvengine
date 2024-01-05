@@ -49,14 +49,14 @@ public class Response {
   }
 
   public void print() {
-    ColoredText.print(keyword, Color.Blue);
+    ColoredText.print(keyword, Color.BRIGHTBLUE);
 
     if (!description.isEmpty()) {
-      ColoredText.print(" - ", Color.White);
+      ColoredText.print(" - ", Color.WHITE);
       description.print();
     }
 
-    ColoredText.print("\n", Color.White);
+    ColoredText.print("\n", Color.WHITE);
   }
 
   public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {
