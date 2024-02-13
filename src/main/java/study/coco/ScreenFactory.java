@@ -39,13 +39,13 @@ public class ScreenFactory {
   }
 
   private Screen parseScreen(String screenName, Map<String, Object> parsedScreen) {
-    String text = "";
+    String text = "\n";
     List<Response> responses = new ArrayList<>();
 
     for (var item : parsedScreen.entrySet()) {
       switch (item.getKey())
       {
-        case "text": text = (String)item.getValue(); break;
+        case "text": text += (String)item.getValue(); break;
         case "responses":
           for (var r : ((List)item.getValue())) {
             var entry = (Map.Entry<String, List>)((Map)r).entrySet().stream().findFirst().get();
