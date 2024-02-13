@@ -1,0 +1,145 @@
+start:
+  text: |
+    Wir befinden uns in einem schnieken Einfamilienhaus. Die Besitzer sind aushäusig. 
+    Nur das jüngste Familienmitglied können wir im Treppenhaus lokalisieren. Es ist in Begleitung eines ebenfalls noch nicht ausgewachsenen jungen Herrn. Sein Name ist Ringo. Er ist nur hier für den schnellen Groschen - er soll den kleinen Fratz hüten.
+
+    Gerade sind sie dabei Rutsche zu spielen.
+  responses:
+    - nochmal:
+        - description: nochmal rutschen
+        - goto: rutschen
+rutschen:
+  text: |
+    Ringo trägt seinen infantilen Geldbringer die Stufen hoch.
+  responses:
+    - absetzen:
+        - description: Den Säugling zum Rutschen absetzen. 
+        - goto_message_state: "So und jetzt du alleine - wir haben das balancieren auf dem Geländer geübt. Ich renne vor und fange dich unten auf!"
+          target_state: realization
+
+realization:
+  text: |
+    Während Ringo die Stufen herrunterschnellt überkommt ihn eine Erkenntnis:
+    "Ri ra rutsch… rutsch? Das reimt sich auf futsch! Futsch ist meine große Liebe, wenn ich mich nicht bald, um unser Date heute Abend kümmere!
+    Ich brauche noch Luftballons; für das richtige Ambiente, Essen; irgendwas beeindruckendes, ein Geschenk; vielleicht Blumen und ich muss besser gekleidet sein, in diesem Aufzug..."
+    Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken..
+    "...brauche ich heute Abend nicht aufkreuzen und den Babymief muss ich auch noch irgendwie loswerden."
+  responses:
+    - bad:
+      - description: ins Bad gehen
+      - goto_message_state_once: Ein dumpfes Geräusch gefolgt von einem leisen Wimmern ist zu hören, während Ringo die Badtür hinter sich schließt.
+        target_state: bad
+
+bad:
+  text: |
+    "Hier gibt es viele Dinge - sogar Luftballons habe ich schonmal gesehen."
+  responses:
+    - schublade:
+      - description: Schublade öffnen
+      - only_visible_if_item_equals: [luftballons, 0]
+      - goto: schublade_bad
+    - schublade:
+      - description: Schublade öffnen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - goto_message_state: "Da gibt's nichts mehr zu holen."
+    - schrank:
+      - description: Schrank öffnen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - goto_message_state: "Die Luftballons habe ich in der Schublade gesehen."
+    - schrank:
+      - description: Schrank öffnen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: schrank_bad
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - goto: wunde
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: treppenhaus
+
+schublade_bad:
+  text: |
+    "Dehnbar und aus Latex, das klingt doch genau wonach wir suchen."
+  responses:
+    - t luftballons:
+      - description: Luftballons nehmen
+      - only_visible_if_item_equals: [luftballons, 0]
+      - give_item: luftballons
+      - goto_message_state: "Jetzt fehlt nur noch das Helium."
+    - schließen:
+      - description: Schublade schließen
+      - goto: bad
+
+schrank_bad:
+  text: |
+    Im Schrank gibt es Pflaster.
+  responses:
+    - t pflaster:
+      - description: Pflaster nehmen
+      - only_visible_if_item_equals: [pflaster, 0]
+      - give_item: pflaster
+    - schließen:
+      - description: Schrank schließen
+      - goto: bad
+
+wunde:
+  text: |
+    Auf dem Boden genau unterhalb des Endes des Geländers liegt das Kleine und weint.
+  responses:
+    - hochheben:
+      - description: das Baby hochheben
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - set_state_var: [wunde_gesehen, 1]
+      - goto_message_state: "Ohje du hast ja ein Aua! Ich bringe dich ins Wohnzimmer und hole eine Pflaster."
+        target_state: treppenhaus
+
+wohnzimmer:
+  text: |
+    Das Wohnzimmer ist groß und gemütlich.
+  responses:
+    - ablegen:
+      - description: Das Baby ablegen.
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - set_state_var: [baby_abgelegt, 1]
+      - goto_message_state: "Hier liegst du gut. Bin gleich wieder da und dann ist das Aua ganz schnell weg!"
+    - treppenhaus:
+      - description: Ins Treppenhaus gehen.
+      - goto: treppenhaus
+
+treppenhaus:
+  text: |
+    Unterhalb der großen Treppe sieht man einen kleinen Blutfleck.
+  responses:
+    - bad:
+      - description: ins Bad gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - goto: bad
+    - bad:
+      - description: ins Bad gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - goto_message_state: "Erst muss ich den Patienten in Sicherheit bringen."
+    - wohnzimmer:
+      - description: ins Wohnzimmer gehen
+      - goto: wohnzimmer
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_item_equals: [garagenschluessel, 0]
+      - goto_message_state: "Die Tür ist verschlossen."
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_item_equals: [garagenschluessel, 1]
+      - goto: garage
+
+garage:
+  text: |
+    Hier gibt es viele Werkzeuge.
+
+?TODO: 
+- wohnzimmer: kind futsch
+- garagenschluessel existierend machen
+- next part: garage mit parfum, leim

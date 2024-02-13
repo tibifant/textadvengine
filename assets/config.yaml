@@ -1,9 +1,9 @@
 items:
-  - knife: 1
-  - hammer: 0
-  - bohrer: 0
+  - luftballons: 0
+  - pflaster: 0
+  - garagenschluessel: 0
 state_vars:
-  - hammer_erhalten: 0
-  - gehaemmert_dunkelraum: 0
+  - wunde_gesehen: 0
+  - baby_abgelegt: 0
   - geruempelkammer_licht_an: 0
-initial_screen: dachgeschoss
+initial_screen: start
