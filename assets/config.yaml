@@ -6,4 +6,5 @@ state_vars:
   - wunde_gesehen: 0
   - baby_abgelegt: 0
   - geruempelkammer_licht_an: 0
+  - baby_nicht_in_wohnzimmer_bemerkt: 0
 initial_screen: start
