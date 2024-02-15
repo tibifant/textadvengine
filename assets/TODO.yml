@@ -1,0 +1,9 @@
+TODO: 
+- garagenschluessel existierend machen -> in garage kommen mit katze? klappe zu, katze zum tueroeffnen bringen -> katzenspielzeug
+- leiter in garage: momentan obsolet, muss nur fuettern koennen, wenn leiter benutzt -> in fuetter state weiterleiten (je fuer alle fluessigekiten)
+
+
+wenn aufgewacht nach chloroform in garage: katze neben ihm, denkt baby waere das
+
+./mvnw.cmd clean package
+java -cp target/text-adventure.jar study.coco.App

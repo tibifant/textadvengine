@@ -2,9 +2,18 @@ items:
   - luftballons: 0
   - pflaster: 0
   - garagenschluessel: 0
+  - leiter: 0
+  - rote_farbe: 0
+  - parfum: 0
+  - milch: 0
 state_vars:
   - wunde_gesehen: 0
   - baby_abgelegt: 0
   - geruempelkammer_licht_an: 0
   - baby_nicht_in_wohnzimmer_bemerkt: 0
-initial_screen: start
+  - leiter_benutzt: 0
+  - farbe_fuettern: 0
+  - parfum_fuettern: 0
+  - leim_gefuettert: 0
+  - baby_klebt_an_flasche: 0
+initial_screen: garage

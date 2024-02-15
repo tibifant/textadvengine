@@ -32,12 +32,12 @@ realization:
 
 bad:
   text: |
-    \"Hier gibt es viele Dinge - sogar Luftballons habe ich hier schonmal gesehen."
+    "Hier gibt es viele Dinge - sogar Luftballons habe ich hier schonmal gesehen."
   responses:
     - schrank:
       - description: Schrank oeffnen
       - only_visible_if_state_var_equals: [wunde_gesehen, 0]
-      - goto_message_state: \"Die Luftballons habe ich in der Schublade gesehen."
+      - goto_message_state: "Die Luftballons habe ich in der Schublade gesehen."
     - schrank:
       - description: Schrank oeffnen
       - only_visible_if_state_var_equals: [wunde_gesehen, 1]
@@ -71,7 +71,7 @@ bad:
 
 schublade_bad:
   text: |
-    \"Dehnbar und aus Latex, das klingt doch genau wonach wir suchen."
+    "Dehnbar und aus Latex, das klingt doch genau wonach wir suchen."
   responses:
     - luftballons:
       - description: Luftballons nehmen
@@ -115,9 +115,9 @@ wohnzimmer:
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
       - set_state_var: [baby_nicht_in_wohnzimmer_bemerkt, 1]
-      - goto_message_state: \"Oh ähh wo bist du nur hin?"
+      - goto_message_state: Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. "Oh ähh ohje! Wo bist du nur hin?"
     - treppenhaus:
-      - description: Ins Treppenhaus gehen.
+      - description: ins Treppenhaus gehen
       - goto: treppenhaus
 
 treppenhaus:
@@ -147,19 +147,16 @@ treppenhaus:
       - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
-      - goto_message_state: \"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten."
+      - goto_message_state: "Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten."
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
-      - goto_message_state: \"Den Geräuschen zu folge scheint das Baby in der Garage zu sein. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn schon eine Katzenklappe zur Garage?"
+      - goto_message_state: "Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?"
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [garagenschluessel, 1]
-      - goto: garage
-
-garage:
-  text: |
-    Hier gibt es viele Werkzeuge.
+      - goto_message_state: "Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?"
+        target_state: garage
