@@ -12,6 +12,7 @@ garage:
     - leiter:
       - description: Leiter nehmen
       - only_visible_if_item_equals: [leiter, 0]
+      - only_visible_if_state_var_equals: [leiter_benutzt, 0]
       - give_item: leiter
     - leiter:
       - description: Leiter benutzen
@@ -22,7 +23,26 @@ garage:
           "So jetzt komm ich an dich dran. Dann komm mal her!"
           Das Weinen wird lauter.
           "Was ist den los? Du willst nicht? Ah ich weiss, jemand ist hungrig! Lieferservice ist schon unterwegs."
-    - haus: 
+    - leiter:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [leiter_benutzt, 1]
+      - only_visible_if_item_equals: [rote_farbe, 0]
+      - only_visible_if_item_equals: [parfum, 0]
+      - only_visible_if_item_equals: [milch, 0]
+      - only_visible_if_state_var_equals: [milch_gefuttert, 0]
+      - goto_message_state: | 
+          "So jetzt komm ich an dich dran. Dann komm mal her!"
+          Das Weinen wird lauter.
+          "Was ist den los? Du willst nicht? Ah ich weiss, jemand ist hungrig! Lieferservice ist schon unterwegs."
+    - leiter:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [leiter_benutzt, 1]
+      - only_visible_if_item_sum_greater: [rote_farbe, parfum, milch, 0]
+      - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
+      - goto_message_state: |
+          "Mal sehen, ob ich was Gutes für dich gefunden habe..."
+        target_state: garage_fuettern
+    - haus:
       - description: zurueck ins Haus gehen
       - goto_message_state: "Oh oh die Tuer ist ins Schloss gefallen, da komm ich nicht mehr rein."
     - rot:
@@ -38,29 +58,6 @@ garage:
       - only_visible_if_item_equals: [milch, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - give_item: milch
-    - rot:
-      - description: rote Fluessigkeit fuettern
-      - only_visible_if_item_equals: [rote_farbe, 1]
-      - only_visible_if_state_var_equals: [farbe_fuettern, 0]
-      - set_state_var: [farbe_fuettern, 1]
-      - goto_message_state: "Rote Fluessigkeit? Das brauchen wir gar nicht zu versuchen, Milch ist weiss!"
-    - durchsichtig:
-      - description: durchsichtige Fluessigkeit fuettern
-      - only_visible_if_item_equals: [parfum, 1]
-      - only_visible_if_state_var_equals: [parfum_fuettern, 0]
-      - set_state_var: [parfum_fuettern, 1]
-      - goto_message_state: Der Text auf der Flasche ist kaum noch lesbar. Er faengt mit 'Ch' an. "Das ist doch Parfum. Channel No 5 oder sowas! Das erkenne ich auf den ersten Blick. Das kann man doch keinem Baby fuettern! Fuer mein Date heute Abend hingegen kann ich das noch sehr gut gebrauchen."
-    - weiss:
-      - description: weisse Fluessigkeit fuettern
-      - only_visible_if_item_equals: [milch, 1]
-      - remove_item: milch
-      - set_state_var: [leim_gefuettert, 1]
-      - goto_message_state: Das Baby verstummt, sobald die Flasche seine Lippen beruehrt. "Das sieht doch gut aus! Immerhin ist die Fluessigkeit weiss!" 
-    - abnehmen:
-      - description: Milch wieder abnehmen
-      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
-      - set_state_var: [baby_klebt_an_flasche, 1]
-      - goto_message_state: Das Baby hatte sich offenbar an der Flasche festgesaugt. "Auch gut, wenn du so sehr daran haengst will ich sie dir nicht wegnehmen!" Ringo traegt den Stropp sammt liebgewonnener Milch die Leiter runter.
     - raus:
       - description: raus gehen
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
@@ -76,6 +73,41 @@ garage:
       - only_visible_if_state_var_equals: [parfum_fuettern, 0]
       - goto_message_state: Ringo haelt inne. "Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt. Man kann es kaum noch lesen, aber da steht drauf 'Channel No 5'..." Phantasie hat Ringo! 'Ch' sind die einzigen Buchstaben, die vom verblassten Schriftzug tatsechlich noch sichtbar sind. "... ein Parfum brauche ich sowieso noch fuer heute Abend, ich werde es direkt ausprobieren"
         target_state: garage_bewusstlos
+
+garage_fuettern:
+  text: |
+    Der Sproessling thront ganz oben auf dem Schrank und schluchzt.
+  responses:
+    - rot:
+      - description: rote Fluessigkeit fuettern
+      - only_visible_if_item_equals: [rote_farbe, 1]
+      - only_visible_if_state_var_equals: [farbe_fuettern, 0]
+      - set_state_var: [farbe_fuettern, 1]
+      - goto_message_state: "Rote Fluessigkeit? Das brauchen wir gar nicht zu versuchen, Milch ist weiss!"
+        target_state: garage
+    - durchsichtig:
+      - description: durchsichtige Fluessigkeit fuettern
+      - only_visible_if_item_equals: [parfum, 1]
+      - only_visible_if_state_var_equals: [parfum_fuettern, 0]
+      - set_state_var: [parfum_fuettern, 1]
+      - goto_message_state: Der Text auf der Flasche ist kaum noch lesbar. Er faengt mit 'Ch' an. "Das ist doch Parfum. Channel No 5 oder sowas! Das erkenne ich auf den ersten Blick. Das kann man doch keinem Baby fuettern! Fuer mein Date heute Abend hingegen kann ich das noch sehr gut gebrauchen."
+        target_state: garage
+    - weiss:
+      - description: weisse Fluessigkeit fuettern
+      - only_visible_if_item_equals: [milch, 1]
+      - remove_item: milch
+      - set_state_var: [leim_gefuettert, 1]
+      - goto_message_state: Das Baby verstummt, sobald die Flasche seine Lippen beruehrt. "Und meine Rechung geht auf, weisse Fluessigkeit = Milch!"
+    - abnehmen:
+      - description: Milch wieder abnehmen
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - set_state_var: [baby_klebt_an_flasche, 1]
+      - goto_message_state: Das Baby hatte sich offenbar an der Flasche festgesaugt. "Auch gut, wenn du so sehr daran haengst will ich sie dir nicht wegnehmen!" Ringo traegt den Stropp sammt liebgewonnener Milch die Leiter runter.
+        target_state: garage
+    - runter:
+      - description: die Leiter wieder runter klettern
+      - goto: garage
+    
 
 garage_bewusstlos:
   text: |

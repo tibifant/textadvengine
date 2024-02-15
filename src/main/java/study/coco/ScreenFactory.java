@@ -132,6 +132,12 @@ public class ScreenFactory {
         int cmpValue = (Integer) contents.get(1);
         return new CmpItemResponseDecorator(itemName, cmpValue);
       }
+      case "only_visible_if_item_sum_greater": {
+        List contents = (List)decoratorContents;
+        int cmpValue = (Integer) contents.remove(contents.size() - 1);
+        List<String> itemNames = (List<String>) contents;
+        return new CmpItemSumGreaterResponseDecorator(itemNames, cmpValue);
+      }
       case "give_item": {
         if (decoratorContents instanceof String) {
           String itemName = (String) decoratorContents;
