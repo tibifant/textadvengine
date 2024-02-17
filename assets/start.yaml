@@ -155,6 +155,12 @@ treppenhaus:
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - goto: bad
     - bad:
+      - description: wirklich dringend ins Bad gehen
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_item_equals: [gel, 0]
+      - goto: bad
+    - bad:
       - description: ins Bad gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
       - goto_message_state: "Erst muss ich den Patienten in Sicherheit bringen."
@@ -180,9 +186,32 @@ treppenhaus:
       - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - set_state_var: [katzenklappe_entdeckt, 1]
       - goto_message_state: "Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?"
-    - garage:
-      - description: in die Garage gehen
-      - only_visible_if_item_equals: [garagenschluessel, 1]
-      - goto_message_state: "Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?"
+    - katzenklappe:
+      - description: kann man da durch?
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - set_state_var: [gel_idee, 1]
+      - goto_message_state: "Keine Chance da pass ich nicht durch. Aber Moment mal... Ich hab so eine Idee."
+    - katzenklappe:
+      - description: kann man da durch?
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 1]
+      - goto_message_state: |
+          "Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht."
+          Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.
+          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seine Aufgabe als Babysitter nimmt, schaut er direkt nach dem Wohlbefinden des eben genannten.
+          ...
+          Ehhem.
+          ...
+          "Oh achso nach klar!  
+           Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?"
         target_state: garage
+    - gel:
+      - description: vielleicht hilft das
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [gel, 1]
+      - remove_item: gel
+      - set_state_var: [gel_benutzt, 1]
+      - goto_message_state: "Pui hihi das ist glipschig"

@@ -42,9 +42,9 @@ garage:
       - goto_message_state: |
           "Mal sehen, ob ich was Gutes für dich gefunden habe..."
         target_state: garage_fuettern
-    - haus:
-      - description: zurueck ins Haus gehen
-      - goto_message_state: "Oh oh die Tuer ist ins Schloss gefallen, da komm ich nicht mehr rein."
+    - katzenklappe:
+      - description: zurueck durch die Katzenklappe gehen
+      - goto_message_state: "Ich hab schon genug Quetschungen da geh ich nicht nochmal durch!"
     - rot:
       - description: Gefaess mit roter Fluessigkeit nehmen
       - only_visible_if_item_equals: [rote_farbe, 0]
@@ -76,7 +76,7 @@ garage:
 
 garage_fuettern:
   text: |
-    Der Sproessling thront ganz oben auf dem Schrank und schluchzt.
+    Der Sproessling hockt ganz oben auf dem Schrank.
   responses:
     - rot:
       - description: rote Fluessigkeit fuettern
