@@ -29,7 +29,7 @@ garage:
       - only_visible_if_item_equals: [rote_farbe, 0]
       - only_visible_if_item_equals: [parfum, 0]
       - only_visible_if_item_equals: [milch, 0]
-      - only_visible_if_state_var_equals: [milch_gefuttert, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - goto_message_state: | 
           "So jetzt komm ich an dich dran. Dann komm mal her!"
           Das Weinen wird lauter.
@@ -107,8 +107,12 @@ garage_fuettern:
     - runter:
       - description: die Leiter wieder runter klettern
       - goto: garage
-    
 
 garage_bewusstlos:
   text: |
-    Ringo wurde ganz schummrig.
+    Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz.
+    Nach einger Zeit blinzelt er vorsichtig.
+    "Wo bin ich? Huch... da muss ich wohl ein ungewolltes Mittagsschläfchen gehalten haben, sowas passiert mir sonst nur beim Zahnarzt."
+    Nach noch ein bisschen mehr Zeit regt sich wieder etwas.
+    "Wo ist eigentlich das Baby?" Ringo tastet neben sich den Boden ab. "Ah puh da bist du ja. Warst du schon immer so pelzig?"
+    Das nächste was Ringo spürt sind Krallen in seiner Hand. Das war wohl nicht das Baby...

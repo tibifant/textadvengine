@@ -1,12 +1,5 @@
 TODO: 
-- treppenhaus: katztenklappe interargierbar machen. wenn gel, etc.
-
-- bad:
-  - schluessel arzt koffer
-  - gleitgel in schrank finden
-
-
-wenn aufgewacht nach chloroform in garage: katze neben ihm, denkt baby waere das
+- garage_bewusstlos: baby suchen, weg nach draussen finden, baby draussen finden
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App

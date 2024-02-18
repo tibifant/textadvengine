@@ -38,17 +38,31 @@ bad:
       - description: Schrank mit Kreuz darauf oeffnen
       - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - only_visible_if_item_equals: [bad_schrank_schluessel, 1]
-      - goto_message_state: "Nein, ich will jetzt nicht beten"
+      - goto_message_state: "Nein, ich will jetzt nicht beten."
+    - schrank:
+      - description: Schrank mit Kreuz darauf oeffnen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - goto_message_state: "Die Tür ist fest verschlossen"
     - schrank:
       - description: Schrank mit Kreuz darauf oeffnen
       - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 0]
       - goto_message_state: Die Tuer ist zugeschlossen.
     - schrank:
       - description: Schrank mit Kreuz darauf oeffnen
       - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - goto_message_state: "Da gibt's nichts mehr zu holen."
+    - schrank:
+      - description: Schrank mit Kreuz darauf oeffnen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - only_visible_if_item_equals: [bad_schrank_schluessel, 1]
-      - goto_message_state: "Bei einem verletzen Kind kann man jede Hilfe gebrauchen!"
+      - remove_item: bad_schrank_schluessel
+      - goto_message_state: "Bei einem verletzen Kind kann man jede Hilfe gebrauchen! Herrgott, stehe uns bei!"
+        target_state: schrank_bad
     - schublade:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 0]
@@ -62,6 +76,7 @@ bad:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 1]
       - only_visible_if_item_equals: [gel, 1]
+      - only_visible_if_item_sum_greater: [bad_schrank_schluessel, pflaster, 0]
       - goto_message_state: "Da gibt's nichts mehr zu holen."
     - treppenhaus:
       - description: ins Treppenhaus gehen
@@ -101,6 +116,7 @@ schublade_bad:
     - schluessel:
       - description: schluessel mit kleinem Kreuz-Anhaenger nehmen
       - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 0]
       - give_item: bad_schrank_schluessel
     - schliessen:
       - description: Schublade schliessen.
@@ -108,7 +124,7 @@ schublade_bad:
 
 schrank_bad:
   text: |
-    Im Schrank gibt es Pflaster. "Ich wusste gar nicht, dass Gottes Hilfe so materialistisch ist. Da sieh mal einer an."
+    Im Schrank gibt es Pflaster. "Da sieh mal einer an. Das ging schnell! Ich wusste gar nicht, dass Gottes Hilfe so materialistisch ist."
   responses:
     - pflaster:
       - description: Pflaster nehmen
@@ -155,12 +171,6 @@ treppenhaus:
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - goto: bad
     - bad:
-      - description: wirklich dringend ins Bad gehen
-      - only_visible_if_state_var_equals: [gel_idee, 1]
-      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
-      - only_visible_if_item_equals: [gel, 0]
-      - goto: bad
-    - bad:
       - description: ins Bad gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
       - goto_message_state: "Erst muss ich den Patienten in Sicherheit bringen."
@@ -170,46 +180,50 @@ treppenhaus:
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
-      - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 0]
       - goto_message_state: "Die Tuer ist verschlossen."
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
-      - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
       - goto_message_state: "Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten."
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
-      - only_visible_if_item_equals: [garagenschluessel, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
       - set_state_var: [katzenklappe_entdeckt, 1]
       - goto_message_state: "Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?"
     - katzenklappe:
-      - description: kann man da durch?
+      - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 0]
       - set_state_var: [gel_idee, 1]
-      - goto_message_state: "Keine Chance da pass ich nicht durch. Aber Moment mal... Ich hab so eine Idee."
+      - goto_message_state: "Keine Chance da pass ich nicht durch. Aber vielleicht ja..."
     - katzenklappe:
-      - description: kann man da durch?
+      - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 1]
       - goto_message_state: |
           "Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht."
           Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.
-          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seine Aufgabe als Babysitter nimmt, schaut er direkt nach dem Wohlbefinden des eben genannten.
+          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.
           ...
           Ehhem.
+          ...
+          Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten
           ...
           "Oh achso nach klar!  
            Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?"
         target_state: garage
+    - pflaster:
+      - description: Pflaster verwenden
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - goto_message_state: "Zukleben? Wem soll das denn helfen?"
     - gel:
-      - description: vielleicht hilft das
+      - description: Gel verwenden
       - only_visible_if_state_var_equals: [gel_idee, 1]
       - only_visible_if_item_equals: [gel, 1]
       - remove_item: gel
