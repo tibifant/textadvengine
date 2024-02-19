@@ -42,7 +42,7 @@ garage:
       - goto_message_state: |
           "Mal sehen, ob ich was Gutes für dich gefunden habe..."
         target_state: garage_fuettern
-    - katzenklappe:
+    - zurueck:
       - description: zurueck durch die Katzenklappe gehen
       - goto_message_state: "Ich hab schon genug Quetschungen da geh ich nicht nochmal durch!"
     - rot:
@@ -116,3 +116,47 @@ garage_bewusstlos:
     Nach noch ein bisschen mehr Zeit regt sich wieder etwas.
     "Wo ist eigentlich das Baby?" Ringo tastet neben sich den Boden ab. "Ah puh da bist du ja. Warst du schon immer so pelzig?"
     Das nächste was Ringo spürt sind Krallen in seiner Hand. Das war wohl nicht das Baby...
+  responses:
+    - suchen:
+      - description: das Baby suchen
+      - goto: garage_suche
+
+garage_suche:
+  text: |
+    Irgendwo muss das Baby doch sein.
+  responses:
+    - leiter:
+      - description: Leiter benutzen
+      - goto_message_state: Gähnende Leere auf dem Schrank.
+    - zurueck:
+      - description: zurueck durch die Katzenklappe gehen
+      - goto_message_state: "Falls es da nochmal durch gegangen ist, ist es ja in Sicherheit. Ich gehe da jedenfalls nicht nochmal durch!"
+    - sofa:
+      - decription: unterm alten Sofa nachsehen
+      - goto_message_state: "Pah nur Spinnweben!"
+    - katze:
+      - decription: Katze fragen
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
+      - set_state_var: [spur_gefunden, 1]
+      - goto_message_state: |
+          "Na komm putt putt putt, such das Baby" 
+          Die Katze schaut nur verdiesslich und folgt der dunklen Spur auf dem Boden Richtung Tuer, setzt sich davor und maunzt.
+          "Typisch Katze, zu nichts zu gebrauchen."
+    - spur:
+      - description: |
+          "Moment mal... 'Folgt der dunklen Spur' welche Spur?"
+      - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - goto_message_state: Eine braeunliche Spur zieht sich ueber den Boden.
+    - begutachten:
+      - description: Spur begutachten
+      - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - goto_message_state: "Bah riecht widerlich. Und führt zur Tür nach draußen... Moment mal!"
+    - raus:
+      - description: raus gehen
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
+      - goto_message_state: "Ich muss erst sicher stellen, dass niemand in dieser Garage zurück bleibt. Das ist ein gefährlicher Ort mit Ohnmacht und so."
+    - raus:
+      - description: raus gehen
+      - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - goto_message_state: "Och neee nicht noch ne Katzenklappe!" Gerade als Ringo zögernd, sehr zögernd, seinen Kopf durch die Klappe steckt, springt die Katze auf, fängt die Türklinke in der Luft und die Tür schwingt sammt Ringo auf.
+        target_state: garten 

@@ -19,4 +19,6 @@ state_vars:
   - parfum_fuettern: 0
   - leim_gefuettert: 0
   - baby_klebt_an_flasche: 0
+  - spur_gefunden: 0
+  - spur_gefolgt: 0
 initial_screen: start

@@ -1,5 +1,6 @@
 TODO: 
-- garage_bewusstlos: baby suchen, weg nach draussen finden, baby draussen finden
+- pfarrer_flur: handtuch mitnehmen, tuer nach draussen
+- garten: pup deutlicher machen, "Da ist es ja!" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. "Mein perfektes Outfit für heute Abend"
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App

@@ -1,0 +1,9 @@
+pfarrer_eingang:
+  text: Ringo steht vor einer Hintertuer, die in das Gebäude führt, das zum Garten gehört.
+  responses:
+    - rein:
+      - description: rein gehen
+      - goto: pfarrer_flur
+
+pfarrer_flur:
+  text: Ringo steht in einem Flur

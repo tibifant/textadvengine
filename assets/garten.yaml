@@ -1,0 +1,37 @@
+garten:
+  text: Ein feinsäuberlich gepflegter Garten erscheint vor Ringo.
+  responses:
+    - spur:
+      - description: Spur weiter folgen
+      - only_visible_if_state_var_equals: [spur_gefolgt, 0]
+      - set_state_var: [spur_gefolgt, 1]
+      - goto_message_state: Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein noch immer Milch nukelndes Baby sitzt.
+    - zaun:
+      - description: zum Zaun gehen
+      - only_visible_if_state_var_equals: [spur_gefolgt, 1]
+      - goto_message_state: Ringo beäugt skeptisch den Stacheldraht. "Keine Chance, sonst zerkratze ich mir alles."
+    - links:
+      - description: links rum gehen
+      - goto: links
+
+links:
+  text: |
+    Ringo folgt dem Zaun bis er zu einer Rosenhecke kommt.
+  responses:
+    - weiter:
+      - description: durch die Rosenhecke
+      - goto: pfarrer_eingang
+    - zurueck: 
+      - description: zurueck gehen
+      - goto: garten
+
+rechts:
+  text: |
+    Ringo folgt dem Zaun bis er auf ein [anderes zerkratz einfuegen] stoesst.
+  responses:
+    - weiter:
+      - description: durch die Rosenhecke
+      - goto: pfarrer_eingang
+    - zurueck:
+      - description: zurueck gehen
+      - goto: garten
