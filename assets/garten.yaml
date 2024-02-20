@@ -5,7 +5,11 @@ garten:
       - description: Spur weiter folgen
       - only_visible_if_state_var_equals: [spur_gefolgt, 0]
       - set_state_var: [spur_gefolgt, 1]
-      - goto_message_state: Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein noch immer Milch nukelndes Baby sitzt.
+      - goto_message_state: |
+          Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein noch immer Milch nukelndes Baby sitzt.
+          "Da ist es ja!" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. "Mein perfektes Outfit für heute Abend"
+          Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt.
+          "Oh du bist ja auch hier. Und wie du aussiehst, die Windel war wohl mal"
     - zaun:
       - description: zum Zaun gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
@@ -20,18 +24,20 @@ links:
   responses:
     - weiter:
       - description: durch die Rosenhecke
-      - goto: pfarrer_eingang
+      - goto_message_state: "Aua!" 
+        target_state: pfarrer_eingang
     - zurueck: 
       - description: zurueck gehen
       - goto: garten
 
 rechts:
   text: |
-    Ringo folgt dem Zaun bis er auf ein [anderes zerkratz einfuegen] stoesst.
+    Ringo folgt dem Zaun bis er auf Brombeerranken stoesst.
   responses:
     - weiter:
-      - description: durch die Rosenhecke
-      - goto: pfarrer_eingang
+      - description: durch die Ranken
+      - goto_message_state: "Aua!" 
+        target_state: pfarrer_eingang
     - zurueck:
       - description: zurueck gehen
       - goto: garten

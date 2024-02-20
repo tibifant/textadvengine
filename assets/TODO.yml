@@ -1,6 +1,8 @@
 TODO: 
+- kleidung zerkratzt nach garten
 - pfarrer_flur: handtuch mitnehmen, tuer nach draussen
-- garten: pup deutlicher machen, "Da ist es ja!" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. "Mein perfektes Outfit für heute Abend"
+- 1 day later: pfarrer waechst baby in weihwasser, pfarrer macht frau bewusstlos...
+- garten: pup deutlicher machen,
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App

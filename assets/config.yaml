@@ -7,6 +7,9 @@ items:
   - rote_farbe: 0
   - parfum: 0
   - milch: 0
+  - handtuch: 0
+  - ring: 0
+  - anzug: 0
 state_vars:
   - wunde_gesehen: 0
   - baby_abgelegt: 0
@@ -21,4 +24,8 @@ state_vars:
   - baby_klebt_an_flasche: 0
   - spur_gefunden: 0
   - spur_gefolgt: 0
+  - wasserhahn_aufgedreht: 0
+  - wasserhahn_heiss_aufgedreht: 0
+  - wasserhahn_kalt_aufgedreht: 0
+  - handtuch_benutzt: 0
 initial_screen: start
