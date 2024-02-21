@@ -16,7 +16,12 @@ garten:
       - goto_message_state: Ringo beäugt skeptisch den Stacheldraht. "Keine Chance, sonst zerkratze ich mir alles."
     - links:
       - description: links rum gehen
+      - only_visible_if_state_var_equals: [spur_gefolgt, 1]
       - goto: links
+    - rechts:
+      - description: rechts rum gehen
+      - only_visible_if_state_var_equals: [spur_gefolgt, 1]
+      - goto: rechts
 
 links:
   text: |

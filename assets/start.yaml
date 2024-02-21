@@ -71,6 +71,7 @@ bad:
     - schublade:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_item_sum_smaller: [gel, bad_schrank_schluessel, pflaster, 2]
       - goto: schublade_bad
     - schublade:
       - description: Schublade oeffnen
@@ -101,6 +102,11 @@ schublade_bad:
   text: |
     In der Schublade liegen allerhand Dinge.
   responses:
+    - schluessel:
+      - description: schluessel mit kleinem Kreuz-Anhaenger nehmen
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 0]
+      - give_item: bad_schrank_schluessel
     - luftballons:
       - description: Luftballons nehmen
       - only_visible_if_item_equals: [luftballons, 0]
@@ -113,11 +119,6 @@ schublade_bad:
       - goto_message_state: |
           In der Flasche war eine dickfluessige transparente Pampe - "Ob das wohl Haargel ist?" - "sentual" stand darauf.
           "Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Tueren offen!"
-    - schluessel:
-      - description: schluessel mit kleinem Kreuz-Anhaenger nehmen
-      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
-      - only_visible_if_item_equals: [pflaster, 0]
-      - give_item: bad_schrank_schluessel
     - schliessen:
       - description: Schublade schliessen.
       - goto: bad

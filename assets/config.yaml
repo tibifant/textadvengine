@@ -28,4 +28,5 @@ state_vars:
   - wasserhahn_heiss_aufgedreht: 0
   - wasserhahn_kalt_aufgedreht: 0
   - handtuch_benutzt: 0
-initial_screen: start
+  - buerste_benutzt: 0
+initial_screen: garage

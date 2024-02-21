@@ -1,5 +1,5 @@
 pfarrer_eingang:
-  text: Ringo steht vor einer Hintertuer, die in das Gebäude führt, das zum Garten gehört.
+  text: Ringo steht vor einer Hintertuer, die in das zum Garten gehörende Haus führt.
   responses:
     - rein:
       - description: rein gehen
@@ -31,11 +31,12 @@ pfarrer_bad:
       - set_state_var: [wasserhahn_heiss_aufgedreht, 1]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
       - goto_message_state: Hinter dem Vorhang bibbert jemand.
-    - wasserhahn:
+    - aus:
       - description: Wasserhahn zudrehen
       - only_visible_if_state_var_equals: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_heiss_aufgedreht, 0]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
+      - set_state_var: [wasserhahn_aufgedreht, 0]
       - goto_message_state: Man hört ein erleichtertes Seufzen.
     - handtuch:
       - description: Handtuch nehmen
@@ -59,6 +60,9 @@ pfarrer_bad:
       - description: Haare kämmen
       - set_state_var: [buerste_benutzt, 1]
       - goto_message_state: "Ich bin mir nicht ganz sicher, ob das eine Haarbürste war."
+    - zurueck:
+      - description: zurück gehen
+      - goto: pfarrer_flur
 
 pfarrer_garten:
   text: Ringo steht nun auf der anderen Seite des Zauns auf dem gepflegten Rasen.
@@ -75,10 +79,18 @@ pfarrer_garten:
     - baby:
       - description: Baby hochheben
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - goto_message_state: "Lass uns sehen, dass wir hier wegkommen." Ringo greift nervös Richtung Ring in seiner Hosentasche.
+      - only_visible_if_item_equals: [ring, 1]
+      - goto_message_state: Ringo greift nervös Richtung Ring in seiner Hosentasche. "Lass uns sehen, dass wir hier wegkommen." 
+    - baby:
+      - description: Baby hochheben
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [ring, 0]
+      - goto_message_state: "Lass uns sehen, dass wir hier wegkommen." 
     - handtuch:
       - description: Baby säubern
+      - only_visible_if_item_equals: [handtuch, 1]
       - set_state_var: [handtuch_benutzt, 1]
+      - remove_item: handtuch
     - zurueck:
       - description: zurück ins Haus
       - goto: pfarrer_flur
