@@ -3,6 +3,8 @@ TODO:
 - pfarrer_flur: handtuch mitnehmen, tuer nach draussen
 - 1 day later: pfarrer waechst baby in weihwasser, pfarrer macht frau bewusstlos...
 - garten: pup deutlicher machen,
+- pfarrer bad: licht
+- kirche vorraum: zur kirche gehen, wein, bibel...
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App

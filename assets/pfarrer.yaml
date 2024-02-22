@@ -8,12 +8,19 @@ pfarrer_eingang:
 pfarrer_flur:
   text: Ringo steht in einem altmodischen Flur.
   responses:
-    - links:
-      - description: linke Tür öffnen
+    - eins:
+      - description: erste Tür öffnen
       - goto: pfarrer_bad
-    - rechts:
-      - description: rechte Tür öffnen
+    - zwei:
+      - description: zweite Tür öffnen
       - goto: pfarrer_garten
+    - drei:
+      - description: dritte Tür öffnen
+      - goto_message_state_once: "'Das war schon mal nicht richtig...'"
+        target_state: kirche_vorraum
+    - raus:
+      - description: vor das Haus
+      - goto: pfarrer_eingang
 
 pfarrer_bad:
   text: Ringo lukt in einen kleinen feuchten Raum. Hinter einem Vorhang ertönt ein Summen.
@@ -23,6 +30,7 @@ pfarrer_bad:
       - only_visible_if_state_var_equals: [wasserhahn_kalt_aufgedreht, 0]
       - set_state_var: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 1]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Hinter dem Vorhang schreit jemand auf.
     - heiss:
       - description: heißes Wasser am Wasserhahn aufdrehen
@@ -30,38 +38,56 @@ pfarrer_bad:
       - set_state_var: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_heiss_aufgedreht, 1]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Hinter dem Vorhang bibbert jemand.
-    - aus:
+    - zu:
       - description: Wasserhahn zudrehen
       - only_visible_if_state_var_equals: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_heiss_aufgedreht, 0]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
       - set_state_var: [wasserhahn_aufgedreht, 0]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Man hört ein erleichtertes Seufzen.
     - handtuch:
       - description: Handtuch nehmen
       - only_visible_if_item_equals: [handtuch, 0]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - give_item: handtuch
       - goto_message_state: "Das Baby braucht dringend eine neue Windel, das wird's wohl tun!"
     - ring:
       - description: goldenen Ring mit Datumsinschrift nehmen
       - only_visible_if_item_equals: [ring, 0]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - give_item: ring
       - goto_message_state: "Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen."
     - spiegel:
       - description: im Spiegel ansehen
       - only_visible_if_state_var_equals: [buerste_benutzt, 0]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: "Ich seh ja völlig rampuniert aus."
     - spiegel:
       - description: im Spiegel ansehen
       - only_visible_if_state_var_equals: [buerste_benutzt, 1]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: "Wenigstens die Haare sitzen wieder, vielleicht war 'sentual' doch nicht die beste Frisur..."
     - buerste:
       - description: Haare kämmen
       - set_state_var: [buerste_benutzt, 1]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: "Ich bin mir nicht ganz sicher, ob das eine Haarbürste war."
+    - an:
+      - description: Licht an
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 1]
+      - set_state_var: [pfarrer_licht_aus, 0]
+      - goto_message_state: "'Von selbst wieder reingegangen? Das ist neu.'"
+    - aus:
+      - description: Licht aus
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
+      - set_state_var: [pfarrer_licht_aus, 1]
+      - goto_message_state: "Ein genervtes Seufzen ertoent von hinter dem Vorhang: 'Immer diese Sicherung...'"
     - zurueck:
       - description: zurück gehen
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto: pfarrer_flur
 
 pfarrer_garten:

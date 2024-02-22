@@ -1,0 +1,12 @@
+kirche_vorraum:
+  text: |
+    Ringo steht in einem eigenartigen Zimmer. Auf der einen Seite tuermen sich Weinflaschen auf, auf der anderen dicke Buecher.
+  responses:
+    - zurueck:
+      - description: zurueck gehen
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
+      - goto: pfarrer_flur
+    - zurueck:
+      - description: zurueck gehen
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - goto_message_state: "'Kommt nicht in die Tuete'"
