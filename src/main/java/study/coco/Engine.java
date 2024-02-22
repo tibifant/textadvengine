@@ -91,7 +91,7 @@ public class Engine {
       e.printStackTrace();
       System.out.flush();
       System.exit(-1);
-      return "yeah, sure, we'll return after System.exit, because that's definetely a thing.";
+      return "yeah, sure, we'll return after System.exit, because that's definitely a thing.";
     }
   }
 
