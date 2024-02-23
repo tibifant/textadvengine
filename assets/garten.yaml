@@ -5,15 +5,15 @@ garten:
       - description: Spur weiter folgen
       - only_visible_if_state_var_equals: [spur_gefolgt, 0]
       - set_state_var: [spur_gefolgt, 1]
-      - goto_message_state: |
-          Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein noch immer Milch nukelndes Baby sitzt.
-          "Da ist es ja!" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. "Mein perfektes Outfit für heute Abend"
-          Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt.
-          "Oh du bist ja auch hier. Und wie du aussiehst, die Windel war wohl mal"
+      - goto_message_state:
+          "\"Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein noch immer Milch nukelndes Baby sitzt.\n
+          \"Da ist es ja!\" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. \"Mein perfektes Outfit für heute Abend\"\n
+          Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt.\n
+          \"Oh du bist ja auch hier. Und wie du aussiehst, die Windel war wohl mal\""
     - zaun:
       - description: zum Zaun gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
-      - goto_message_state: Ringo beäugt skeptisch den Stacheldraht. "Keine Chance, sonst zerkratze ich mir alles."
+      - goto_message_state: "Ringo beäugt skeptisch den Stacheldraht. \"Keine Chance, sonst zerkratze ich mir alles.\""
     - links:
       - description: links rum gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
@@ -29,7 +29,7 @@ links:
   responses:
     - weiter:
       - description: durch die Rosenhecke
-      - goto_message_state: "Aua!" 
+      - goto_message_state: "\"Aua!\"" 
         target_state: pfarrer_eingang
     - zurueck: 
       - description: zurueck gehen
@@ -41,7 +41,7 @@ rechts:
   responses:
     - weiter:
       - description: durch die Ranken
-      - goto_message_state: "Aua!" 
+      - goto_message_state: "\"Aua!\"" 
         target_state: pfarrer_eingang
     - zurueck:
       - description: zurueck gehen

@@ -15,19 +15,19 @@ pfarrer_flur:
     - eins:
       - description: erste Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state: "'Da geh ich nicht nochmal rein, man soll die Plaene Gottes nicht durchkreuzen.'"
+      - goto_message_state: "\"Da geh ich nicht nochmal rein, man soll die Plaene Gottes nicht durchkreuzen.\""
     - zwei:
       - description: zweite Tür öffnen
       - goto: pfarrer_garten
     - drei:
       - description: dritte Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
-      - goto_message_state_once: "'Das war schon mal nicht richtig...'"
+      - goto_message_state_once: "\"Das war schon mal nicht richtig...\""
         target_state: kirche_vorraum
     - drei:
       - description: dritte Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state_once: "'Mal schauen wo es da weiter geht.'"
+      - goto_message_state_once: "\"Mal schauen wo es da weiter geht.\""
         target_state: kirche_vorraum
     - raus:
       - description: vor das Haus
@@ -39,7 +39,7 @@ pfarrer_im_flur:
   responses:
     - eins:
       - description: erste Tür öffnen
-      - goto_message_state: "'Das ist kein Weg der uns hier weg bringt'"
+      - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt\""
       - goto: pfarrer_bad
     - zwei:
       - description: zweite Tür öffnen
@@ -47,44 +47,42 @@ pfarrer_im_flur:
     - drei:
       - description: dritte Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
-      - goto_message_state: "'Unbemerkt komme ich da nicht vorbei.'"
+      - goto_message_state: "\"Unbemerkt komme ich da nicht vorbei.\""
         target_state: kirche_vorraum
     - drei:
       - description: dritte Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 1]
-      - goto_message_state: "'Schnell lass uns verschwinden!'"
+      - goto_message_state: "\"Schnell lass uns verschwinden!\""
         target_state: kirche_vorraum
     - raus:
       - description: vor das Haus
-      - goto_message_state: "'Der Weg ist versperrt.'"
+      - goto_message_state: "\"Der Weg ist versperrt.\""
     - pflaster:
       - description: Pflaster benutzen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
-      - goto_message_state: "'Man koennte ihm den Mund zukleben...' Ringo naehert sich der Person, diese schreit auf, holt aus und Ringo sieht Sterne."s
+      - goto_message_state: "\"Man koennte ihm den Mund zukleben...\" Ringo naehert sich der Person, diese schreit auf, holt aus und Ringo sieht Sterne."
     - parfum:
       - description: Parfum benutzen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - set_state_var: [pfarrer_bewusstlos, 1]
-      - goto_message_state: |
-        "'Mal schauen, ob das nur mich umwerfend macht.' Ringo sprueht den Mann an, dieser hustet und ehe er sich versieht liegt er auf dem Boden.
-        'Channel No 5 bietet einem ungeahnte Moeglichkeiten...'"
+      - goto_message_state: "\"Mal schauen, ob das nur mich umwerfend macht.\" Ringo sprueht den Mann an, dieser hustet und ehe er sich versieht liegt er auf dem Boden.\n\"Channel No 5 bietet einem ungeahnte Moeglichkeiten...\""
     - rote farbe:
       - description: rote Farbe benutzen
       - only_visible_if_item_equals: [rote_farbe, 1]
-      - goto_message_state: "'Ich bin doch kein Anstreicher.'"
+      - goto_message_state: "\"Ich bin doch kein Anstreicher.\""
     - buch:
       - description: Buch verwenden
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - set_state_var: [pfarrer_bewusstlos, 1]
-      - goto_message_state: |
-        "'Mal sehen..' Ringo schlaegt das Buch an einer zufaelligen Stelle auf.
-        'Und er verbrannte das Haus des HERRN und das Haus des Königs; und alle Häuser Jerusalems und jedes große Haus verbrannte er mit Feuer...'
-        'Mein Vater spricht zu mir!' vor Aufregung wird dem Guten ganz warm, er dreht sich einmal um die eigene Achse und sinkt langsam, leise murmelend zu Boden."
+      - goto_message_state:
+        "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n
+        \"Und er verbrannte das Haus des HERRN und das Haus des Königs; und alle Häuser Jerusalems und jedes große Haus verbrannte er mit Feuer...\"\n
+        \"Mein Vater spricht zu mir!\" vor Aufregung wird dem Guten ganz warm, er dreht sich einmal um die eigene Achse und sinkt langsam, leise murmelend zu Boden."
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]
-      - goto_message_state: "'Hicks!'"
+      - goto_message_state: "\"Hicks!\""
 
 pfarrer_bad:
   text: Ringo lukt in einen kleinen feuchten Raum. Hinter einem Vorhang ertönt ein Summen.
@@ -117,54 +115,50 @@ pfarrer_bad:
       - only_visible_if_item_equals: [handtuch, 0]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - give_item: handtuch
-      - goto_message_state: "Das Baby braucht dringend eine neue Windel, das wird's wohl tun!"
+      - goto_message_state: "\"Das Baby braucht dringend eine neue Windel, das wird's wohl tun!\""
     - ring:
       - description: goldenen Ring mit Datumsinschrift nehmen
       - only_visible_if_item_equals: [ring, 0]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - give_item: ring
-      - goto_message_state: "Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen."
+      - goto_message_state: "\"Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen.\""
     - buch:
       - description: Buch verwenden
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - set_state_var: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state: |
-        "'Mal sehen..' Ringo schlaegt das Buch an einer zufaelligen Stelle auf.
-        'Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.
-        Da sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat; 
-        und siehe, ich will sie verderben mit der Erde. 
-        Denn ich, siehe, ich bringe eine Sintflut über die Erde.'
-        'Mein Vater spricht zu mir!' ertoent von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
+      - goto_message_state:
+        "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat; 
+        und siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\"\n\"Mein Vater spricht zu mir!\" ertoent es von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]
-      - goto_message_state: "'Hicks!'"
+      - goto_message_state: "\"Hicks!\""
     - spiegel:
       - description: im Spiegel ansehen
       - only_visible_if_state_var_equals: [buerste_benutzt, 0]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - goto_message_state: "Ich seh ja völlig rampuniert aus."
+      - goto_message_state: "\"Ich seh ja völlig rampuniert aus.\""
     - spiegel:
       - description: im Spiegel ansehen
       - only_visible_if_state_var_equals: [buerste_benutzt, 1]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - goto_message_state: "Wenigstens die Haare sitzen wieder, vielleicht war 'sentual' doch nicht die beste Frisur..."
+      - goto_message_state: "\"Wenigstens die Haare sitzen wieder, vielleicht war \"sentual\" doch nicht die beste Frisur...\""
     - buerste:
       - description: Haare kämmen
       - set_state_var: [buerste_benutzt, 1]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - goto_message_state: "Ich bin mir nicht ganz sicher, ob das eine Haarbürste war."
+      - goto_message_state: "\"Ich bin mir nicht ganz sicher, ob das eine Haarbürste war.\""
     - an:
       - description: Licht an
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 1]
       - set_state_var: [pfarrer_licht_aus, 0]
-      - goto_message_state: "'Von selbst wieder reingegangen? Das ist neu.'"
+      - goto_message_state: "\"Von selbst wieder reingegangen? Das ist neu.\""
     - aus:
       - description: Licht aus
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - set_state_var: [pfarrer_licht_aus, 1]
-      - goto_message_state: "Ein genervtes Seufzen ertoent von hinter dem Vorhang: 'Immer diese Sicherung...'"
+      - goto_message_state: "Ein genervtes Seufzen ertoent von hinter dem Vorhang: \"Immer diese Sicherung...\""
     - zurueck:
       - description: zurück gehen
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
@@ -177,27 +171,27 @@ pfarrer_garten:
       - description: Anzug nehmen
       - only_visible_if_item_equals: [anzug, 0]
       - give_item: anzug
-      - goto_message_state: "Mein geliebter Retter in der Not, endlich habe ich dich!"
+      - goto_message_state: "\"Mein geliebter Retter in der Not, endlich habe ich dich!\""
     - baby:
       - description: Baby hochheben
       - only_visible_if_item_equals: [handtuch, 0]
-      - goto_message_state: "Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen."
+      - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen.\""
     - baby:
       - description: Baby hochheben
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
       - only_visible_if_item_equals: [ring, 1]
-      - goto_message_state: Ringo greift nervös Richtung Ring in seiner Hosentasche. "Lass uns sehen, dass wir hier wegkommen." 
+      - goto_message_state: "Ringo greift nervös Richtung Ring in seiner Hosentasche. \"Lass uns sehen, dass wir hier wegkommen.\"" 
     - baby:
       - description: Baby hochheben
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
       - only_visible_if_item_equals: [ring, 0]
-      - goto_message_state: "Lass uns sehen, dass wir hier wegkommen." 
+      - goto_message_state: "\"Lass uns sehen, dass wir hier wegkommen.\"" 
     - handtuch:
       - description: Baby säubern
       - only_visible_if_item_equals: [handtuch, 1]
       - set_state_var: [handtuch_benutzt, 1]
       - remove_item: handtuch
-      - goto_message_state: "'Schon besser, aber ich sollte dich noch irgendwo waschen.'"
+      - goto_message_state: "\"Schon besser, aber ich sollte dich noch irgendwo waschen.\""
     - zurueck:
       - description: zurück ins Haus
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
@@ -207,7 +201,7 @@ pfarrer_garten:
       - description: zurück ins Haus
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
-      - goto_message_state: 'Oh oh da ist jemand und die Dusche scheint auch aus zu sein...'
+      - goto_message_state: "\"Oh oh da ist jemand und die Dusche scheint auch aus zu sein...\""
         target_state: pfarrer_im_flur
     - zurueck:
       - description: zurück ins Haus
