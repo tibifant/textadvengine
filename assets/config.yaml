@@ -29,4 +29,5 @@ state_vars:
   - wasserhahn_kalt_aufgedreht: 0
   - handtuch_benutzt: 0
   - buerste_benutzt: 0
+  - pfarrer_bewusstlos: 0
 initial_screen: garage

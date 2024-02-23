@@ -5,6 +5,18 @@ TODO:
 - garten: pup deutlicher machen,
 - pfarrer bad: licht
 - kirche vorraum: zur kirche gehen, wein, bibel...
+- pfarrer flur: pfarrer aufheoert zu duschen
+- immer parfum
+
+- minigame:  |
+    ey du, ich habe gehoert du bist auf der suche nach etwas, was ich habe... eine zwielichtige Person spricht Ringo aus einer Seitengasse an. // R14 47 B Schraubschluessel
+    "Ach nein wirklich? Du hast einen *absurdes ding*?"
+    Die Gestalt zuckt mit den Schultern. Willst du's haben?
+    "Na klar will!"
+    Geht klar, aber zuerst musst du es schaffen in diesem Spiel zu ueberleben.
+    Die Gestalt tritt zur Seite und deutet mit einem Nicken auf einen heruntergekommenen Spieleautomaten in der Ecke
+        'Textadvent-o-mat'
+    'Dein Abenteuer beginnt hier'
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App
