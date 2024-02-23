@@ -38,7 +38,7 @@ kirche_vorraum:
           Jemand zieht einen mit weißen Rosen bestückten Blumenstrauss durch die zufallende Tür.\n\n
 
           Ringo will schon losrennen, doch da fällt ihm der stinkende Dreikäsehoch unter seinem Arm auf den er vor lauter Entzücken eng an sich gepresst hat.\n
-          \"Verdammt. Ich muss mich wohl zuerst darum kümmern keine Stinkwolke mehr bei mir zu haben...\""s
+          \"Verdammt. Ich muss mich wohl zuerst darum kümmern keine Stinkwolke mehr bei mir zu haben...\""ss
         target_state: kirche
 
 kirche:
