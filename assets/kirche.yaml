@@ -14,12 +14,12 @@ kirche_vorraum:
       - description: eine Flasche Wein nehmen
       - only_visible_if_item_equals: [wein, 0]
       - give_item: wein
-      - goto_message_state: 'Das eignet sich hervorragend für einen romantischen Abend'
+      - goto_message_state: "'Das eignet sich hervorragend für einen romantischen Abend'"
     - buch:
       - description: ein Buch mitnehmen
       - only_visible_if_item_equals: [buch, 0]
       - give_item: buch
-      - goto_message_state: 'Da ist ein Kreuz drauf, Gott hat uns heute schonmal zur Seite gestanden, das kann nir schaden.'
+      - goto_message_state: "'Da ist ein Kreuz drauf, Gott hat uns heute schonmal zur Seite gestanden, das kann nicht schaden.'"
     - tuer:
       - description: sperrige Tür öffnen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
@@ -27,8 +27,23 @@ kirche_vorraum:
     - tuer:
       - description: sperrige Tür öffnen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - goto_message_state: Ringo schlüpft das stinkende Kleinkind unterm Arm durch die Tür.
+      - goto_message_state: |
+          Ringo schlüpft das stinkende Kleinkind unterm Arm durch die Tür.
+          Er befidnet sich in einem weiten, offenen Raum mit hoher Decke und großen bunten Fenstern.
+          Einige Personen verlassen gerade das Gebäude. In ihren schicken Kleidern und Anzügen bewegen sie sich zur Tür.
+          'Hier muss wohl eine Festlichkeit stattgefunden ha...' 
+          Gerade in diesem Moment, während die letzte Person durch die großen Eingangstüren schlüpft, sieht Ringo ihn.
+          'WOW! Der schönste Blumenstrauss, den ich je gesehen habe! Den _muss_ ich haben...'
+
+          Jemand zieht einen mit weißen Rosen bestückten Blumenstrauss durch die zufallende Tür.
+
+          Ringo will schon losrennen, doch da fällt ihm der stinkende Dreikäsehoch unter seinem Arm auf den er vor lauter Entzücken eng an sich gepresst hat.
+          'Verdammt. Ich muss mich wohl zuerst darum kümmern keine Stinkwolke mehr bei mir zu haben...'
+
         target_state: kirche
 
 kirche:
   text: |
+    Ringo steht in einem weiten, offenen Raum mit hoher Decke und großen bunten Fenstern.
+  responses:
+    - 
