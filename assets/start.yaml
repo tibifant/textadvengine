@@ -18,8 +18,7 @@ rutschen:
           target_state: realization
 
 realization:
-  text:
-    "Waehrend Ringo die Stufen herrunterschnellt ueberkommt ihn eine Erkenntnis:\n
+  text: "Waehrend Ringo die Stufen herrunterschnellt ueberkommt ihn eine Erkenntnis:\n
     \"Ri ra rutsch… rutsch? Das reimt sich auf futsch! Futsch ist meine grosse Liebe, wenn ich mich nicht bald, um unser Date heute Abend kuemmere!
     Ich brauche noch Luftballons; fuer das richtige Ambiente, Essen; irgendwas beeindruckendes, ein Geschenk; vielleicht Blumen und ich muss besser gekleidet sein, in diesem Aufzug...\"\n
     Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken...\n
@@ -115,16 +114,14 @@ schublade_bad:
       - description: Flasche mit Gel nehmen
       - only_visible_if_item_equals: [gel, 0]
       - give_item: gel
-      - goto_message_state:
-          "In der Flasche war eine dickfluessige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
+      - goto_message_state: "In der Flasche war eine dickfluessige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
           \"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Tueren offen!\""
     - schliessen:
       - description: Schublade schliessen.
       - goto: bad
 
 schrank_bad:
-  text:
-    "Im Schrank gibt es Pflaster. \"Da sieh mal einer an. Das ging schnell! Ich wusste gar nicht, dass Gott so materialistisch ist.\""
+  text: "Im Schrank gibt es Pflaster. \"Da sieh mal einer an. Das ging schnell! Ich wusste gar nicht, dass Gott so materialistisch ist.\""
   responses:
     - pflaster:
       - description: Pflaster nehmen

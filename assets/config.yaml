@@ -33,4 +33,5 @@ state_vars:
   - buerste_benutzt: 0
   - pfarrer_bewusstlos: 0
   - pfarrer_bewusstlos_bad: 0
+  - pfarrer_licht_aus: 0
 initial_screen: garage

@@ -75,10 +75,7 @@ pfarrer_im_flur:
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - set_state_var: [pfarrer_bewusstlos, 1]
-      - goto_message_state:
-        "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n
-        \"Und er verbrannte das Haus des HERRN und das Haus des Königs; und alle Häuser Jerusalems und jedes große Haus verbrannte er mit Feuer...\"\n
-        \"Mein Vater spricht zu mir!\" vor Aufregung wird dem Guten ganz warm, er dreht sich einmal um die eigene Achse und sinkt langsam, leise murmelend zu Boden."
+      - goto_message_state: "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und er verbrannte das Haus des HERRN und das Haus des Königs; und alle Häuser Jerusalems und jedes große Haus verbrannte er mit Feuer...\"\n\"Mein Vater spricht zu mir!\" vor Aufregung wird dem Guten ganz warm, er dreht sich einmal um die eigene Achse und sinkt langsam, leise murmelend zu Boden."
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]
@@ -127,9 +124,9 @@ pfarrer_bad:
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - set_state_var: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state:
-        "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat; 
-        und siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\"\n\"Mein Vater spricht zu mir!\" ertoent es von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
+      - goto_message_state: 
+          "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat;\n
+          und siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\"\n\"Mein Vater spricht zu mir!\" ertoent es von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]

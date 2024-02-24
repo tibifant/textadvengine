@@ -76,7 +76,8 @@ garage:
       - only_visible_if_item_equals: [parfum, 1]
       - only_visible_if_item_equals: [rote_farbe, 1]
       - only_visible_if_state_var_equals: [parfum_fuettern, 0]
-      - goto_message_state: "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt. Man kann es kaum noch lesen, aber da steht drauf 'Channel No 5'...\" Phantasie hat Ringo! 'Ch' sind die einzigen Buchstaben, die vom verblassten Schriftzug tatsechlich noch sichtbar sind. \"... ein Parfum brauche ich sowieso noch fuer heute Abend, ich werde es direkt ausprobieren\""
+      - goto_message_state: 
+          "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt. Man kann es kaum noch lesen, aber da steht drauf 'Channel No 5'...\" Phantasie hat Ringo! 'Ch' sind die einzigen Buchstaben, die vom verblassten Schriftzug tatsechlich noch sichtbar sind. \"... ein Parfum brauche ich sowieso noch fuer heute Abend, ich werde es direkt ausprobieren\""
         target_state: garage_bewusstlos
 
 garage_fuettern:
