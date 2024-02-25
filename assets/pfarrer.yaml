@@ -140,7 +140,7 @@ pfarrer_bad:
       - description: im Spiegel ansehen
       - only_visible_if_state_var_equals: [buerste_benutzt, 1]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - goto_message_state: "\"Wenigstens die Haare sitzen wieder, vielleicht war \"sentual\" doch nicht die beste Frisur...\""
+      - goto_message_state: "\"Wenigstens die Haare sitzen wieder, vielleicht war 'sentual' doch nicht die beste Frisur...\""
     - buerste:
       - description: Haare kämmen
       - set_state_var: [buerste_benutzt, 1]
@@ -158,7 +158,6 @@ pfarrer_bad:
       - goto_message_state: "Ein genervtes Seufzen ertoent von hinter dem Vorhang: \"Immer diese Sicherung...\""
     - zurueck:
       - description: zurück gehen
-      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto: pfarrer_flur
 
 pfarrer_garten:
@@ -172,6 +171,7 @@ pfarrer_garten:
     - baby:
       - description: Baby hochheben
       - only_visible_if_item_equals: [handtuch, 0]
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
       - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen.\""
     - baby:
       - description: Baby hochheben

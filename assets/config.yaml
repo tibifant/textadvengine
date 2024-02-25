@@ -3,7 +3,6 @@ items:
   - pflaster: 0
   - bad_schrank_schluessel: 0
   - gel: 0
-  - leiter: 0
   - rote_farbe: 0
   - parfum: 0
   - milch: 0
@@ -34,4 +33,4 @@ state_vars:
   - pfarrer_bewusstlos: 0
   - pfarrer_bewusstlos_bad: 0
   - pfarrer_licht_aus: 0
-initial_screen: garage
+initial_screen: start

@@ -1,9 +1,7 @@
 TODO: 
-- kleidung zerkratzt nach garten
+- kleidung zerkratzt nach garten - geht nicht mehr durch hecke zurueck mit anzug
 - 1 day later: pfarrer waechst baby in weihwasser, pfarrer macht frau bewusstlos...
-- garten: pup deutlicher machen,
 - immer parfum
-- pfarrer_imflur: bibelstelle
 
 - minigame:  |
     ey du, ich habe gehoert du bist auf der suche nach etwas, was ich habe... eine zwielichtige Person spricht Ringo aus einer Seitengasse an. // R14 47 B Schraubschluessel
@@ -17,3 +15,23 @@ TODO:
 
 ./mvnw.cmd clean package
 java -cp target/text-adventure.jar study.coco.App
+
+
+TODO:
+
+schlafzimmer: 
+    - "wer hat denn bitte haargel im schlafzimmer?" hinzufuegen
+    - verschlossen, schluessel liegt im goldfischtank und das sagt er, wenn du den goldfisch fuetterst oder so
+
+haus:
+    - gefaehrliche dinge rumstehen haben, damit das baby vll dahin geklettert ist - suche nach baby
+
+ katzenklappe verschwinden, aber woanders hin, aber das oeffnet dann neue optionen im haus, z.b. schluessel fuer garage im X-raum zu dem die katzenklappe geht
+
+ rote fluessigkeit auch essbar, aber kind schreit mehr
+
+ "was wohl eine 'chloro-form' ist - jedenfalls bringt es mich sicher top in form'" - vll steht das auf der rueckseite
+
+ garage, nach draussen: "ich will noch nicht ins gras beissen"
+
+ potentiell geht er wegen dem anzug nicht mehr durch die hecke
