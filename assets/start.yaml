@@ -122,7 +122,6 @@ schrank_bad_meta:
       - goto_message_state: "\"Bei einem verletzen Kind kann man jede Hilfe gebrauchen! Herrgott, stehe uns bei!\""
         target_state: schrank_bad
     - zurueck:
-      - description: zurück zum Bad
       - goto: bad
 
 schrank_bad:
@@ -172,7 +171,6 @@ baby_wohnzimmer_meta:
       - description: die Wunde begutachten
       - goto_message_state: "\"Das ist aber ein wirklich fieses Aua!\" Das Baby hat eine dicke Beule an der Stirn."
     - zurueck:
-      - description: zurueck zum Wohnzimmer
       - goto: wohnzimmer
 
 treppenhaus:

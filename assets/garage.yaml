@@ -48,7 +48,6 @@ rot_meta:
       - only_visible_if_item_equals: [rote_farbe, 0]
       - give_item: rote_farbe
     - zurueck:
-      - description: zurück zur Garage
       - goto: garage
 
 durchsichtig_meta:
@@ -59,7 +58,6 @@ durchsichtig_meta:
       - only_visible_if_item_equals: [parfum, 0]
       - give_item: parfum
     - zurueck:
-      - description: zurück zur Garage
       - goto: garage
 
 leim_meta:
@@ -78,7 +76,10 @@ leiter_meta:
       - description: Leiter an den Schrank lehnen
       - only_visible_if_state_var_equals: [leiter_verschoben, 0]
       - set_state_var: [leiter_verschoben, 1]
-      - only_visible_if_state_var_equals: [leiter_benutzt, 0]
+    - verschieben:
+      - description: Leiter an die Wand lehnen
+      - only_visible_if_state_var_equals: [leiter_verschoben, 1]
+      - set_state_var: [leiter_verschoben, 0]
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 0]
@@ -118,15 +119,35 @@ leiter_meta:
       - goto: garage_fuettern
         target_state: garage_fuettern
     - zurueck:
-      - description: zurück zur Garage
       - goto: garage
 
 leiter_an_decke:
   text: "\"Von hier oben kann man die toten Motten sehen, die auf der Deckenlampe dahingesiecht sind.\""
   responses:
+    - kabel:
+      - description: Kabel ansehen
+      - goto: kabel_meta
     - runter:
       - description: wieder runter klettern
       - goto: garage
+
+kabel_meta:
+  text: Neben der Deckenlampe ragt ein Kabel aus der Wand.
+  responses:
+    - abmachen:
+      - description: Kabel abmachen
+      - only_visible_if_item_equals: [kaninchen, 0] 
+      - goto_message_state: "\"Die bekomme ich so nicht ab.\""
+    - kaninchen:
+      - description: Kabel abknabbern lassen
+      - only_visible_if_item_equals: [kaninchen, 1] 
+      - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
+      
+      Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
+      
+      Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+    - zurueck:
+      - goto: leiter_an_decke
 
 garage_fuettern:
   text: |
