@@ -1,0 +1,568 @@
+start:
+  text: |
+    Wir befinden uns in einem schnieken Einfamilienhaus. Die Besitzer sind aushaeusig. 
+    Nur das juengste Familienmitglied koennen wir im Treppenhaus lokalisieren. Es ist in Begleitung eines ebenfalls noch nicht ausgewachsenen jungen Herrn. Sein Name ist Ringo. Er ist nur hier fuer den schnellen Groschen - er soll den kleinen Fratz hueten.
+
+    Gerade sind sie dabei Rutsche zu spielen.
+  responses:
+    - nochmal:
+        - description: nochmal rutschen
+        - goto_message_state: Ringo läuft, das Baby auf dem Arm, die Treppe hoch.
+          target_state: rutschen
+
+rutschen:
+  text: |
+    Ringo spielt Rutschen mit seinem infantilen Geldbringer.
+  responses:
+    - absetzen:
+        - description: Den Saeugling zum Rutschen absetzen.
+        - only_visible_if_state_var_equals: [abgesetzt, 0]
+        - set_state_var: [abgesetzt, 1]
+        - only_visible_if_state_var_equals: [realization, 0]
+        - set_state_var: [realization, 1]
+        - goto_message_state: "\"So und jetzt du alleine - wir haben das balancieren auf dem Geländer geübt. Ich renne vor und fange dich unten auf!\""
+          target_state: realization
+    - absetzen:
+        - description: Den Saeugling zum Rutschen absetzen.
+        - only_visible_if_state_var_equals: [abgesetzt, 0]
+        - set_state_var: [abgesetzt, 1]
+        - only_visible_if_state_var_equals: [realization, 1]
+        - goto_message_state: "\"Los geht's. Ich renne vor und fange dich unten auf!\""
+          target_state: treppenhaus_vor_unfall
+    - nochmal:
+        - description: nochmal rutschen
+        - only_visible_if_state_var_equals: [abgesetzt, 1]
+        - set_state_var: [abgesetzt, 0]
+        - goto_message_state: Ringo läuft, das Baby auf dem Arm, die Treppe hoch.
+
+realization:
+  text: "Waehrend Ringo die Stufen herrunterschnellt ueberkommt ihn eine Erkenntnis:\n
+    \"Ri ra rutsch… rutsch? Das reimt sich auf futsch! Futsch ist meine grosse Liebe, wenn ich mich nicht bald um unser Date heute Abend kuemmere!
+
+    Ich brauche noch:
+
+
+      - Luftballons, fuer das richtige Ambiente
+
+      - Essen, irgendwas beeindruckendes
+
+      - ein Geschenk, vielleicht Blumen
+    
+
+      und ich muss besser gekleidet sein, in diesem Aufzug...\"\n
+    Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken...\n
+    \"...brauche ich heute Abend nicht aufkreuzen und den Babymief muss ich auch noch irgendwie loswerden.\""
+  responses:
+    - x:
+      - accept_any_input
+      - goto: treppenhaus_vor_unfall
+
+bad:
+  text: "Ringo steht in einem hübschen Badezimmer."
+  responses:
+    - zu:
+      - description: Wasserhahn zudrehen
+      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 1]
+      - set_state_var: [wasserhahn_haus_aufgedreht, 0]
+      - goto_message_state: Das Wasser hört auf zu plätschern.
+    - auf:
+      - description: Wasserhahn aufdrehen
+      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 0]
+      - set_state_var: [wasserhahn_haus_aufgedreht, 1]
+      - goto_message_state: Wasser plätschert aus dem Wasserhahn
+    - giesskanne:
+      - description: Gießkanne auffüllen
+      - only_visible_if_item_equals: [giesskanne, 1]
+      - only_visible_if_state_var_equals: [giesskanne_voll, 0]
+      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 1]
+    - lappen:
+      - description: Putzlappen
+      - only_visible_if_state_var_equals: [lappen_nass, 0]
+      - goto: lappen_meta
+    - schrank:
+      - goto: schrank_bad_meta
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - goto: treppenhaus_oben
+
+lappen_meta:
+  text: Der Lappen ist weiß.
+  responses:
+    - nehmen:
+      - description: lappen nehmen
+      - give_item: lappen
+      - goto_message_state: "\"Ringo steckt den Lappen ein.\""
+        target_state: bad
+    - nass machen:
+      - description: den Lappen nass machen
+      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 1]
+      - set_state_var: [lappen_nass, 1]
+      - goto_message_state: Ringo macht den Lappen nass.
+    - nass machen:
+      - description: den Lappen nass machen
+      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 0]
+      - goto_message_state: "\"Der Wasserhahn ist nicht an.\""
+    - zurueck:
+      - goto: bad
+
+schublade_nachttisch:
+  text: |
+    In der Schublade liegen allerhand Dinge.
+  responses:
+    - schluessel:
+      - description: schluessel mit kleinem Kreuz-Anhaenger nehmen
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 0]
+      - give_item: bad_schrank_schluessel
+    - luftballons:
+      - description: Luftballons nehmen
+      - only_visible_if_item_equals: [luftballons, 0]
+      - give_item: luftballons
+      - goto_message_state: "\"Jetzt fehlt nur noch das Helium.\""
+    - gel:
+      - description: Flasche mit Gel nehmen
+      - only_visible_if_item_equals: [gel, 0]
+      - give_item: gel
+      - goto_message_state: "In der Flasche war eine dickfluessige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
+          \"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Tueren offen!\""
+    - schliessen:
+      - description: Schublade schliessen
+      - goto: bad
+
+schrank_bad_meta:
+  text: Auf dem Schrank ist ein großes Kreuz.
+  responses:
+    - oeffnen:
+      - description: den Schrank öffnen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 1]
+      - goto_message_state: "\"Ich will jetzt nicht beten.\""
+    - oeffnen:
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - goto_message_state:  &fest-verschlossen "\"Die Tür ist fest verschlossen.\""
+    - oeffnen:
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 0]
+      - goto_message_state: *fest-verschlossen
+    - oeffnen:
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - goto_message_state: "\"Da gibt's nichts mehr zu holen.\""
+    - oeffnen:
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 1]
+      - remove_item: bad_schrank_schluessel
+      - goto_message_state: "\"Bei einem verletzen Kind kann man jede Hilfe gebrauchen! Herrgott, stehe uns bei!\""
+        target_state: schrank_bad
+    - zurueck:
+      - goto: bad
+
+schrank_bad:
+  text: "Im Schrank gibt es allerhand medizinische HIlfsmittel. \"Da sieh mal einer an. Das ging schnell! Ich wusste gar nicht, dass Gott so materialistisch ist.\""
+  responses:
+    - pflaster:
+      - description: Pflaster nehmen
+      - only_visible_if_item_equals: [pflaster, 0]
+      - give_item: pflaster 
+    - schliessen:
+      - description: den Schrank schließen
+      - goto: bad
+
+wunde:
+  text: |
+    Auf dem Boden genau unterhalb des Endes des Gelaenders liegt das Kleine und weint.
+  responses:
+    - hochheben:
+      - description: das Baby hochheben
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - set_state_var: [wunde_gesehen, 1]
+      - goto_message_state: "\"Ohje du hast ja ein Aua! Ich bringe dich ins Wohnzimmer und hole eine Pflaster.\""
+        target_state: treppenhaus
+
+wohnzimmer:
+  text: |
+    Das Wohnzimmer ist groß und gemütlich.
+  responses:
+    - ablegen:
+      - description: Das Baby ablegen.
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - set_state_var: [baby_abgelegt, 1]
+      - goto_message_state: "\"Hier liegst du gut. Bin gleich wieder da und dann ist das Aua ganz schnell weg!\""
+    - baby:
+      - goto: baby_wohnzimmer_meta
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_item_equals: [pflaster, 0]
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - set_state_var: [wunde_gesehen, 1]
+      - goto: wunde
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - goto: treppenhaus
+    - treppenhaus:
+      - description: ins Treppenhaus gehen
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - goto: treppenhaus_sauber
+
+baby_wohnzimmer_meta:
+  text: Das Baby liegt auf einem weichen Kissen.
+  responses:
+    - begutachten:
+      - description: die Wunde begutachten
+      - goto_message_state: "\"Das ist aber ein wirklich fieses Aua!\" Das Baby hat eine dicke Beule an der Stirn."
+    - zurueck:
+      - goto: wohnzimmer
+
+treppenhaus_vor_unfall:
+  text: |
+    Im Treppenhaus ist eine große Treppe und es gibt Türen in alle Richtungen.
+  responses: &treppenhaus-responses
+    - auffangen:
+      - description: das Baby auffangen
+      - only_visible_if_state_var_equals: [abgesetzt, 1]
+      - goto_message_state: "\"Wuii komm in meine Arme!\" Das Baby kracht mit großer Wucht gegen Ringo und lacht. \"Wow das hatte Wumps!\" Das Baby lässt Ringo nicht mehr los und zeigt die Treppe hoch."
+        target_state: rutschen
+    - hoch:
+      - description: nach oben gehen
+      - goto_message_state_once: &fall-message-state Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
+      - goto: treppenhaus_oben
+    - wohnzimmer:
+      - description: ins Wohnzimmer gehen
+      - goto_message_state_once: *fall-message-state
+        target_state: wohnzimmer
+    - keller:
+      - description: in den Keller gehen
+      - goto_message_state_once: *fall-message-state
+      - goto: keller
+    - garage:
+      - description: in die Garage gehen
+      - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe.\""
+      - set_state_var: [katzenklappe_entdeckt, 1]
+    - katzenklappe:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - set_state_var: [gel_idee, 1]
+      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+
+treppenhaus:
+  text: |
+    Unterhalb der grossen Treppe sieht man einen kleinen Blutfleck.
+  responses: &treppenhaus-responses
+    - putzen:
+      - description: den Blutfleck wegputzen
+      - only_visible_if_item_equals: [lappen, 1]
+      - only_visible_if_state_var_equals: [lappen_nass, 1]
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - set_state_var: [treppenhaus_sauber, 1]
+      - goto_message_state: Ringo schrubbt den Blutfleck weg.
+        target_state: treppenhaus_sauber
+    - putzen:
+      - description: den Blutfleck wegputzen
+      - only_visible_if_item_equals: [lappen, 1]
+      - only_visible_if_state_var_equals: [lappen_nass, 0]
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - goto_message_state: "\"Mit einem trockenem Lappen geht das nicht.\""
+    - hoch:
+      - description: nach oben gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - goto: treppenhaus_oben
+    - hoch:
+      - description: nach oben gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - goto_message_state: "\"Erst muss ich den Patienten in Sicherheit bringen.\""
+    - keller:
+      - description: in den Keller gehen
+      - goto: keller
+    - wohnzimmer:
+      - description: ins Wohnzimmer gehen
+      - only_visible_if_item_equals: [pflaster, 0]
+      - goto: wohnzimmer
+    - wohnzimmer:
+      - description: ins Wohnzimmer gehen
+      - only_visible_if_item_equals: [pflaster, 1]
+      - set_state_var: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - goto_message_state: "Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. \"Oh ähh ohje! Wo bist du nur hin?\""
+        target_state: wohnzimmer
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_item_equals: [pflaster, 0]
+      - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe\""
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
+      - goto_message_state: "\"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - set_state_var: [katzenklappe_entdeckt, 1]
+      - goto_message_state: "\"Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?\""
+    - katzenklappe:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - set_state_var: [gel_idee, 1]
+      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+    - katzenklappe:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 1]
+      - set_state_var: [baby_in_garage_gefunden, 1]
+      - goto_message_state_once:
+          "\"Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht.\"\n
+          Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.\n
+          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.\n
+          ...\n
+          Ehhem.\n
+          ...\n
+          Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten.\n
+          ...\n
+          \"Oh achso nach klar!\n  
+           Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?\"\n
+           Man hört ein leises Fauchen."
+        target_state: garage
+    - pflaster:
+      - description: Pflaster verwenden
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - goto_message_state: "\"Zukleben? Wem soll das denn helfen?\""
+    - giesskanne:
+      - only_visible_if_item_equals: [giesskanne, 1]
+      - goto_message_state: "Ringo steckt den Hals der Gießkann durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
+    - gel:
+      - description: Gel verwenden
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [gel, 1]
+      - remove_item: gel
+      - set_state_var: [gel_benutzt, 1]
+      - goto_message_state: "\"Pui hihi das ist glipschig.\" Ringo schmiert die glibbrige Pampe über seinen gesamten Körper."
+
+treppenhaus_sauber:
+  text: |
+    Im Treppenhaus ist eine große Treppe und es gibt Türen in alle Richtungen.
+  responses: *treppenhaus-responses
+
+treppenhaus_oben:
+  text: Ringo steht im oberen Stockwerk.
+  responses:
+    - runter:
+      - description: die Treppe runter gehen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - set_state_var: [wunde_gesehen, 1]
+      - goto: wunde
+    - runter:
+      - description: die Treppe runter gehen
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - goto: treppenhaus
+    - runter:
+      - description: die Treppe runter gehen
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - goto: treppenhaus_sauber
+    - bad:
+      - description: ins Bad gehen
+      - goto: bad
+    - schlafzimmer:
+      - description: ins Schlafzimmer gehen
+      - goto: schlafzimmer
+    - arbeitszimmer:
+      - description: ins Arbeitszimmer gehen
+      - goto: arbeitszimmer
+
+schlafzimmer:
+  text: In der Mitte steht ein großes Bett
+  responses:
+    - bett:
+      - goto: bett_meta
+    - kleiderschrank:
+      - goto_message_state: "\"Nur Frauenkleider und Hawaiihemden.\" Ringo rümpft die Nase."
+    - nachttisch:
+      - goto: nachttisch
+    - balkon:
+      - description: auf den Balkon gehen
+      - goto: balkon
+
+bett_meta:
+  text: Das Bett ist groß und flauschig
+  responses:
+    - hinlegen:
+      - description: ins Bett legen
+      - only_visible_if_state_var_equals: [hingelegt, 0]
+      - set_state_var: [hingelegt, 1]
+      - goto_message_state: "Ringo macht es sich gemütlich, für eine Weile ist nichts aus Schnarchen von ihm zu hören. Bis er gerade langsam blinzend die Augen wieder öffnet. \"Das hat gut getan. Ich habe von fliegenden Giraffen mit Straßenlaternen als Hälsen geträumt.\""
+    - aufstehen:
+      - description: wieder aufstehen
+      - only_visible_if_state_var_equals: [hingelegt, 1]
+      - set_state_var: [hingelegt, 0]
+      - goto: schlafzimmer
+    - zurueck:
+      - goto: schlafzimmer
+
+nachttisch:
+  text: Der Nachttisch hat eine Schublade.
+  responses:    
+    - schublade:
+      - description: Schublade oeffnen
+      - only_visible_if_item_equals: [luftballons, 0]
+      - goto_message_state: "\"Dehnbar und aus Latex, das klingt doch genau wonach wir suchen.\""
+        target_state: schublade_nachttisch
+    - schublade:
+      - description: Schublade oeffnen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_item_equals: [gel, 0]
+      - goto: schublade_nachttisch
+    - schublade:
+      - description: Schublade oeffnen
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_item_equals: [gel, 1]
+      - only_visible_if_item_sum_greater: [bad_schrank_schluessel, pflaster, 0]
+      - goto_message_state: "\"Da gibt's nichts mehr zu holen.\""
+    - zurueck:
+      - goto: schlafzimmer
+
+balkon:
+  text: Der Balkon ist klein aber fein.
+  responses:
+    - katzenklo:
+      - goto_message_state: "\"Clever, die Fäkalien einfach outsourcen.\""
+    - giesskanne:
+      - only_visible_if_item_equals: [giesskanne, 0]
+      - goto: giesskanne_balkon
+
+giesskanne_balkon:
+  text: In der Ecke des Balkons steht eine grüne Gießkanne.
+  responses:
+    - nehmen:
+      - description: Gießkanne nehmen
+      - give_item: giesskanne
+      - goto: balkon
+    - zurueck:
+      - goto: balkon
+    
+keller:
+  text: Im Keller gibt es eine große Tür.
+  responses:
+    - tuer:
+      - description: Tür öffnen
+      - only_visible_if_item_equals: [stift, 0]
+      - only_visible_if_item_equals: [spitzer_stift, 0]
+      - only_visible_if_item_equals: [besen, 0]
+      - goto_message_state: *fest-verschlossen
+    - schluesselloch: 
+      - description: durch das Schlüßelloch schauen
+      - only_visible_if_item_equals: [stift, 0]
+      - only_visible_if_item_equals: [spitzer_stift, 0]
+      - only_visible_if_item_equals: [besen, 0]
+      - goto_message_state: "\"Von der anderen Seite steckt ein Schlüssel.\""
+    - spinne:
+      - description: der Spinne Hallo sagen
+      - goto_message_state: "\"Hallo Spinne.\""
+    - hoch:
+      - description: die Treppe wieder hochgehen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
+      - set_state_var: [wunde_gesehen, 1]
+      - goto: wunde
+    - hoch:
+      - description: die Treppe wieder hochgehen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - goto: treppenhaus
+    - hoch:
+      - description: die Treppe wieder hochgehen
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - goto: treppenhaus_sauber
+
+arbeitszimmer:
+  text: Ein großer Schreibtisch steht am Fenster.
+  responses:
+    - schredder:
+      - description: Papierschredder
+      - goto: papierschredder
+    - schreibtisch:
+      - goto: schreibtisch
+
+schreibtisch:
+  text: Auf dem Schreibtisch liegt alles Mögliche verteilt.
+  responses:
+    - rechnung:
+      - description: Rechung
+      - goto: rechnung
+    - stift:
+      - description: Stift
+      - only_visible_if_item_equals: [stift, 0]
+      - goto: stift_meta
+    - zettel:
+      - description: Zettel ansehen
+      - goto_message_state: "Auf dem Tisch liegt ein Zettel: '5583'"
+    - zurueck:
+      - goto: arbeitszimmer
+
+stift_meta:
+  text: Ein stumpfer Bleistift
+  responses:
+    - nehmen:
+      - description: den Stift nehmen
+      - give_item: stift
+      - goto: schreibtisch
+    - zurueck:
+      - goto: schreibtisch
+  
+rechnung:
+  text: Auf dem Schreibtisch liegt eine Rechnung
+  responses:
+    - lesen:
+      - description: Rechnung lesen
+      - only_visible_if_state_var_equals: [rechnung_unterschrieben, 0]
+      - goto_message_state: |
+          Rechnung  
+          
+          Suppentopf    Anzahl: 22 Preis: 66,92 EUR 
+
+                        Betrag: 553,36 EUR
+          
+          Unterschrift __________________
+    - lesen:
+      - description: Rechnung lesen
+      - only_visible_if_state_var_equals: [rechnung_unterschrieben, 1]
+      - goto_message_state: |
+          Rechnung  
+          
+          Suppentopf    Anzahl: 22 Preis: 66,92 EUR 
+
+                        Betrag: 553,36 EUR
+          
+          Unterschrift    RiNgO
+    - unterschreiben:
+      - description: die Rechnung unterschreiben
+      - only_visible_if_item_equals: [stift, 1]
+      - goto_message_state: Ringo setzt seine krakelige Unterschrift unter die Rechnung.
+    - zurueck:
+      - goto: schreibtisch
+
+papierschredder:
+  text: Im Papierschredder hängen einige Papiefetzen.
+  responses:
+    - an:
+      - description: anschalten
+      - only_visible_if_state_var_equals: [papierschredder_an, 0]
+      - set_state_var: [papierschredder_an, 1]
+    - aus:
+      - description: ausschalten
+      - only_visible_if_state_var_equals: [papierschredder_an, 1]
+      - set_state_var: [papierschredder_an, 0]
+    - baby:
+      - description: nach dem Baby suchen
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
+      - goto_message_state: "\"Hoffentlich bist du nicht hier rein gefallen.\" Ringo sucht den Schredder genaustens ab. \"Puhh! Kein Baby und kein Blut zu sehen.\""
+    - zurueck:
+      - goto: arbeitszimmer

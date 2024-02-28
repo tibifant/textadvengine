@@ -12,10 +12,18 @@ items:
   - wein: 0
   - buch: 0
   - kaninchen: 0
+  - giesskanne: 0
+  - stift: 0
+  - spitzer_stift: 0
+  - besen: 0
+  - lappen: 0
 state_vars:
+  - abgesetzt: 0
+  - hingelegt: 0
   - wunde_gesehen: 0
   - baby_abgelegt: 0
   - baby_nicht_in_wohnzimmer_bemerkt: 0
+  - baby_in_garage_gefunden: 0
   - katzenklappe_entdeckt: 0
   - gel_benutzt: 0
   - gel_idee: 0
@@ -35,4 +43,11 @@ state_vars:
   - pfarrer_bewusstlos: 0
   - pfarrer_bewusstlos_bad: 0
   - pfarrer_licht_aus: 0
+  - treppenhaus_sauber: 0
+  - rechnung_unterschrieben: 0
+  - realization: 0
+  - papierschredder_an: 0
+  - wasserhahn_haus_aufgedreht: 0
+  - giesskanne_voll: 0
+  - lappen_nass: 0
 initial_screen: start
