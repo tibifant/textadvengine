@@ -60,6 +60,7 @@ public class ScreenFactory {
   }
 
   final String GotoMessageStateAttribute = "goto_message_state";
+  final String GotoMessageStatesFromListAttribute = "goto_message_states_from_list";
   final String GotoMessageStateOnceAttribute = "goto_message_state_once";
   final String GotoMessageStateAttributeTargetState = "target_state";
 
@@ -90,6 +91,9 @@ public class ScreenFactory {
             case GotoMessageStateAttribute:
               targetScreen = createMessageScreen((String)item.getValue(), screenName);
               break;
+            case GotoMessageStatesFromListAttribute:
+              targetScreen = createMessageScreensFromList((List<String>)item.getValue(), screenName);
+              break;
             case GotoMessageStateOnceAttribute:
               targetScreen = createMessageScreen((String)item.getValue(), screenName, true);
               break;
@@ -111,6 +115,15 @@ public class ScreenFactory {
               messageScreenTarget = (String)containedValues.get(GotoMessageStateAttributeTargetState);
 
             targetScreen = createMessageScreen(message, messageScreenTarget, containedValues.containsKey(GotoMessageStateOnceAttribute));
+          } else if (containedValues.containsKey(GotoMessageStatesFromListAttribute)) {
+            List<String> messages = (List<String>)containedValues.get(GotoMessageStatesFromListAttribute);
+
+            String messageScreenTarget = screenName;
+
+            if (containedValues.containsKey(GotoMessageStateAttributeTargetState))
+              messageScreenTarget = (String)containedValues.get(GotoMessageStateAttributeTargetState);
+
+            targetScreen = createMessageScreensFromList(messages, messageScreenTarget);
           } else {
             throw new InvalidParameterException("Unexpected attribute in " + screenName + ": '" + containedValues + "'.");
           }
@@ -190,6 +203,21 @@ public class ScreenFactory {
     }
   }
 
+  private String createMessageScreensFromList(List<String> messages, String targetState) {
+    // handle last screen separately as its targetScreen is already given
+    String lastMessage = messages.remove(messages.size() - 1);
+    String nextMessageScreen = createMessageScreen(lastMessage, targetState);
+
+    // iterate remaining screens backwards to always set the following screen as the target of the former.
+    for (int i = messages.size() - 1; i >= 0; i--) {
+      String current = messages.get(i);
+      nextMessageScreen = createMessageScreen(current, nextMessageScreen);
+      System.out.println(nextMessageScreen + ": " + screens.get(nextMessageScreen));
+    }
+
+    // return first screen
+    return nextMessageScreen;
+  }
   private String createMessageScreen(String message, String targetState) {
     return createMessageScreen(message, targetState, false);
   }

@@ -8,6 +8,7 @@ start:
     - nochmal:
         - description: nochmal rutschen
         - goto: rutschen
+
 rutschen:
   text: |
     Ringo traegt seinen infantilen Geldbringer die Stufen hoch.
@@ -20,14 +21,17 @@ rutschen:
 realization:
   text: "Waehrend Ringo die Stufen herrunterschnellt ueberkommt ihn eine Erkenntnis:\n
     \"Ri ra rutsch… rutsch? Das reimt sich auf futsch! Futsch ist meine grosse Liebe, wenn ich mich nicht bald um unser Date heute Abend kuemmere!
+
     Ich brauche noch:
+
 
       - Luftballons, fuer das richtige Ambiente
 
       - Essen, irgendwas beeindruckendes
 
       - ein Geschenk, vielleicht Blumen
-      s
+    
+
       und ich muss besser gekleidet sein, in diesem Aufzug...\"\n
     Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken...\n
     \"...brauche ich heute Abend nicht aufkreuzen und den Babymief muss ich auch noch irgendwie loswerden.\""
@@ -41,7 +45,7 @@ bad:
   text: "Ringo steht in einem hübschen Badezimmer."
   responses:
     - schrank:
-      - goto: 
+      - goto: schrank_bad_meta
     - schublade:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 0]

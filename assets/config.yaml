@@ -11,6 +11,7 @@ items:
   - anzug: 0
   - wein: 0
   - buch: 0
+  - kaninchen: 0
 state_vars:
   - wunde_gesehen: 0
   - baby_abgelegt: 0
@@ -19,6 +20,7 @@ state_vars:
   - gel_benutzt: 0
   - gel_idee: 0
   - leiter_benutzt: 0
+  - leiter_verschoben: 0
   - farbe_fuettern: 0
   - parfum_fuettern: 0
   - leim_gefuettert: 0

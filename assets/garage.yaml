@@ -43,7 +43,7 @@ garage:
 rot_meta:
   text: "Ringo hält eine Dose mit roter Flüssigkeit in der Hand. \"Ob das wohl Ketchup ist?\""
   responses:
-    - nehmen
+    - nehmen:
       - description: Gefaess mit roter Fluessigkeit nehmen
       - only_visible_if_item_equals: [rote_farbe, 0]
       - give_item: rote_farbe
@@ -53,7 +53,7 @@ rot_meta:
 durchsichtig_meta:
   text: "Der Text auf der Flasche ist kaum noch lesbar. Er faengt mit 'Ch' an. \"Das ist doch Parfum. Channel No 5 oder sowas! Das erkenne ich auf den ersten Blick.\""
   responses:
-    nehmen:
+    - nehmen:
       - description: Gefaess mit durchsichtiger Fluessigkeit nehmen
       - only_visible_if_item_equals: [parfum, 0]
       - give_item: parfum
@@ -99,7 +99,7 @@ leiter_meta:
           \"Was ist den los? Du willst nicht? Ah ich weiss, jemand ist hungrig! Lieferservice ist schon unterwegs.\""
     - benutzen:
       - description: Leiter benutzen
-      - only_visible_if_item_equals: [leiter_verschoben, 1]
+      - only_visible_if_state_var_equals: [leiter_verschoben, 1]
       - set_state_var: [leiter_benutzt, 1]
       - goto_message_state:
           "\"So jetzt komm ich an dich dran. Dann komm mal her!\"\n
@@ -112,12 +112,12 @@ leiter_meta:
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
       - goto_message_state: "\"Mal sehen, ob ich was Gutes für dich gefunden habe...\""
+        target_state: garage_fuettern
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leim_gefuettert, 1]
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
       - goto: garage_fuettern
-        target_state: garage_fuettern
     - zurueck:
       - goto: garage
 
@@ -165,7 +165,7 @@ garage_fuettern:
       - only_visible_if_state_var_equals: [parfum_fuettern, 0]
       - set_state_var: [parfum_fuettern, 1]
       - goto_message_state: "\"Das kann man doch keinem Baby fuettern! Fuer mein Date heute Abend hingegen kann ich das noch sehr gut gebrauchen.\""
-      - weiss:
+    - weiss:
       - description: weisse Fluessigkeit fuettern
       - only_visible_if_item_equals: [milch, 1]
       - remove_item: milch
