@@ -6,9 +6,9 @@ start:
     Gerade sind sie dabei Rutsche zu spielen.
   responses:
     - nochmal:
-        - description: nochmal rutschen
-        - goto_message_state: Ringo läuft, das Baby auf dem Arm, die Treppe hoch.
-          target_state: rutschen
+      - description: nochmal rutschen
+      - goto_message_state: Ringo läuft, das Baby auf dem Arm, die Treppe hoch.
+        target_state: rutschen
 
 rutschen:
   text: |
@@ -49,8 +49,8 @@ realization:
       - ein Geschenk, vielleicht Blumen
     
 
-      und ich muss besser gekleidet sein, in diesem Aufzug...\"\n
-    Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken...\n
+    und ich muss besser gekleidet sein, in diesem Aufzug...\"\n\n
+    Ringo schaut an sich herunter, Ringelshirt mit Bäuerchenflecken...\n\n
     \"...brauche ich heute Abend nicht aufkreuzen und den Babymief muss ich auch noch irgendwie loswerden.\""
   responses:
     - x:
@@ -87,12 +87,12 @@ bad:
       - goto: treppenhaus_oben
 
 lappen_meta:
-  text: Der Lappen ist weiß.
+  text: Ein weißer Putzlappen.
   responses:
     - nehmen:
       - description: lappen nehmen
       - give_item: lappen
-      - goto_message_state: "\"Ringo steckt den Lappen ein.\""
+      - goto_message_state: "\"Im Treppenhaus sind noch Spuren zu beseitigen.\""
         target_state: bad
     - nass machen:
       - description: den Lappen nass machen
@@ -141,7 +141,7 @@ schrank_bad_meta:
     - oeffnen:
       - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
-      - goto_message_state:  &fest-verschlossen "\"Die Tür ist fest verschlossen.\""
+      - goto_message_state: &fest-verschlossen "\"Die Tür ist fest verschlossen.\""
     - oeffnen:
       - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
@@ -197,6 +197,9 @@ wohnzimmer:
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
+    - küche:
+      - description: in die Küche gehen
+      - goto: kueche
     - treppenhaus:
       - description: ins Treppenhaus gehen
       - only_visible_if_state_var_equals: [wunde_gesehen, 0]
@@ -220,10 +223,272 @@ baby_wohnzimmer_meta:
     - zurueck:
       - goto: wohnzimmer
 
+kueche:
+  text: Ringo steht in einer modernen Küche mit hohen Fenstern.
+  responses:
+    - kuehlschrank:
+      - description: Kühlschrank öffnen
+      - goto_message_state_once: "\"Ob das Licht auch wirklich immer ausgeht, wenn man den Kühlschrank zu macht?\""
+        target_state: kuehlschrank
+    - schublade:
+      - description: Küchenschublade
+      - goto: schublade_kueche_meta
+
+schublade_kueche_meta:
+  text: Eine der Schubladen an der Anrichte fällt besonders ins Auge.
+  responses:
+    - oeffnen:
+      - description: die Schublade öffnen
+      - only_visible_if_state_var_equals: [kueche_richtiger_code, 0]
+      - goto_message_state: "\"Die geht nicht auf, da ist eine Kindersicherung dran - mit Zahlenschloss.\""
+    - oeffnen:
+      - description: die Schublade öffnen
+      - only_visible_if_state_var_equals: [kueche_richtiger_code, 1]
+      - goto: schublade_kueche
+    - oeffnen:
+      - description: die Schublade öffnen
+      - only_visible_if_state_var_equals: [kueche_richtiger_code, 0]
+    - zahlenschloss:
+      - description: Zahlenschloss
+      - goto: zahlenschloss
+    - zurueck:
+      - goto: kueche
+
+schublade_kueche:
+  text: In der Schublade liegt ein Haufen Messer.
+  responses:
+    - schluessel:
+      - description: Schluessel
+      - goto: bad_schrank_schluessel_meta
+    - schliessen:
+      - description: Schublade schließen
+      - goto: kueche
+
+bad_schrank_schluessel_meta:
+  text: Ein kleiner Schlüssel liegt zwischen den Messern.
+  responses:
+    - nehmen:
+      - description: den Schlüssel nehmen
+      - give_item: bad_schrank_schluessel
+      - goto_message_state: "\"Ein Schlüssel bei den Messern, wo der wohl drauf passt.\" Ringo steckt den Schlüssel ein."
+      - goto: kueche
+    - zurueck:
+      - goto: kueche
+    
+zahlenschloss:
+  text: Das Schloss hat drei Stellen. #583
+  responses:
+    - "0": &falsch-eins 
+      - goto: falsch_stelle_2
+    - "1": *falsch-eins
+    - "2": *falsch-eins
+    - "3": *falsch-eins
+    - "4": *falsch-eins
+    - "5":
+      - goto: richtig_stelle_2
+    - "6": *falsch-eins
+    - "7": *falsch-eins
+    - "8": *falsch-eins
+    - "9": *falsch-eins
+
+richtig_stelle_2:
+  text: Zweite Stelle. #583
+  responses:
+    - "0": &falsch-zwei
+      - goto: falsch_stelle_3
+    - "1": *falsch-zwei
+    - "2": *falsch-zwei
+    - "3": *falsch-zwei
+    - "4": *falsch-zwei
+    - "5": *falsch-zwei
+    - "6": *falsch-zwei
+    - "7": *falsch-zwei
+    - "8":
+      - goto: richtig_stelle_3
+    - "9": *falsch-zwei
+      
+falsch_stelle_2:
+  text: Zweite Stelle. #583
+  responses:
+    - "0": &falsch-zwei
+      - goto: falsch_stelle_3
+    - "1": *falsch-zwei
+    - "2": *falsch-zwei
+    - "3": *falsch-zwei
+    - "4": *falsch-zwei
+    - "5": *falsch-zwei
+    - "6": *falsch-zwei
+    - "7": *falsch-zwei
+    - "8": *falsch-zwei
+    - "9": *falsch-zwei
+
+richtig_stelle_3:
+  text: Dritte Stelle. #583
+  responses:
+    - "0": &falsch
+      - goto_message_state: Der Code war falsch. Das Schloss geht nicht auf.
+        target_state: schublade_kueche_meta
+    - "1": *falsch
+    - "2": *falsch
+    - "3":
+      - goto_message_state: Der Code war richtig. Das Schloss geht auf.
+        target_state: schublade_kueche
+    - "4": *falsch
+    - "5": *falsch
+    - "6": *falsch
+    - "7": *falsch
+    - "8": *falsch
+    - "9": *falsch
+      
+falsch_stelle_3:
+  text: Dritte Stelle. #583
+  responses:
+    - "0": *falsch
+    - "1": *falsch
+    - "2": *falsch
+    - "3": *falsch
+    - "4": *falsch
+    - "5": *falsch
+    - "6": *falsch
+    - "7": *falsch
+    - "8": *falsch
+    - "9": *falsch
+
+kuehlschrank:
+  text: "\"Das ist ein richtiger High-Tech-Kühlschrank mit Eiswürfelmaschine.\""
+  responses:
+    - milch:
+      - description: Milch nehmen
+      - goto_message_state: "\"Die Milch ist leer.\""
+    - saft:
+      - description: Saft nehmen
+      - only_visible_if_item_equals: [saft, 0]
+      - give_item: saft
+    - mayo:
+      - description: Mayonnaise
+      - only_visible_if_item_equals: [mayo, 0]
+      - goto: mayo_meta
+    - hotsauce:
+      - description: Hotsauce
+      - only_visible_if_item_equals: [hotsauce, 0]
+      - goto: hotsauce_meta
+    - knopf:
+      - description: Knopf am Kühlschrank
+      - goto: knopf_kuehlschrank
+    - zumachen:
+      - description: den Kühlschrank zumachen.
+      - goto: kueche
+    - zumachen und licht preufen:
+      - description: beim Zumachen überprüfen, ob das Licht ausgeht
+      - goto_message_state: "Ringo steckt den Kopf in den Kühlschrank und zieht dir Tür zu. \"Aua, mein Kopf!\" Ringo taumelt weg vom Kühlschrank und dieser fällt langsam zu. \"So ein Mist.\""
+        target_state: kueche
+
+knopf_kuehlschrank:
+  text: Am Kühlschrank ist ein Knopf mit Schnee-Symbol angbracht.
+  responses:
+    - druecken:
+      - description: Knopf drücken
+      - goto_message_state: Eiswürfel kullern auf den Boden und bilde ein kleine Pfütze.
+        target_state: kuehlschrank
+    - zurueck:
+      - goto: kuehlschrank
+
+
+saft_meta:
+  text: "\"Vitamin A, E, I, O und U, ob das wohl gesund ist - so viele Buchstaben aufeinmal...\""
+  responses:
+    - probieren:
+      - description: Saft probieren
+      - only_visible_if_item_equals: [saft, 0]
+      - goto_message_state: "\"Ich fühle mich direkt viel gesünder.\""
+    - nehmen:
+      - description: Saft nehmen
+      - only_visible_if_item_equals: [saft, 0]
+      - give_item: saft
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Saft nehmen
+      - only_visible_if_item_equals: [saft, 0]
+      - give_item: saft
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Saft nehmen
+      - only_visible_if_item_equals: [saft, 0]
+      - give_item: saft
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - goto_message_state: "\"Vielleicht schmeckt das dem Baby.\""
+        target_state: kuehlschrank
+    - zurueck:
+      - goto: kuehlschrank
+
+hotsauce_meta:
+  text: '''Extra scharf'''
+  responses:
+    - probieren:
+      - description: Hotsauce probieren
+      - only_visible_if_item_equals: [hotsauce, 0]
+      - goto_message_state: "\"AHHH puhh das brennt...\""
+    - nehmen:
+      - description: Hotsauce nehmen
+      - only_visible_if_item_equals: [hotsauce, 0]
+      - give_item: hotsauce
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Hotsauce nehmen
+      - only_visible_if_item_equals: [hotsauce, 0]
+      - give_item: hotsauce
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Hotsauce nehmen
+      - only_visible_if_item_equals: [hotsauce, 0]
+      - give_item: hotsauce
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - goto_message_state: "\"Vielleicht mögen Babys sowas.\""
+        target_state: kuehlschrank
+    - zurueck:
+      - goto: kuehlschrank
+
+mayo_meta:
+  text: '''Feinste Mayonnaise'''
+  responses:
+    - probieren:
+      - description: Mayonnaise probieren
+      - only_visible_if_item_equals: [mayo, 0]
+      - goto_message_state: "\"Vorzüglich!\""
+    - nehmen:
+      - description: Mayonnaise nehmen
+      - only_visible_if_item_equals: [mayo, 0]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
+      - give_item: mayo
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Mayonnaise nehmen
+      - only_visible_if_item_equals: [mayo, 0]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - give_item: mayo
+      - goto: kuehlschrank
+    - nehmen:
+      - description: Mayonnaise nehmen
+      - only_visible_if_item_equals: [mayo, 0]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - give_item: mayo
+      - goto_message_state: "\"Die Farbe stimmt schonmal mit Milch überein...\""
+        target_state: kuehlschrank
+    - zurueck:
+      - goto: kuehlschrank
+
 treppenhaus_vor_unfall:
   text: |
     Im Treppenhaus ist eine große Treppe und es gibt Türen in alle Richtungen.
-  responses: &treppenhaus-responses
+  responses:
     - auffangen:
       - description: das Baby auffangen
       - only_visible_if_state_var_equals: [abgesetzt, 1]
@@ -502,7 +767,7 @@ schreibtisch:
       - goto: stift_meta
     - zettel:
       - description: Zettel ansehen
-      - goto_message_state: "Auf dem Tisch liegt ein Zettel: '5583'"
+      - goto_message_state: "Auf dem Tisch liegt ein Zettel: '583'"
     - zurueck:
       - goto: arbeitszimmer
 
