@@ -932,10 +932,74 @@ werkstatt_keller:
       - description: das Licht ausmachen
       - only_visible_if_state_var_equals: [keller_licht_an, 1]
       - set_state_var: [keller_licht_an, 0]
-      - goto_message_state: "\"Im Dunkeln ist gut Munkeln. Aber schlecht sehen...\""
+      - goto_message_state: "\"Im Dunkeln ist gut Munkeln - aber auch schlecht Sehen...\""
+    - rot:
+      - description: Gefaess mit roter Fluessigkeit ansehen
+      - only_visible_if_state_var_equals: [keller_licht_an, 1]
+      - only_visible_if_item_equals: [rote_farbe, 0]
+      - goto: rot_meta
+    - durchsichtig:
+      - description: Gefaess mit durchsichtiger Fluessigkeit ansehen
+      - only_visible_if_state_var_equals: [keller_licht_an, 1]
+      - only_visible_if_item_equals: [parfum, 0]
+      - goto: durchsichtig_meta
+    - weiss:
+      - description: Gefaess mit weisser Fluessigkeit ansehen
+      - only_visible_if_item_equals: [milch, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_state_var_equals: [keller_licht_an, 1]
+      - goto: leim_meta
+    - hammer:
+      - description: Hammer
+      - only_visible_if_state_var_equals: [keller_licht_an, 1]
+      - goto: hammer_meta
     - kellertreppe:
       - description: zurück zur Kellertreppe
       - goto: keller
+
+hammer_meta:
+  text: Ein großer Hammer liegt auf der Werkbank.
+  responses:
+    - haemmern:
+      - description: einen Nagel in die Wand hämmern
+      - goto_message_state: "Ringo schlägt einen Nagel an einer zufälligen Stelle in die Wand. Etwas Putz blättert ab. \"Ich war schon immer gut darin den Nagel auf den Kopf zu treffen.\""
+    - zurueck:
+      - goto: werkstatt_keller
+
+rot_meta:
+  text: "Ringo hält eine Dose mit roter Flüssigkeit in der Hand. \"Ob das wohl Ketchup ist?\""
+  responses:
+    - nehmen:
+      - description: Gefaess mit roter Fluessigkeit nehmen
+      - only_visible_if_item_equals: [rote_farbe, 0]
+      - give_item: rote_farbe
+    - zurueck:
+      - goto: werkstatt_keller
+
+durchsichtig_meta:
+  text: "Der Text auf der Flasche ist kaum noch lesbar. Er faengt mit 'Ch' an. \"Das ist doch Parfum. Channel No 5 oder sowas! Das erkenne ich auf den ersten Blick.\""
+  responses:
+    - nehmen:
+      - description: Gefaess mit durchsichtiger Fluessigkeit nehmen
+      - only_visible_if_item_equals: [parfum, 0]
+      - give_item: parfum
+    - zurueck:
+      - goto: werkstatt_keller
+
+leim_meta:
+  text: In der Flasche war eine klebrige Flüssigkeit.
+  responses:
+    - probieren:
+      - description: "die 'Milch' probieren"
+      - goto_message_state: "\"Schmeckt klebrig...\"" 
+    - nehmen:
+      - description: Gefaess mit weisser Fluessigkeit nehmen
+      - only_visible_if_item_equals: [milch, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - give_item: milch
+      - goto_message_state: "\"Wer bewahrt denn seine Milch im Keller auf?\""
+    - zurueck:
+      - goto: werkstatt_keller
 
 arbeitszimmer:
   text: Ein großer Schreibtisch steht am Fenster.
