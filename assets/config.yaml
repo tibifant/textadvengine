@@ -20,6 +20,7 @@ items:
   - saft: 0
   - mayo: 0
   - hotsauce: 0
+  - schluessel_keller: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -54,4 +55,6 @@ state_vars:
   - giesskanne_voll: 0
   - lappen_nass: 0
   - kueche_richtiger_code: 0
+  - schluessel_aus_dem_loch_geschoben: 0
+  - keller_licht_an: 0
 initial_screen: start

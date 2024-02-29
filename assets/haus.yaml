@@ -119,13 +119,13 @@ schublade_nachttisch:
       - description: Luftballons nehmen
       - only_visible_if_item_equals: [luftballons, 0]
       - give_item: luftballons
-      - goto_message_state: "\"Jetzt fehlt nur noch das Helium.\""
+      - goto_message_state: "\"Wer hat den luftballons in der Nachttischschublade?\""
     - gel:
       - description: Flasche mit Gel nehmen
       - only_visible_if_item_equals: [gel, 0]
       - give_item: gel
-      - goto_message_state: "In der Flasche war eine dickfluessige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
-          \"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Tueren offen!\""
+      - goto_message_state: "In der Flasche war eine dickflüssige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
+          \"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Türen offen!\""
     - schliessen:
       - description: Schublade schliessen
       - goto: bad
@@ -197,7 +197,16 @@ wohnzimmer:
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
-    - küche:
+    - pflanzen:
+      - description: Zimmerplfanzen
+      - goto: blumen_wohnzimmer_meta
+    - schrank:
+      - description: Wohnzimmerschrank
+      - goto: wohnzimmerschrank
+    - katzenspielzeug:
+      - description: Katzenspielzeug
+      - goto: katzenspielzeug
+    - kueche:
       - description: in die Küche gehen
       - goto: kueche
     - treppenhaus:
@@ -208,11 +217,69 @@ wohnzimmer:
     - treppenhaus:
       - description: ins Treppenhaus gehen
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - goto: treppenhaus
     - treppenhaus:
       - description: ins Treppenhaus gehen
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - goto: treppenhaus_sauber
+
+katzenspielzeug:
+  text: In der Ecke liegt allerhand Katzenspielzeug
+  responses:
+    - spielen:
+      - description: mit der Katze spielen
+      - goto_message_state: "Ringo spielt mit der Katze. \"Hehehe so ein feines Kätzchen.\" Sobald sie Ringos Stimme hört, dreht die Katze auf der Stelle um, geht ans andere Ende des Raums und schaut Ringo vorwurfsvoll an."
+        target_state: wohnzimmer
+    - zurueck:
+      - goto: wohnzimmer
+
+wohnzimmerschrank:
+  text: Im Schrank gibt es allen möglichen Bastelbedarf.
+  responses:
+    - spitzer:
+      - description: Spitzer
+      - goto: spitzer_meta
+
+spitzer_meta:
+  text: Ringo hält einen elektrischen Spitzer in den Händen.
+  responses:
+    - einschalten:
+      - description: Spitzer einschalten
+      - goto_message_state: '''brrrrrbr'''
+    - benutzen:
+      - description: Spitzer benutzen
+      - only_visible_if_item_equals: [stift, 1]
+      - remove_item: stift
+      - give_item: spitzer_stift
+      - goto_message_state: Jetzt ist der Stift ist vorne wieder dünn und spitz.
+    - zurueck:
+      - goto: wohnzimmerschrank
+
+blumen_wohnzimmer_meta:
+  text: Im Wohnzimmer stehen viele verschiedene Zimmerplfanzen.
+  responses:
+    - giessen:
+      - description: Pflanzen gießen
+      - only_visible_if_item_equals: [giesskanne, 0]
+      - goto_message_state: "\"Ohne Gießkanne wird das nichts.\""
+    - giessen:
+      - description: Pflanzen gießen
+      - only_visible_if_item_equals: [giesskanne, 1]
+      - only_visible_if_state_var_equals: [giesskanne_voll, 0]
+      - goto_message_state: "\"Mit einer leeren Gießkanne kommen wir hier nicht weit.\""
+    - giessen:
+      - description: Pflanzen gießen
+      - only_visible_if_item_equals: [giesskanne, 1]
+      - only_visible_if_state_var_equals: [giesskanne_voll, 1]
+      - set_state_var: [giesskanne_voll, 0]
+      - goto_message_state: Ringo kippt ordentlich Wasser über die Blumen.
+    - reden:
+      - description: mit den Pflanzen reden
+      - goto_message_state: "Ringos Stimme geht in eine Babystimme über. \"Uiii was für feine Blümchen.\" Und wieder zurück in ihre normale liebliche Form. \"Los wachst schneller!\""
+    - zurueck:
+      - goto: wohnzimmer
 
 baby_wohnzimmer_meta:
   text: Das Baby liegt auf einem weichen Kissen.
@@ -233,6 +300,29 @@ kueche:
     - schublade:
       - description: Küchenschublade
       - goto: schublade_kueche_meta
+    - fleischwolf:
+      - description: Fleischwolf
+      - goto: fleischwolf
+
+fleischwolf:
+  text: In der Küche steht ein großer, gefährlich aussehender Fleischwolf.
+  responses:
+    - kurbeln:
+      - description: an der Kurbel drehen
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
+      - goto_message_state: "Ringo dreht an der großen Kurbel. Vorne kommen ein paar Reste raus. \"Da war wohl noch was drin.\""
+        target_state: kueche
+    - kurbeln:
+      - description: an der Kurbel drehen
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - goto_message_state: "Ringo dreht an der großen Kurbel. Vorne kommen ein paar Reste raus. \"Da war wohl noch was drin.\""
+    - baby:
+      - description: nach dem Baby suchen
+      - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
+      - goto_message_state: "\"Hoffentlich ist das Baby nicht hier rein geklettert.\" Ringo sucht den Fleischwolf genaustens ab. \"Puhh! Kein Baby in Sicht.\""
+    - zurueck:
+      - goto: kueche
 
 schublade_kueche_meta:
   text: Eine der Schubladen an der Anrichte fällt besonders ins Auge.
@@ -245,11 +335,9 @@ schublade_kueche_meta:
       - description: die Schublade öffnen
       - only_visible_if_state_var_equals: [kueche_richtiger_code, 1]
       - goto: schublade_kueche
-    - oeffnen:
-      - description: die Schublade öffnen
-      - only_visible_if_state_var_equals: [kueche_richtiger_code, 0]
     - zahlenschloss:
       - description: Zahlenschloss
+      - only_visible_if_state_var_equals: [kueche_richtiger_code, 0]
       - goto: zahlenschloss
     - zurueck:
       - goto: kueche
@@ -270,7 +358,7 @@ bad_schrank_schluessel_meta:
     - nehmen:
       - description: den Schlüssel nehmen
       - give_item: bad_schrank_schluessel
-      - goto_message_state: "\"Ein Schlüssel bei den Messern, wo der wohl drauf passt.\" Ringo steckt den Schlüssel ein."
+      - goto_message_state: "\"Ein Schlüssel bei den Messern? Wo der wohl drauf passt.\" Ringo steckt den Schlüssel ein."
       - goto: kueche
     - zurueck:
       - goto: kueche
@@ -290,6 +378,8 @@ zahlenschloss:
     - "7": *falsch-eins
     - "8": *falsch-eins
     - "9": *falsch-eins
+    - zurueck:
+      - goto: schublade_kueche_meta
 
 richtig_stelle_2:
   text: Zweite Stelle. #583
@@ -306,6 +396,12 @@ richtig_stelle_2:
     - "8":
       - goto: richtig_stelle_3
     - "9": *falsch-zwei
+    - zurueck:
+      - description: zurück zu Stelle 1
+      - goto: zahlenschloss
+    - abbrechen:
+      - description: zurück zur Küche
+      - goto: kueche
       
 falsch_stelle_2:
   text: Zweite Stelle. #583
@@ -321,6 +417,12 @@ falsch_stelle_2:
     - "7": *falsch-zwei
     - "8": *falsch-zwei
     - "9": *falsch-zwei
+    - zurueck:
+      - description: zurück zu Stelle 1
+      - goto: zahlenschloss
+    - abbrechen:
+      - description: zurück zur Küche
+      - goto: kueche
 
 richtig_stelle_3:
   text: Dritte Stelle. #583
@@ -331,6 +433,7 @@ richtig_stelle_3:
     - "1": *falsch
     - "2": *falsch
     - "3":
+      - set_state_var: [kueche_richtiger_code, 1]
       - goto_message_state: Der Code war richtig. Das Schloss geht auf.
         target_state: schublade_kueche
     - "4": *falsch
@@ -339,6 +442,12 @@ richtig_stelle_3:
     - "7": *falsch
     - "8": *falsch
     - "9": *falsch
+    - zurueck:
+      - description: zurück zu Stelle 2
+      - goto: richtig_stelle_2
+    - abbrechen:
+      - description: zurück zur Küche
+      - goto: kueche
       
 falsch_stelle_3:
   text: Dritte Stelle. #583
@@ -353,6 +462,12 @@ falsch_stelle_3:
     - "7": *falsch
     - "8": *falsch
     - "9": *falsch
+    - zurueck:
+      - description: zurück zu Stelle 2
+      - goto: falsch_stelle_2
+    - abbrechen:
+      - description: zurück zur Küche
+      - goto: kueche
 
 kuehlschrank:
   text: "\"Das ist ein richtiger High-Tech-Kühlschrank mit Eiswürfelmaschine.\""
@@ -628,10 +743,12 @@ treppenhaus_oben:
     - runter:
       - description: die Treppe runter gehen
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - goto: treppenhaus
     - runter:
       - description: die Treppe runter gehen
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - goto: treppenhaus_sauber
     - bad:
       - description: ins Bad gehen
@@ -704,7 +821,7 @@ balkon:
       - goto: giesskanne_balkon
 
 giesskanne_balkon:
-  text: In der Ecke des Balkons steht eine grüne Gießkanne.
+  text: In der Ecke des Balkons steht eine grüne, leere Gießkanne.
   responses:
     - nehmen:
       - description: Gießkanne nehmen
@@ -717,17 +834,11 @@ keller:
   text: Im Keller gibt es eine große Tür.
   responses:
     - tuer:
-      - description: Tür öffnen
-      - only_visible_if_item_equals: [stift, 0]
-      - only_visible_if_item_equals: [spitzer_stift, 0]
-      - only_visible_if_item_equals: [besen, 0]
-      - goto_message_state: *fest-verschlossen
-    - schluesselloch: 
-      - description: durch das Schlüßelloch schauen
-      - only_visible_if_item_equals: [stift, 0]
-      - only_visible_if_item_equals: [spitzer_stift, 0]
-      - only_visible_if_item_equals: [besen, 0]
-      - goto_message_state: "\"Von der anderen Seite steckt ein Schlüssel.\""
+      - only_visible_if_item_equals: [schluessel_keller, 0]
+      - goto: kellertuer
+    - werkstatt:
+      - only_visible_if_item_equals: [schluessel_keller, 1]
+      - goto: werkstatt_keller
     - spinne:
       - description: der Spinne Hallo sagen
       - goto_message_state: "\"Hallo Spinne.\""
@@ -745,6 +856,86 @@ keller:
       - description: die Treppe wieder hochgehen
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
       - goto: treppenhaus_sauber
+
+kellertuer:
+  text: Zwischen Tür und Fußboden ist ein großer Spalt.
+  responses:
+    - oeffnen:
+      - description: Tür öffnen
+      - only_visible_if_item_equals: [schluessel_keller, 0]
+      - goto_message_state: *fest-verschlossen
+    - arm:
+      - description: mit dem Arm nach dem Schlüssel angeln
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 1]
+      - goto_message_state: "\"Mist! Mein Arm ist zu kurz.\""
+    - besen:
+      - description: mit dem Besen nach dem Schlüssel angeln
+      - only_visible_if_item_equals: [besen, 1]
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 1]
+      - give_item: schluessel_keller
+      - goto_message_states_from_list: 
+          - "Ringo legt sich auf den Boden, streckt Arm und Besen unter der Tür durch und stochert nach dem Schlüssel."
+          - "Etwas schlittert über den Boden."
+          - "\"Hab ich dich!\" Ringo zieht den Schlüssel unter der Tür hervor und hält ihn triumphierend in die Luft."
+    - aufschliessen:
+      - description: die Tür aufschliessen
+      - only_visible_if_item_equals: [schluessel_keller, 1]
+      - goto_message_state: Ringo betritt den Raum und... sieht nichts.
+        target_state: werkstatt_keller
+    - schluesselloch: 
+      - only_visible_if_item_equals: [schluessel_keller, 0]
+      - goto: schluesselloch
+    - zurueck:
+      - goto: keller
+
+schluesselloch:
+  text: Die Tür hat ein großes Schlüsselloch.
+  responses:
+    - schauen:
+      - description: durch das Schlüsselloch schauen
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
+      - only_visible_if_item_equals: [schluessel_keller, 0]
+      - goto_message_state_once: "\"Von der anderen Seite steckt ein Schlüssel. Hätte man was langes, dünnes könnte man den Schlüssel aus dem Schloss schieben.\""
+    - schauen:
+      - description: durch das Schlüsselloch schauen
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 1]
+      - only_visible_if_item_equals: [schluessel_keller, 0]
+      - goto_message_state_once: "\"Der Schlüssel steckt nicht mehr im Loch.\""
+    - finger:
+      - description: Finger in das Schlüsselloch stecken
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
+      - goto_message_state: "\"Mein Finger ist zu dick. Der passt da nicht rein.\""
+    - stift:
+      - description: Stift in das Schlüsselloch stecken
+      - only_visible_if_item_equals: [stift, 1]
+      - only_visible_if_item_equals: [spitzer_stift, 0]
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
+      - goto_message_state: "Ringo versucht mit dem Stift den Schlüssel aus dem Loch zu schieben. Aber die Spitze des Stifts ist zu dick."
+    - stift:
+      - description: Stift in das Schlüsselloch stecken
+      - only_visible_if_item_equals: [stift, 0]
+      - only_visible_if_item_equals: [spitzer_stift, 1]
+      - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
+      - goto_message_state: "\"Ha! Mit dem gespitzen Stift geht es.\" Man hört ein Klirren auf der anderen Seite der Tür."
+    - zurueck:
+      - goto: kellertuer
+
+werkstatt_keller:
+  text: Hier gibt es viele Werkzeuge und was der Hobby-Bastler sonst noch so braucht.
+  responses:
+    - licht an:
+      - description: das Licht anmachen
+      - only_visible_if_state_var_equals: [keller_licht_an, 0]
+      - set_state_var: [keller_licht_an, 1]
+      - goto_message_state_once: "\"Es werde Licht!\" Ringo steht findet sich in einer Art Werkstatt wieder."
+    - licht aus:
+      - description: das Licht ausmachen
+      - only_visible_if_state_var_equals: [keller_licht_an, 1]
+      - set_state_var: [keller_licht_an, 0]
+      - goto_message_state: "\"Im Dunkeln ist gut Munkeln. Aber schlecht sehen...\""
+    - kellertreppe:
+      - description: zurück zur Kellertreppe
+      - goto: keller
 
 arbeitszimmer:
   text: Ein großer Schreibtisch steht am Fenster.

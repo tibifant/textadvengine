@@ -209,11 +209,8 @@ public class ScreenFactory {
     String nextMessageScreen = createMessageScreen(lastMessage, targetState);
 
     // iterate remaining screens backwards to always set the following screen as the target of the former.
-    for (int i = messages.size() - 1; i >= 0; i--) {
-      String current = messages.get(i);
-      nextMessageScreen = createMessageScreen(current, nextMessageScreen);
-      System.out.println(nextMessageScreen + ": " + screens.get(nextMessageScreen));
-    }
+    for (int i = messages.size() - 1; i >= 0; i--)
+      nextMessageScreen = createMessageScreen(messages.get(i), nextMessageScreen);
 
     // return first screen
     return nextMessageScreen;
