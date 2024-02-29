@@ -1,9 +1,104 @@
 pfarrer_eingang:
-  text: Ringo steht vor einer Hintertuer, die in das zum Garten gehörende Haus führt.
+  text: Ringo steht vor der Haustür des Nachbarhauses.
   responses:
     - rein:
       - description: rein gehen
+      - only_visible_if_item_equals: [schluessel_pfarrer, 0]
+      - goto_message_state: &fest-verschlossen "\"Die Tür ist fest verschlossen.\""
+    - rein:
+      - description: rein gehen
+      - only_visible_if_item_equals: [schluessel_pfarrer, 1]
       - goto: pfarrer_flur
+    - klingel:
+      - description: Klingel
+      - goto: klingel_pfarrer
+    - briefkasten:
+      - goto: pfarrer_briefkasten
+    - brief:
+      - only_visible_if_item_equals: [brief_pfarrer, 1]
+      - only_visible_if_state_var_equals: [brief_pfarrer_geoeffnet, 0]
+      - goto: brief_pfarrer
+    - zurueck:
+      - description: zurück zur Garage
+      - goto: #TODO!      
+
+brief_pfarrer:
+  text: Im Briefumschlag scheint ein Gegenstand zu sein.
+  responses:
+    - oeffnen:
+      - description: den Brief öffnen
+      - set_state_var: brief_pfarrer_geoeffnet
+      - goto: brief_pfarrer_offen
+    - zurueck:
+      - goto: pfarrer_eingang
+
+brief_pfarrer_offen:
+  text: 
+  responses:
+    - lesen:
+      - description: Brief lesen
+      - goto_message_states_from_list: 
+          - "\"In dem Brief steht:\n'Hallo Johann,'\""
+          - ... Ringo nuschelt immer wieder uneindeutige Laute vor sich hin ...
+          - "\"' ... deine Fetisch für ... und deine nervige Art beim ... haben dazu geführt, dass ich nichts mehr mit dir zu tun haben will.\n
+            Hier hast du dein Zeug zurück - ich brauche es nicht mehr.'\""
+    - ring:
+      - only_visible_if_item_equals: [ring, 0]
+      - goto: ring_pfarrer_meta
+    - schluessel:
+      - only_visible_if_item_equals: [schluessel_pfarrer, 0]
+      - goto: schluessel_pfarrer_meta
+    - zurueck:
+      - goto: pfarrer_eingang
+
+ring_pfarrer_meta:
+  text: Im Briefumschlag lag ein goldener Ring mit Datumsinschrift.
+    - nehmen:
+      - description: Ring nehmen
+      - give_item: ring
+      - goto_message_state: "\"Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen.\""
+    - zurueck:
+      - goto: brief_pfarrer_offen
+
+schluessel_pfarrer_meta:
+  text: Ein Schlüssel mit einem kaputten Herz-Anhänger war im Brief
+  responses:
+    - nehmen:
+      - description: den Schlüssel nehmen
+      - give_item: schluessel_pfarrer
+      - goto_message_state: "\"Was ein glücklicher Zufall!\" Ringo steckt den Schlüssel ein."
+        target_state: brief_pfarrer_offen
+    - zurueck:
+      - goto: brief_pfarrer_offen
+
+pfarrer_briefkasten:
+  text: Am Eingang des Hauses gibt es einen Briefkasten
+  responses:
+    - reinschauen:
+      - description: in den Breifkasten schauen
+      - goto_message_state: "Ringo späht durch den Briefschlitz. \"Ich glaube da steckt was drin.\""
+    - rausziehen:
+      - description: Brief aus dem Briefkasten ziehen
+      - only_visible_if_item_equals: [brief_pfarrer, 0]
+      - goto_message_state: "\"Meine Finger sind immer noch zu dick für schmale Öffnungen, das muss was anderes her.\""
+    - kabel:
+      - description: mit dem Kabel nach dem Brief angeln
+      - only_visible_if_item_equals: [kabel, 1]
+      - give_item: brief_pfarrer
+      - goto_message_state: "Ringo schiebt das Kabel durch die Öffnung und - \"Tada! Hab ich dich\" - hält den Brief in den Händen."
+        target_state: pfarrer_eingang
+    - zurueck:
+      - goto: pfarrer_eingang
+
+klingel_pfarrer:
+  text: Neben der Haustür ist eine Klingel mit schnörkeligen Verzierungen angebracht.
+  responses:
+    - klingeln:
+      - description: Klingel betätigen
+      - goto_message_state: " ... ... ... \"Nichts - macht niemand auf.\""
+        target_state: pfarrer_eingang
+    - zurueck:
+      - goto: pfarrer_eingang
 
 pfarrer_flur:
   text: Ringo steht in einem altmodischen Flur.
@@ -113,12 +208,6 @@ pfarrer_bad:
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - give_item: handtuch
       - goto_message_state: "\"Das Baby braucht dringend eine neue Windel, das wird's wohl tun!\""
-    - ring:
-      - description: goldenen Ring mit Datumsinschrift nehmen
-      - only_visible_if_item_equals: [ring, 0]
-      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - give_item: ring
-      - goto_message_state: "\"Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen.\""
     - buch:
       - description: Buch verwenden
       - only_visible_if_item_equals: [buch, 1]

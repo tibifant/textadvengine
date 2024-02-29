@@ -60,12 +60,12 @@ realization:
 bad:
   text: "Ringo steht in einem hübschen Badezimmer."
   responses:
-    - zu:
+    - zudrehen:
       - description: Wasserhahn zudrehen
       - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 1]
       - set_state_var: [wasserhahn_haus_aufgedreht, 0]
       - goto_message_state: Das Wasser hört auf zu plätschern.
-    - auf:
+    - aufdrehen:
       - description: Wasserhahn aufdrehen
       - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 0]
       - set_state_var: [wasserhahn_haus_aufgedreht, 1]

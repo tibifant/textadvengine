@@ -252,13 +252,9 @@ garage_suche:
           Die Katze schaut nur verdiesslich und folgt der dunklen Spur auf dem Boden Richtung Tuer, setzt sich davor und maunzt.\n
           \"Typisch Katze, zu nichts zu gebrauchen.\""
     - spur:
-      - description: "\"Moment mal... 'Folgt der dunklen Spur' welche Spur?\""
       - only_visible_if_state_var_equals: [spur_gefunden, 1]
-      - goto_message_state: Eine braeunliche Spur zieht sich ueber den Boden.
-    - begutachten:
-      - description: Spur begutachten
-      - only_visible_if_state_var_equals: [spur_gefunden, 1]
-      - goto_message_state: "\"Bah riecht widerlich. Und führt zur Tür nach draußen...\""
+      - goto_message_state: "\"Moment mal... 'Folgt der dunklen Spur' welche Spur?\""
+        target_state: spur_garage
     - raus:
       - description: raus gehen
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
@@ -268,3 +264,14 @@ garage_suche:
       - only_visible_if_state_var_equals: [spur_gefunden, 1]
       - goto_message_state: "\"Och neee hier gibt's auch ne Katzenklappe!\" Gerade als Ringo zögernd, sehr zögernd, seinen Kopf durch die Klappe steckt, springt die Katze auf, fängt die Türklinke in der Luft und die Tür schwingt sammt Ringo auf."
         target_state: garten 
+
+spur_garage:
+  text: Eine braeunliche Spur zieht sich ueber den Boden.
+  responses:
+    - begutachten:
+      - description: Spur begutachten
+      - goto_message_state: "\"Bah riecht widerlich. Und führt zur Tür nach draußen...\""
+        target_state: garage_suche
+    - zurueck:
+      - goto: garage_suche
+

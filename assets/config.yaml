@@ -22,6 +22,8 @@ items:
   - hotsauce: 0
   - schluessel_keller: 0
   - kabel: 0
+  - schluessel_pfarrer: 0
+  - brief_pfarrer: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -63,4 +65,5 @@ state_vars:
   - mayo_gefuettert: 0
   - hingesetzt_sofa: 0
   - zerkratzt: 0
+  - brief_pfarrer_geoeffnet: 0
 initial_screen: bad
