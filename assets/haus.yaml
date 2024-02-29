@@ -110,25 +110,37 @@ schublade_nachttisch:
   text: |
     In der Schublade liegen allerhand Dinge.
   responses:
-    - schluessel:
-      - description: schluessel mit kleinem Kreuz-Anhaenger nehmen
-      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
-      - only_visible_if_item_equals: [pflaster, 0]
-      - give_item: bad_schrank_schluessel
     - luftballons:
-      - description: Luftballons nehmen
       - only_visible_if_item_equals: [luftballons, 0]
-      - give_item: luftballons
-      - goto_message_state: "\"Wer hat den luftballons in der Nachttischschublade?\""
+      - goto: luftballons_schlafzimmer_meta
     - gel:
-      - description: Flasche mit Gel nehmen
       - only_visible_if_item_equals: [gel, 0]
-      - give_item: gel
-      - goto_message_state: "In der Flasche war eine dickflüssige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n
-          \"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Türen offen!\""
+      - goto: gel_schlafzimmer_meta
     - schliessen:
       - description: Schublade schliessen
-      - goto: bad
+      - goto: nachttisch
+
+gel_schlafzimmer_meta:
+  text: "In der Flasche ist eine dickflüssige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n\"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Türen offen!\""
+  responses:
+    - nehmen:
+      - description: Flasche mit Gel nehmen
+      - give_item: gel
+      - goto_message_state: "Ringo steckt das 'Haargel' ein."
+        target_state: schublade_nachttisch
+    - zurueck:
+      - goto: schublade_nachttisch
+
+luftballons_schlafzimmer_meta:
+  text: "\"Dehnbar und aus Latex, das klingt doch genau wonach wir suchen.\""
+  responses:
+    - nehmen:
+      - description: "die 'Luftballons' nehmen"
+      - give_item: luftballons
+      - goto_message_state: "\"Wer hat den luftballons in der Nachttischschublade?\" Ringo steckt sie ein."
+        target_state: schublade_nachttisch
+    - zurueck:
+      - goto: schublade_nachttisch
 
 schrank_bad_meta:
   text: Auf dem Schrank ist ein großes Kreuz.
@@ -178,7 +190,6 @@ wunde:
   responses:
     - hochheben:
       - description: das Baby hochheben
-      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - set_state_var: [wunde_gesehen, 1]
       - goto_message_state: "\"Ohje du hast ja ein Aua! Ich bringe dich ins Wohnzimmer und hole eine Pflaster.\""
         target_state: treppenhaus
@@ -190,6 +201,7 @@ wohnzimmer:
     - ablegen:
       - description: Das Baby ablegen.
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
       - set_state_var: [baby_abgelegt, 1]
       - goto_message_state: "\"Hier liegst du gut. Bin gleich wieder da und dann ist das Aua ganz schnell weg!\""
     - baby:
@@ -198,16 +210,60 @@ wohnzimmer:
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
     - pflanzen:
-      - description: Zimmerplfanzen
+      - description: Zimmerpflanzen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto_message_state: &message-state-patient "\"Erst muss ich den Patienten in Sicherheit bringen.\""
+    - pflanzen:
+      - description: Zimmerpflanzen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: blumen_wohnzimmer_meta
+    - pflanzen:
+      - description: Zimmerpflanzen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - goto: blumen_wohnzimmer_meta
     - schrank:
       - description: Wohnzimmerschrank
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto_message_state: *message-state-patient
+    - schrank:
+      - description: Wohnzimmerschrank
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: wohnzimmerschrank
+    - schrank:
+      - description: Wohnzimmerschrank
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - goto: wohnzimmerschrank
     - katzenspielzeug:
       - description: Katzenspielzeug
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto_message_state: *message-state-patient
+    - katzenspielzeug:
+      - description: Katzenspielzeug
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: katzenspielzeug
+    - katzenspielzeug:
+      - description: Katzenspielzeug
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - goto: katzenspielzeug
     - kueche:
       - description: in die Küche gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto_message_state: *message-state-patient
+    - kueche:
+      - description: in die Küche gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [wunde_gesehen, 1]
+      - goto: kueche
+    - kueche:
+      - description: in die Küche gehen
+      - only_visible_if_state_var_equals: [wunde_gesehen, 0]
       - goto: kueche
     - treppenhaus:
       - description: ins Treppenhaus gehen
@@ -241,6 +297,9 @@ wohnzimmerschrank:
     - spitzer:
       - description: Spitzer
       - goto: spitzer_meta
+    - schliessen:
+      - description: den Schrank schließen
+      - goto: wohnzimmer
 
 spitzer_meta:
   text: Ringo hält einen elektrischen Spitzer in den Händen.
@@ -303,6 +362,9 @@ kueche:
     - fleischwolf:
       - description: Fleischwolf
       - goto: fleischwolf
+    - wohnzimmer:
+      - description: zurück ins Wohnzimmer
+      - goto: wohnzimmer
 
 fleischwolf:
   text: In der Küche steht ein großer, gefährlich aussehender Fleischwolf.
@@ -359,7 +421,7 @@ bad_schrank_schluessel_meta:
       - description: den Schlüssel nehmen
       - give_item: bad_schrank_schluessel
       - goto_message_state: "\"Ein Schlüssel bei den Messern? Wo der wohl drauf passt.\" Ringo steckt den Schlüssel ein."
-      - goto: kueche
+        target_state: kueche
     - zurueck:
       - goto: kueche
     
@@ -473,12 +535,12 @@ kuehlschrank:
   text: "\"Das ist ein richtiger High-Tech-Kühlschrank mit Eiswürfelmaschine.\""
   responses:
     - milch:
-      - description: Milch nehmen
+      - description: Milch
       - goto_message_state: "\"Die Milch ist leer.\""
     - saft:
-      - description: Saft nehmen
+      - description: Saft
       - only_visible_if_item_equals: [saft, 0]
-      - give_item: saft
+      - goto: saft_meta
     - mayo:
       - description: Mayonnaise
       - only_visible_if_item_equals: [mayo, 0]
@@ -490,16 +552,16 @@ kuehlschrank:
     - knopf:
       - description: Knopf am Kühlschrank
       - goto: knopf_kuehlschrank
-    - zumachen:
-      - description: den Kühlschrank zumachen.
+    - schliessen:
+      - description: den Kühlschrank schließen
       - goto: kueche
-    - zumachen und licht preufen:
-      - description: beim Zumachen überprüfen, ob das Licht ausgeht
-      - goto_message_state: "Ringo steckt den Kopf in den Kühlschrank und zieht dir Tür zu. \"Aua, mein Kopf!\" Ringo taumelt weg vom Kühlschrank und dieser fällt langsam zu. \"So ein Mist.\""
+    - schliessen und licht pruefen:
+      - description: beim Schließen überprüfen, ob das Licht ausgeht
+      - goto_message_state: "Ringo steckt den Kopf in den Kühlschrank und zieht die Tür zu. \"Aua, mein Kopf!\" Ringo taumelt weg vom Kühlschrank und dieser fällt langsam zu. \"So ein Mist.\""
         target_state: kueche
 
 knopf_kuehlschrank:
-  text: Am Kühlschrank ist ein Knopf mit Schnee-Symbol angbracht.
+  text: Am Kühlschrank ist ein Knopf mit Schnee-Symbol angebracht.
   responses:
     - druecken:
       - description: Knopf drücken
@@ -611,16 +673,16 @@ treppenhaus_vor_unfall:
         target_state: rutschen
     - hoch:
       - description: nach oben gehen
-      - goto_message_state_once: &fall-message-state Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
-      - goto: treppenhaus_oben
+      - goto_message_state_once: &fall-message Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
+        target_state: treppenhaus_oben
     - wohnzimmer:
       - description: ins Wohnzimmer gehen
-      - goto_message_state_once: *fall-message-state
+      - goto_message_state_once: *fall-message
         target_state: wohnzimmer
     - keller:
       - description: in den Keller gehen
-      - goto_message_state_once: *fall-message-state
-      - goto: keller
+      - goto_message_state_once: *fall-message
+        target_state: keller
     - garage:
       - description: in die Garage gehen
       - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe.\""
@@ -656,10 +718,15 @@ treppenhaus:
     - hoch:
       - description: nach oben gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
-      - goto_message_state: "\"Erst muss ich den Patienten in Sicherheit bringen.\""
+      - goto_message_state: *message-state-patient
     - keller:
       - description: in den Keller gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - goto: keller
+    - keller:
+      - description: in den Keller gehen
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - goto_message_state: *message-state-patient
     - wohnzimmer:
       - description: ins Wohnzimmer gehen
       - only_visible_if_item_equals: [pflaster, 0]
@@ -673,6 +740,12 @@ treppenhaus:
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [pflaster, 0]
+      - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - goto_message_state: *message-state-patient
+    - garage:
+      - description: in die Garage gehen
+      - only_visible_if_item_equals: [pflaster, 0]
+      - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe\""
     - garage:
       - description: in die Garage gehen
@@ -761,7 +834,7 @@ treppenhaus_oben:
       - goto: arbeitszimmer
 
 schlafzimmer:
-  text: In der Mitte steht ein großes Bett
+  text: In der Mitte des Schlafzimmers steht ein großes Bett
   responses:
     - bett:
       - goto: bett_meta
@@ -772,6 +845,9 @@ schlafzimmer:
     - balkon:
       - description: auf den Balkon gehen
       - goto: balkon
+    - treppenhaus:
+      - description: zurück ins Treppenhaus
+      - goto: treppenhaus_oben
 
 bett_meta:
   text: Das Bett ist groß und flauschig
@@ -780,13 +856,14 @@ bett_meta:
       - description: ins Bett legen
       - only_visible_if_state_var_equals: [hingelegt, 0]
       - set_state_var: [hingelegt, 1]
-      - goto_message_state: "Ringo macht es sich gemütlich, für eine Weile ist nichts aus Schnarchen von ihm zu hören. Bis er gerade langsam blinzend die Augen wieder öffnet. \"Das hat gut getan. Ich habe von fliegenden Giraffen mit Straßenlaternen als Hälsen geträumt.\""
+      - goto_message_state: "Ringo macht es sich gemütlich, für eine Weile ist nichts aus Schnarchen von ihm zu hören. Bis er gerade langsam blinzend die Augen wieder öffnet.\n\"Das hat gut getan. Ich habe von fliegenden Giraffen mit Straßenlaternen als Hälsen geträumt.\""
     - aufstehen:
       - description: wieder aufstehen
       - only_visible_if_state_var_equals: [hingelegt, 1]
       - set_state_var: [hingelegt, 0]
       - goto: schlafzimmer
     - zurueck:
+      - only_visible_if_state_var_equals: [hingelegt, 0]
       - goto: schlafzimmer
 
 nachttisch:
@@ -795,8 +872,7 @@ nachttisch:
     - schublade:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 0]
-      - goto_message_state: "\"Dehnbar und aus Latex, das klingt doch genau wonach wir suchen.\""
-        target_state: schublade_nachttisch
+      - goto: schublade_nachttisch
     - schublade:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 1]
@@ -806,7 +882,6 @@ nachttisch:
       - description: Schublade oeffnen
       - only_visible_if_item_equals: [luftballons, 1]
       - only_visible_if_item_equals: [gel, 1]
-      - only_visible_if_item_sum_greater: [bad_schrank_schluessel, pflaster, 0]
       - goto_message_state: "\"Da gibt's nichts mehr zu holen.\""
     - zurueck:
       - goto: schlafzimmer
@@ -819,6 +894,9 @@ balkon:
     - giesskanne:
       - only_visible_if_item_equals: [giesskanne, 0]
       - goto: giesskanne_balkon
+    - schlafzimmer:
+      - description: zurück ins Schlafzimmer
+      - goto: schlafzimmer
 
 giesskanne_balkon:
   text: In der Ecke des Balkons steht eine grüne, leere Gießkanne.
@@ -910,13 +988,13 @@ schluesselloch:
       - only_visible_if_item_equals: [stift, 1]
       - only_visible_if_item_equals: [spitzer_stift, 0]
       - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
-      - goto_message_state: "Ringo versucht mit dem Stift den Schlüssel aus dem Loch zu schieben. Aber die Spitze des Stifts ist zu dick."
+      - goto_message_state: "Ringo versucht mit dem Stift den Schlüssel auf der anderen Seite aus dem Loch zu schieben. Aber die Spitze des Stifts ist zu dick."
     - stift:
       - description: Stift in das Schlüsselloch stecken
       - only_visible_if_item_equals: [stift, 0]
       - only_visible_if_item_equals: [spitzer_stift, 1]
       - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
-      - goto_message_state: "\"Ha! Mit dem gespitzen Stift geht es.\" Man hört ein Klirren auf der anderen Seite der Tür."
+      - goto_message_state: "\"Ha! Mit dem gespitzen Stift geht es.\" Ringo schiebt mit dem Stift den Schlüssel aus dem Schlüsselloch. Man hört ein Klirren auf der anderen Seite der Tür."
     - zurueck:
       - goto: kellertuer
 
@@ -962,7 +1040,8 @@ hammer_meta:
   responses:
     - haemmern:
       - description: einen Nagel in die Wand hämmern
-      - goto_message_state: "Ringo schlägt einen Nagel an einer zufälligen Stelle in die Wand. Etwas Putz blättert ab. \"Ich war schon immer gut darin den Nagel auf den Kopf zu treffen.\""
+      - goto_message_state: "Ringo schlägt einen Nagel an einer zufälligen Stelle in die Wand. Etwas Putz blättert ab.\n\"Ich war schon immer gut darin den Nagel auf den Kopf zu treffen.\""
+        target_state: werkstatt_keller
     - zurueck:
       - goto: werkstatt_keller
 
@@ -973,6 +1052,8 @@ rot_meta:
       - description: Gefaess mit roter Fluessigkeit nehmen
       - only_visible_if_item_equals: [rote_farbe, 0]
       - give_item: rote_farbe
+      - goto_message_state: Ringo steckt die farbige Dose ein.
+        target_state: werkstatt_keller
     - zurueck:
       - goto: werkstatt_keller
 
@@ -983,6 +1064,8 @@ durchsichtig_meta:
       - description: Gefaess mit durchsichtiger Fluessigkeit nehmen
       - only_visible_if_item_equals: [parfum, 0]
       - give_item: parfum
+      - goto_message_state: "Ringo steckt das 'Parfum' ein"
+        target_state: werkstatt_keller
     - zurueck:
       - goto: werkstatt_keller
 
@@ -1009,6 +1092,9 @@ arbeitszimmer:
       - goto: papierschredder
     - schreibtisch:
       - goto: schreibtisch
+    - treppenhaus:
+      - description: zurueck ins Treppenhaus gehen
+      - goto: treppenhaus_oben
 
 schreibtisch:
   text: Auf dem Schreibtisch liegt alles Mögliche verteilt.
@@ -1022,7 +1108,7 @@ schreibtisch:
       - goto: stift_meta
     - zettel:
       - description: Zettel ansehen
-      - goto_message_state: "Auf dem Tisch liegt ein Zettel: '583'"
+      - goto_message_state: "Auf dem Tisch liegt ein Zettel: '583' steht darauf. Daneben ist ein Schwert?! oder sowas gemalt... irgendwas mit Klinge."
     - zurueck:
       - goto: arbeitszimmer
 
@@ -1063,7 +1149,9 @@ rechnung:
           Unterschrift    RiNgO
     - unterschreiben:
       - description: die Rechnung unterschreiben
+      - only_visible_if_state_var_equals: [rechnung_unterschrieben, 0]
       - only_visible_if_item_equals: [stift, 1]
+      - set_state_var: [rechnung_unterschrieben, 1]
       - goto_message_state: Ringo setzt seine krakelige Unterschrift unter die Rechnung.
     - zurueck:
       - goto: schreibtisch
@@ -1075,6 +1163,7 @@ papierschredder:
       - description: anschalten
       - only_visible_if_state_var_equals: [papierschredder_an, 0]
       - set_state_var: [papierschredder_an, 1]
+      - goto_message_state: "'bzzztzztbzzt"
     - aus:
       - description: ausschalten
       - only_visible_if_state_var_equals: [papierschredder_an, 1]

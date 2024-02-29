@@ -57,4 +57,4 @@ state_vars:
   - kueche_richtiger_code: 0
   - schluessel_aus_dem_loch_geschoben: 0
   - keller_licht_an: 0
-initial_screen: start
+initial_screen: werkstatt_keller
