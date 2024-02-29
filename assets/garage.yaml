@@ -13,23 +13,75 @@ garage:
       - goto: leiter_meta
     - zurueck:
       - description: zurueck durch die Katzenklappe gehen
-      - goto_message_state: "\"Ich hab schon genug Quetschungen da geh ich nicht nochmal durch!\""
+      - only_visible_if_state_var_equals: [zerkratzt, 0]
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
+      - goto: treppenhaus
+    - zurueck:
+      - description: zurueck durch die Katzenklappe gehen
+      - only_visible_if_state_var_equals: [zerkratzt, 0]
+      - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
+      - goto: treppenhaus_sauber
+    - zurueck:
+      - description: zurueck durch die Katzenklappe gehen
+      - only_visible_if_state_var_equals: [zerkratzt, 1]
+      - goto_message_state: "\"So ein Mist, die Ranken haben alles Gel abgetragen, jetzt komme ich da nicht mehr durch.\""
+    - sofa:
+      - goto: sofa_garage
+    - besen:
+      - only_visible_if_item_equals: [besen, 0]
+      - goto: besen_meta
     - raus:
-      - description: raus gehen
+      - description: nach draußen gehen
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - goto_message_state: "\"Draußen gibt es sicher keine Milch.\""
+    - raus:
+      - description: nach draußen gehen
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
+      - goto_message_state: "\"Ich kann doch das Baby nicht einfach hier sitzen lassen.\""
+    - raus:
+      - description: nach draußen gehen
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
       - only_visible_if_state_var_equals: [parfum_fuettern, 1]
       - only_visible_if_item_equals: [rote_farbe, 1]
       - goto_message_state: "\"Bevor ich es vergesse, lass mich schnell das Channel No 5 ausprobieren.\""
         target_state: garage_bewusstlos
     - raus:
-      - description: raus gehen
+      - description: nach draußen gehen
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
       - only_visible_if_item_equals: [parfum, 1]
       - only_visible_if_item_equals: [rote_farbe, 1]
       - only_visible_if_state_var_equals: [parfum_fuettern, 0]
-      - goto_message_state: 
-          "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*, ich werde es direkt ausprobieren\""
+      - goto_message_states_from_list: 
+          - "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt ... \n ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*, ich werde es direkt ausprobieren\""
+          - "Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz."
+          - "Nach einger Zeit blinzelt er vorsichtig.\n\"Parfüm: Check! Das hat reingehauen!\""
+          - "Nach noch ein bisschen mehr Zeit regt sich wieder etwas.\n\"Wo bin ich eigentlich? Das muss wohl wieder eins meiner berühmten ungewollten Mittagsschläfchen gewesen sein, die passieren sonst nur beim Zahnarzt.\"\nRingos Augen fallen wieder zu. Nach einer Weile erneutes Blinzeln.\n"
         target_state: garage_bewusstlos
+
+besen_meta:
+  text: In der Ecke lehnt ein Besen mit langem Stiel.
+  responses:
+    - nehmen:
+      - description: den Besen nehmen
+      - give_item: besen
+      - goto: garage
+    - zurueck:
+      - goto: garage
+
+sofa_garage:
+  text: In der Ecke steht ein altes Sofa.
+  responses:
+    - setzen:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
+      - set_state_var: [hingesetzt_sofa, 1]
+      - goto_message_state: Das Sofa ächzt unter Ringos Gewicht.
+    - aufstehen:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 1]
+      - set_state_var: [hingesetzt_sofa, 0]
+      - goto: garage
+    - zurueck:
+      - goto: garage
 
 leiter_meta:
   text: Die Leiter hat Sprossen aus Holz.
@@ -87,7 +139,8 @@ leiter_an_decke:
   text: "\"Von hier oben kann man die toten Motten sehen, die auf der Deckenlampe dahingesiecht sind.\""
   responses:
     - kabel:
-      - description: Kabel ansehen
+      - description: Kabel
+      - only_visible_if_item_equals: [kabel, 0]
       - goto: kabel_meta
     - runter:
       - description: wieder runter klettern
@@ -102,7 +155,9 @@ kabel_meta:
       - goto_message_state: "\"Die bekomme ich so nicht ab.\""
     - kaninchen:
       - description: Kabel abknabbern lassen
-      - only_visible_if_item_equals: [kaninchen, 1] 
+      - only_visible_if_item_equals: [kaninchen, 1]
+      - only_visible_if_item_equals: [kabel, 0]
+      - give_item: kabel
       - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
       
       Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
@@ -118,11 +173,13 @@ garage_fuettern:
     - rot:
       - description: rote Fluessigkeit fuettern
       - only_visible_if_item_equals: [rote_farbe, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [farbe_fuettern, 0]
       - set_state_var: [farbe_fuettern, 1]
       - goto_message_state: "\"Das Baby schreit lauter.\""
     - durchsichtig:
       - description: durchsichtige Fluessigkeit fuettern
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_item_equals: [parfum, 1]
       - only_visible_if_state_var_equals: [parfum_fuettern, 0]
       - set_state_var: [parfum_fuettern, 1]
@@ -133,6 +190,27 @@ garage_fuettern:
       - remove_item: milch
       - set_state_var: [leim_gefuettert, 1]
       - goto_message_state: "Das Baby verstummt, sobald die Flasche seine Lippen beruehrt. \"Muss wohl tatsächlich hungrig gewesen sein.\""
+    - hotsauce:
+      - description: Hotsauce füttern
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_item_equals: [hotsauce, 1]
+      - only_visible_if_state_var_equals: [hotsauce_gefuettert, 0]
+      - set_state_var: [hotsauce_gefuettert, 1]
+      - goto_message_state: "\"Das Baby schreit noch lauter. Oh und äh seine Stirn fängt an zu glühen.\""
+    - saft:
+      - description: Saft füttern
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_item_equals: [saft, 1]
+      - only_visible_if_state_var_equals: [saft_gefuettert, 0]
+      - set_state_var: [saft_gefuettert, 1]
+      - goto_message_state: "Das Baby schaut erst vergnügt, verzieht dann den Mund von der Säure und weint lauter als zuvor."
+    - mayo:
+      - description: Mayonnaise füttern
+      - only_visible_if_state_var_equals: [mayo_gefuettert, 0]
+      - set_state_var: [mayo_gefuettert, 1]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_item_equals: [mayo, 1]
+      - goto_message_state: "Das Baby spuckt die Myonnaise wieder aus. \"Ich kann verstehen, dass du das ohne Pommes Frites nicht haben willst.\""
     - milch:
       - description: Milch wieder abnehmen
       - only_visible_if_state_var_equals: [leim_gefuettert, 1]
@@ -145,13 +223,7 @@ garage_fuettern:
 
 garage_bewusstlos:
   text:
-    "Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz.\n
-    Nach einger Zeit blinzelt er vorsichtig.\n
-    \"Parfüm: Check! Das hat reingehauen!\"
-    Nach noch ein bisschen mehr Zeit regt sich wieder etwas.\n
-    \"Wo bin ich eigentlich? Das muss wohl wieder eins meiner berühmten ungewollten Mittagsschläfchen gewesen sein, die passieren sonst nur beim Zahnarzt.\"
-    Ringos Augen fallen wieder zu. Nach einer Weile erneutes Blinzeln.\n
-    \"Wo ist eigentlich das Baby?\" Ringo tastet neben sich den Boden ab. \"Ah puh da bist du ja. Warst du schon immer so pelzig?\"\n
+    "\"Wo ist eigentlich das Baby?\" Ringo tastet neben sich den Boden ab. \"Ah puh da bist du ja. Warst du schon immer so pelzig?\"\n
     Das nächste was Ringo spürt sind Krallen in seiner Hand."
   responses:
     - suchen:

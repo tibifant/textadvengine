@@ -29,6 +29,7 @@ links:
   responses:
     - weiter:
       - description: durch die Rosenhecke
+      - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Aua!\"" 
         target_state: pfarrer_eingang
     - zurueck: 
@@ -41,6 +42,7 @@ rechts:
   responses:
     - weiter:
       - description: durch die Ranken
+      - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Aua!\"" 
         target_state: pfarrer_eingang
     - zurueck:
