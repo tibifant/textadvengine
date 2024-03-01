@@ -111,7 +111,7 @@ pfarrer_flur:
     - gruen:
       - description: grüne Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state: "\"Da geh ich nicht nochmal rein, man soll die Plaene Gottes nicht durchkreuzen.\""
+      - goto_message_state: "\"Da geh ich nicht nochmal rein, man soll die Pläne Gottes nicht durchkreuzen.\""
     - braun:
       - description: braune Tür öffnen
       - goto: pfarrer_garten
@@ -131,22 +131,22 @@ pfarrer_flur:
 
 pfarrer_im_flur:
   text: |
-    Vor dem Ausgang direkt an der ersten Tuer steht eine Person im Bademantel
+    Vor dem Ausgang direkt an der ersten Tuer steht eine nasse, nackte Person.
   responses:
-    - eins:
-      - description: erste Tür öffnen
-      - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt\""
+    - gruen:
+      - description: grüne Tür öffnen
+      - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt.\""
       - goto: pfarrer_bad
-    - zwei:
-      - description: zweite Tür öffnen
+    - braun:
+      - description: braune Tür öffnen
       - goto: pfarrer_garten
-    - drei:
-      - description: dritte Tür öffnen
+    - gang:
+      - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - goto_message_state: "\"Unbemerkt komme ich da nicht vorbei.\""
         target_state: kirche_vorraum
-    - drei:
-      - description: dritte Tür öffnen
+    - gang:
+      - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 1]
       - goto_message_state: "\"Schnell lass uns verschwinden!\""
         target_state: kirche_vorraum
@@ -156,7 +156,8 @@ pfarrer_im_flur:
     - pflaster:
       - description: Pflaster benutzen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
-      - goto_message_state: "\"Man koennte ihm den Mund zukleben...\" Ringo naehert sich der Person, diese schreit auf, holt aus und Ringo sieht Sterne."
+      - goto_message_state: "\"Man koennte ihm den Mund zukleben...\" \nRingo naehert sich der Person, diese schreit auf, holt aus und Ringo sieht Sterne.\nEr findet sich in dem Garten wieder."
+        target_state: pfarrer_garten
     - parfum:
       - description: Parfum benutzen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]

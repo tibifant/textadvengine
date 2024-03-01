@@ -2,14 +2,18 @@ kirche_vorraum:
   text: |
     Ringo steht in einem eigenartigen Zimmer. Auf der einen Seite tuermen sich Weinflaschen auf, auf der anderen dicke Buecher.
   responses:
-    - zurueck:
-      - description: zurueck gehen
+    - flur:
+      - description: zurueck in den Flur gehen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
       - goto: pfarrer_flur
-    - zurueck:
-      - description: zurueck gehen
+    - flur:
+      - description: zurueck in den Flur gehen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - goto_message_state: "\"Kommt nicht in die Tuete\""
+      - goto_message_state: "\"Kommt nicht in die Tuete. Da kann ich nicht nochmal reingehen.\""
+    - flur:
+      - description: in den Flur des Nachbarhauses gehen
+      - only_visible_if_state_var_equals: [baby_gewaschen, 1]
+      - goto_message_state: "\"Kommt nicht in die Tuete. Da kann ich nicht nochmal reingehen.\""
     - wein:
       - description: eine Flasche Wein nehmen
       - only_visible_if_item_equals: [wein, 0]
@@ -74,7 +78,7 @@ spendendose:
     - oeffnen:
       - description: die Spendendose öffnen
       - only_visible_if_state_var_equals: [spendendose_offen, 0]
-      - goto_message_state: "\"Die ist fest verschlossen, ohne Werkzeug bekomme ich die nicht auf.\""
+      - goto_message_state: "\"Die Dose ist fest verschlossen, ohne Hilfsmittel bekomme ich sie nicht auf.\""
         target_state: spendendose_oeffnen
     - zurueck:
       - goto: kirche

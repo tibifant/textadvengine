@@ -9,8 +9,7 @@ strasse_vor_kirche:
       - goto: hund
     - gasse:
       - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
-      - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
-        target_state: strasse_werkstatt_meta
+      - goto: strasse_werkstatt_meta
     - fussweg:
       - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
       - goto: kreuzung_1
@@ -23,7 +22,8 @@ strasse_werkstatt_meta:
   responses:
     - entlang gehen:
       - description: die Gasse entlang gehen
-      - goto: strasse_werkstatt
+      - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
+        target_state: strasse_werkstatt
     - zurueck:
       - goto: strasse_vor_kirche
 
@@ -49,7 +49,9 @@ schleife_meta:
       - description: das Baby an der Schleife schnuppern lassen
       - only_visible_if_item_equals: [leine, 1]
       - only_visible_if_item_equals: [schleife, 1]
+      - set_state_var: [baby_als_spuerhund, 1]
       - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der Gasse zu ziehen."
+        target_state: strasse_vor_kirche
     - zurueck:
       - goto: strasse_vor_kirche
 
@@ -64,7 +66,7 @@ hund:
       - only_visible_if_item_equals: [leine, 0]
       - give_item: leine
       - goto_message_states_from_list: 
-          - "\"Prima Idee!\" Ringo nimmt die Leine, macht sie vom Hund ab - der Hund rennt freudig davon - und befestigt sie am Baby?!?"
+          - "\"Prima Idee!\" Ringo nimmt die Leine, macht sie vom Hund ab - der Hund rennt freudig davon - und Ringo befestigt sie am Baby?!?"
           - "\"Das Baby wird einen super Spürhund machen.\" Ringo sieht zufrieden mit sich aus."
         target_state: strasse_vor_kirche
     - zurueck:
@@ -80,10 +82,10 @@ kreuzung_1:
       - goto: strasse_vor_kirche
 
 strasse_werkstatt:
-  text: Am Ende der Gasse ist eine Werkstatt.
+  text: "Am Ende der Gasse ist ein Gebäude mit der Aufschrift 'Metallverarbeitung Hans E. Jürgen'."
   responses:
-    - werkstatt:
-      - description: in die Werkstatt gehen
+    - gebaeude:
+      - description: in das Gebäude gehen
       - goto: werkstatt
     - kirche:
       - description: dem Weg zur Kirche folgen
@@ -129,7 +131,7 @@ hammer_metall:
   responses:
     - benutzen:
       - description: etwas hämmern
-      - goto_message_state: "Ringo schlägt zweimal auf ein Metallstück. \"Aha.\""
+      - goto_message_state: "Ringo schlägt zweimal auf ein Metallstück. \"So so.\""
         target_state: werkzeuge
     - zurueck:
       - goto: werkzeuge
@@ -193,7 +195,7 @@ gasflasche_meta:
     - luftballons:
       - description: Ballons mit Helium füllen
       - only_visible_if_item_equals: [schraubschluessel, 0]
-      - goto_message_state: "\"Man braucht einen R14 47 B Schraubschluessel um das Gas aufzudrehen.\""
+      - goto_message_state: "\"Man braucht einen R14 47 B Schraubschluessel um das Gas aufzudrehen, sowas habe ich nicht.\""
     - luftballons:
       - description: Ballons mit Helium füllen
       - only_visible_if_state_var_equals: [helium_aufgedreht, 1]
