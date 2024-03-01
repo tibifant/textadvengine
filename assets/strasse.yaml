@@ -1,0 +1,146 @@
+strasse_vor_kirche:
+  text: Ringo steht auf der Straße vor der Kirche.
+  responses:
+    - schleife:
+      - goto_message_state_once: "Auf dem Boden vor der Kirche liegt eine weiße Schleife.\n\"Das gleiche Weiß wie die Blumen im Blumenstrauß. Bestimmt hilft uns das weiter. Wenn ich doch nur einen Spürhund hätte.\""
+        target_state: schleife_meta
+    - hund:
+      - only_visible_if_item_equals: [leine, 0]
+      - goto: hund
+    - gasse:
+      - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
+      - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
+        target_state: strasse_werkstatt_meta
+    - fussweg:
+      - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
+      - goto: kreuzung_1
+    - kirche:
+      - description: in die Kirche gehen
+      - goto: kirche
+
+strasse_werkstatt_meta:
+  text: Das Baby zieht in Richtung der Gasse.
+  responses:
+    - entlang gehen:
+      - description: die Gasse entlang gehen
+      - goto: strasse_werkstatt
+    - zurueck:
+      - goto: strasse_vor_kirche
+
+fussweg_kreuzung_1_meta:
+  text: Entgegen der Richtung in die das Baby zieht, verläuft ein Fußweg die Straße entlang.
+  responses:
+    - entlang gehen:
+      - description: den Fußweg entlang gehen
+      - goto: kreuzung_1
+    - zurueck:
+      - goto: strasse_vor_kirche
+
+schleife_meta:
+  text: "Ringo hält die weiße Schleife in der Hand."
+  responses:
+    - nehmen:
+      - description: Schleife nehmen
+      - only_visible_if_item_equals: [schleife, 0]
+      - give_item: schleife
+      - goto_message_state: "Ringo steckt die Schleife ein."
+        target_state: strasse_vor_kirche
+    - schnuppern lassen:
+      - description: das Baby an der Schleife schnuppern lassen
+      - only_visible_if_item_equals: [leine, 1]
+      - only_visible_if_item_equals: [schleife, 1]
+      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der Gasse zu ziehen."
+    - zurueck:
+      - goto: strasse_vor_kirche
+
+hund:
+  text: Auf der anderen Straßenseite sitzt ein Hund, vor einem Geschäft mit einer Leine angebunden.
+  responses:
+    - hallo:
+      - description: dem Hund Hallo sagen
+      - goto_message_state: "\"Hallo Hundi!\""
+    - leine:
+      - description: Leine nehmen
+      - only_visible_if_item_equals: [leine, 0]
+      - give_item: leine
+      - goto_message_states_from_list: 
+          - "\"Prima Idee!\" Ringo nimmt die Leine, macht sie vom Hund ab - der Hund rennt freudig davon - und befestigt sie am Baby?!?"
+          - "\"Das Baby wird einen super Spürhund machen.\" Ringo sieht zufrieden mit sich aus."
+        target_state: strasse_vor_kirche
+    - zurueck:
+      - goto: strasse_vor_kirche
+
+kreuzung_1:
+  text: jo
+  responses:
+    - yeah:
+      - description: lets go
+    - kirche:
+      - description: dem Weg zur Kirche folgen
+      - goto: strasse_vor_kirche
+
+strasse_werkstatt:
+  text: Am Ende der Gasse ist eine Werkstatt.
+  responses:
+    - werkstatt:
+      - description: in die Werkstatt gehen
+      - goto: werkstatt
+    - kirche:
+      - description: dem Weg zur Kirche folgen
+      - goto: strasse_vor_kirche
+
+werkstatt:
+  text: "\"Wow hier sieht alles so professionell aus.\" Ringo staunt über die vielen Maschinen und Werkzeuge."
+  responses:
+    - schweissgeraet:
+      - description: Schweißgerät
+      - goto: schweissgeraet
+    - metallschere:
+      - only_visible_if_item_equals: [metallschere, 0]
+    - random ding was man machen kann:
+      - description: todo!
+    - zurueck:
+      - description: zurueck in die Gasse
+      - goto: strasse_werkstatt
+
+schweissgeraet:
+  text: Auf der einen Seite des Raums gibt es ein Schweißgerät.
+  responses:
+    - schweissen:
+      - description: etwas schweißen
+      - only_visible_if_state_var_equals: [helium_in_ballons, 0]
+      - goto_message_state: "\"Wird wohl nicht so schwer sein.\" \nRingo betätigt das Gerät und nur wenige Sekunden später entflammt der Tisch vor ihm. Ringo pustet das Feuer schnell aus."
+    - schweissen:
+      - description: etwas schweißen
+      - only_visible_if_state_var_equals: [helium_in_ballons, 1]
+      - goto_message_state: "\"Wird wohl nicht so schwer sein.\" \nRingo betätigt das Gerät und nichts passiert. \"Kein Saft mehr auf der Leitung.\""
+    - gasflasche:
+      - only_visible_if_state_var_equals: [helium_in_ballons, 0]
+      - goto: gasflasche_meta
+    - zurueck:
+      - goto: werkstatt
+
+gasflasche_meta:
+  text: "Am Schweißgerät ist eine Gasflasche angebracht. 'Enthält Helium' \"Das brauche ich für die Luftballons!\""
+  responses:
+    - luftballons:
+      - description: Ballons mit Helium füllen
+      - only_visible_if_item_equals: [schraubschluessel, 0]
+      - goto_message_state: "\"Man braucht einen R14 47 B Schraubschluessel um das Gas aufzudrehen.\""
+    - luftballons:
+      - description: Ballons mit Helium füllen
+      - only_visible_if_state_var_equals: [helium_aufgedreht, 1]
+      - only_visible_if_state_var_equals: [helium_in_ballons, 0]
+      - set_state_var: [helium_in_ballons, 1]
+      - remove_item: luftballons
+      - give_item: befuellte_luftballons
+      - goto_message_state: "Ringo befüllt nach und nach alle seine 'Luftballons' mit Helium und freut sich: \"Dem perfekten Date einen Schritt näher!\""
+        target-state: werkstatt
+    - schraubschluessel:
+      - description: Schraubschlüssel verwenden
+      - only_visible_if_item_equals: [schraubschluessel, 1]
+      - only_visible_if_state_var_equals: [helium_aufgedreht, 0]
+      - set_state_var: [helium_aufgedreht, 0]
+      - goto_message_state: Man hört ein leises Zischen, das Gas strömt aus der Flasche.
+    - zurueck:
+      - goto: werkstatt

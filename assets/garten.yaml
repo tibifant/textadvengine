@@ -6,7 +6,7 @@ garten:
       - only_visible_if_state_var_equals: [spur_gefolgt, 0]
       - set_state_var: [spur_gefolgt, 1]
       - goto_message_states_from_list:
-          - "\"Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein - noch immer Milch nukelndes Baby sitzt."s
+          - "\"Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein - noch immer Milch nukelndes Baby sitzt."
           - "\"Da ist es ja!\" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. \"Mein perfektes Outfit für heute Abend\"\n
             Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt."
           - "\"Oh du bist ja auch hier. Und wie du aussiehst, die Windel ist hinüber\""

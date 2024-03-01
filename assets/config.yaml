@@ -24,6 +24,12 @@ items:
   - kabel: 0
   - schluessel_pfarrer: 0
   - brief_pfarrer: 0
+  - metallschere: 0
+  - geld: 0
+  - schleife: 0
+  - leine: 0
+  - befuellte_luftballons: 0
+  - schraubschluessel: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -68,4 +74,9 @@ state_vars:
   - brief_pfarrer_geoeffnet: 0
   - linker_weg_ausprobiert: 0
   - rechter_weg_ausprobiert: 0
-initial_screen: bad
+  - spendendose_offen: 0
+  - baby_gewaschen: 0
+  - baby_als_spuerhund: 0
+  - helium_in_ballons: 0
+  - helium_aufgedreht: 0
+initial_screen: strasse_vor_kirche
