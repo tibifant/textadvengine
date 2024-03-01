@@ -5,15 +5,15 @@ garten:
       - description: Spur weiter folgen
       - only_visible_if_state_var_equals: [spur_gefolgt, 0]
       - set_state_var: [spur_gefolgt, 1]
-      - goto_message_state:
-          "\"Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein - noch immer Milch nukelndes Baby sitzt.\n
-          \"Da ist es ja!\" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. \"Mein perfektes Outfit für heute Abend\"\n
-          Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt.\n
-          \"Oh du bist ja auch hier. Und wie du aussiehst, die Windel ist hinüber\""
+      - goto_message_states_from_list:
+          - "\"Die Spur geht gerade auf den Zaun zum Nachbarsgrundstueck zu, hoert kurz auf und geht auf der anderen Seite des Zauns weiter bis zur Mitte des Gartens, wo ein - noch immer Milch nukelndes Baby sitzt."s
+          - "\"Da ist es ja!\" Ringo lächelt und zeigt knapp am Baby vorbei auf einen schwarz weißen Anzug an einer Wäscheleine. \"Mein perfektes Outfit für heute Abend\"\n
+            Ringo liebäugelt einige Momente mit dem Anzug, bis ihn die Realität einholt."
+          - "\"Oh du bist ja auch hier. Und wie du aussiehst, die Windel ist hinüber\""
     - zaun:
       - description: zum Zaun gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
-      - goto_message_state: "Ringo beäugt skeptisch den Stacheldraht. \"Keine Chance, sonst zerkratze ich mir alles.\""
+      - goto_message_state: "Ringo beäugt skeptisch den Stacheldraht. \"Keine Chance, da komme ich nicht drüber.\""
     - links:
       - description: links rum gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
@@ -22,6 +22,12 @@ garten:
       - description: rechts rum gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
       - goto: rechts
+    - kaninchen:
+      - description: zum Kaninchenstall
+      - goto: kaninchenstall_meta
+    - garage:
+      - description: in die Garage gehen
+      - goto: garage
 
 links:
   text: |
@@ -29,22 +35,56 @@ links:
   responses:
     - weiter:
       - description: durch die Rosenhecke
-      - set_state_var: [zerkratzt, 1]
-      - goto_message_state: "\"Aua!\"" 
-        target_state: pfarrer_eingang
+      - only_visible_if_state_var_equals: [rechter_weg_ausprobiert, 0]
+      - set_state_var: [linker_weg_ausprobiert, 1]
+      - goto_message_state: "\"Aua! Das zerkratzt mir alles, ich sollte den anderen Weg ausprobieren.\""
+    - weiter:
+      - description: durch die Rosenhecke
+      - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
+      - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
     - zurueck: 
-      - description: zurueck gehen
+      - description: zurück gehen
       - goto: garten
 
+      - set_state_var: [zerkratzt, 1]
 rechts:
   text: |
     Ringo folgt dem Zaun bis er auf Brombeerranken stoesst.
   responses:
     - weiter:
       - description: durch die Ranken
-      - set_state_var: [zerkratzt, 1]
-      - goto_message_state: "\"Aua!\"" 
-        target_state: pfarrer_eingang
+      - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 0]
+      - set_state_var: [rechter_weg_ausprobiert, 1]
+      - goto_message_state: "\"Aua! Das zerkratzt mir alles, ich sollte den anderen Weg ausprobieren.\""
+    - weiter:
+      - description: durch die Ranken
+      - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
+      - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
     - zurueck:
-      - description: zurueck gehen
+      - description: zurück gehen
+      - goto: garten
+
+kaninchenstall_meta:
+  text: In der Ecke des Gartens steht ein Kaninchenstall, darin hoppeln zwei Kaninchen.
+  responses:
+    - hallo:
+      - description: Kaninchen Hallo sagen
+      - goto_message_state: "\"Hallo Kaninchen, wie geht's, wie steht's?\" Keine Antwort."
+    - fuettern:
+      - description: die Kaninchen füttern
+      - goto_message_state: Ringo rupft ein paar Grashalme aus und hält sie den Kaninchen hin. Sie sehen mäßig begeistert aus.
+    - streicheln:
+      - description: die Kaninchen streicheln
+      - goto_message_state: Ringo streckt seine Hand aus und streichelt ein Kaninchen, welches sehr skeptisch drein schaut.
+    - nehmen:
+      - description: ein Kaninchen nehmen
+      - only_visible_if_item_equals: [kaninchen, 0]
+      - give_item: kaninchen
+      - goto_message_state: Ringo nimmt eins der Kaninchen aus dem Gehege und steckt es ein. Er scheint Platz für vieles zu haben.
+    - zurueck setzen:
+      - description: das Kaninchen zurück in den Stall setzen
+      - only_visible_if_item_equals: [kaninchen, 1]
+      - remove_item: kaninchen
+      - goto_message_state: Das Kaninchen sieht sehr erleichtert aus, sobald es wieder gewohnten Boden unter den Pfoten spürt.S
+    - zurueck:
       - goto: garten

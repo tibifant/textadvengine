@@ -20,7 +20,7 @@ pfarrer_eingang:
       - goto: brief_pfarrer
     - zurueck:
       - description: zurück zur Garage
-      - goto: #TODO!      
+      - goto_message_state: Ringo quetscht sich an den Ranken seiner Wahl vorbei und steht wieder im Garten vor der Garage.
 
 brief_pfarrer:
   text: Im Briefumschlag scheint ein Gegenstand zu sein.
@@ -38,7 +38,7 @@ brief_pfarrer_offen:
     - lesen:
       - description: Brief lesen
       - goto_message_states_from_list: 
-          - "\"In dem Brief steht:\n'Hallo Johann,'\""
+          - "\"In dem Brief steht:\n'Hallo Matthias,'\""
           - ... Ringo nuschelt immer wieder uneindeutige Laute vor sich hin ...
           - "\"' ... deine Fetisch für ... und deine nervige Art beim ... haben dazu geführt, dass ich nichts mehr mit dir zu tun haben will.\n
             Hier hast du dein Zeug zurück - ich brauche es nicht mehr.'\""
@@ -103,29 +103,29 @@ klingel_pfarrer:
 pfarrer_flur:
   text: Ringo steht in einem altmodischen Flur.
   responses:
-    - eins:
-      - description: erste Tür öffnen
+    - gruen:
+      - description: grüne Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - goto: pfarrer_bad
-    - eins:
-      - description: erste Tür öffnen
+    - gruen:
+      - description: grüne Tür öffnen
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
       - goto_message_state: "\"Da geh ich nicht nochmal rein, man soll die Plaene Gottes nicht durchkreuzen.\""
-    - zwei:
-      - description: zweite Tür öffnen
+    - braun:
+      - description: braune Tür öffnen
       - goto: pfarrer_garten
-    - drei:
-      - description: dritte Tür öffnen
+    - gang:
+      - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
-      - goto_message_state_once: "\"Das war schon mal nicht richtig...\""
+      - goto_message_state_once: "Ringo geht durch die Tür am Ende des Gangs. \"Das war schon mal nicht der Garten...\""
         target_state: kirche_vorraum
-    - drei:
-      - description: dritte Tür öffnen
+    - gang:
+      - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
       - goto_message_state_once: "\"Mal schauen wo es da weiter geht.\""
         target_state: kirche_vorraum
-    - raus:
-      - description: vor das Haus
+    - eingang:
+      - description: zum Eingang vor dem Haus
       - goto: pfarrer_eingang
 
 pfarrer_im_flur:
@@ -203,18 +203,15 @@ pfarrer_bad:
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Man hört ein erleichtertes Seufzen.
     - handtuch:
-      - description: Handtuch nehmen
       - only_visible_if_item_equals: [handtuch, 0]
-      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - give_item: handtuch
-      - goto_message_state: "\"Das Baby braucht dringend eine neue Windel, das wird's wohl tun!\""
+      - goto: handtuch_meta
     - buch:
       - description: Buch verwenden
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - set_state_var: [pfarrer_bewusstlos_bad, 1]
       - goto_message_state: 
-          "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat;\n
+          "\"Mal sehen..\" Ringo schlägt das Buch an einer zufälligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat;\n
           und siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\"\n\"Mein Vater spricht zu mir!\" ertoent es von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
     - wein:
       - description: Wein verwenden
@@ -231,10 +228,7 @@ pfarrer_bad:
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: "\"Wenigstens die Haare sitzen wieder, vielleicht war 'sentual' doch nicht die beste Frisur...\""
     - buerste:
-      - description: Haare kämmen
-      - set_state_var: [buerste_benutzt, 1]
-      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
-      - goto_message_state: "\"Ich bin mir nicht ganz sicher, ob das eine Haarbürste war.\""
+      - goto: buerste_meta
     - an:
       - description: Licht an
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 1]
@@ -249,35 +243,40 @@ pfarrer_bad:
       - description: zurück gehen
       - goto: pfarrer_flur
 
+buerste_meta:
+  text: Am Waschbecken liegt eine Bürste
+  responses:
+    - kämmen:
+      - description: Haare kämmen
+      - set_state_var: [buerste_benutzt, 1]
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
+      - goto_message_state: "\"Ich bin mir nicht ganz sicher, ob das eine Haarbürste war.\""
+        target_state: pfarrer_bad
+    - zurueck:
+      - goto: pfarrer_bad
+
+handtuch_meta:
+  text: "Am Haken neben dem Vorhang hängt ein Handtuch. \n\"Das Baby braucht dringend eine neue Windel, das wird's wohl tun!\""
+  responses:
+    - nehmen:
+      - description: Handtuch nehmen
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
+      - give_item: handtuch
+      - goto_message_state: "Ringo steckt das Handtuch ein."
+        target_state: pfarrer_bad
+    - zurueck:
+      - goto: pfarrer_bad
+
 pfarrer_garten:
   text: Ringo steht nun auf der anderen Seite des Zauns auf dem gepflegten Rasen.
   responses:
     - anzug:
-      - description: Anzug nehmen
       - only_visible_if_item_equals: [anzug, 0]
-      - give_item: anzug
-      - goto_message_state: "\"Mein geliebter Retter in der Not, endlich habe ich dich!\""
+      - goto: anzug_garten
     - baby:
-      - description: Baby hochheben
-      - only_visible_if_item_equals: [handtuch, 0]
+      - description: zum Baby gehen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
-      - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen.\""
-    - baby:
-      - description: Baby hochheben
-      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - only_visible_if_item_equals: [ring, 1]
-      - goto_message_state: "Ringo greift nervös Richtung Ring in seiner Hosentasche. \"Lass uns sehen, dass wir hier wegkommen.\"" 
-    - baby:
-      - description: Baby hochheben
-      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - only_visible_if_item_equals: [ring, 0]
-      - goto_message_state: "\"Lass uns sehen, dass wir hier wegkommen.\"" 
-    - handtuch:
-      - description: Baby säubern
-      - only_visible_if_item_equals: [handtuch, 1]
-      - set_state_var: [handtuch_benutzt, 1]
-      - remove_item: handtuch
-      - goto_message_state: "\"Schon besser, aber ich sollte dich noch irgendwo waschen.\""
+      - goto: baby_pfarrer_garten
     - zurueck:
       - description: zurück ins Haus
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
@@ -293,3 +292,47 @@ pfarrer_garten:
       - description: zurück ins Haus
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
       - goto: pfarrer_flur
+
+anzug_garten:
+  text: Ein schwarz-weißer Anzug baumelt an der Wäscheleine.
+  responses:
+    - bestaunen:
+      - description: den Anzug bestaunen
+      - goto_message_state: "\"Wow, was ein toller Stoff!\""
+    - nehmen:
+      - description: Anzug nehmen
+      - give_item: anzug
+      - goto_message_state: "\"Mein geliebter Retter in der Not, endlich habe ich dich!\""
+        goto: pfarrer_garten
+    - zurueck:
+      - goto: pfarrer_garten
+
+
+baby_pfarrer_garten:
+  text: Das Baby sitzt in der Mitte des Gartens.
+  responses:
+    - hochheben:
+      - description: Baby hochheben
+      - only_visible_if_item_equals: [handtuch, 0]
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
+      - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen.\""
+    - hochheben:
+      - description: Baby hochheben
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [ring, 1]
+      - goto_message_state: "Ringo greift nervös Richtung Ring in seiner Hosentasche. \"Lass uns sehen, dass wir hier wegkommen.\"" 
+        target_state: pfarrer_garten
+    - hochheben:
+      - description: Baby hochheben
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [ring, 0]
+      - goto_message_state: "\"Lass uns sehen, dass wir hier wegkommen.\"" 
+        target_state: pfarrer_garten
+    - handtuch:
+      - description: Baby mit dem Handtuch säubern
+      - only_visible_if_item_equals: [handtuch, 1]
+      - set_state_var: [handtuch_benutzt, 1]
+      - remove_item: handtuch
+      - goto_message_state: "\"Schon besser, aber ich sollte dich noch irgendwo waschen.\""
+    - zurueck:
+      - goto: pfarrer_garten
