@@ -4,7 +4,7 @@ pfarrer_eingang:
     - rein:
       - description: rein gehen
       - only_visible_if_item_equals: [schluessel_pfarrer, 0]
-      - goto_message_state: &fest-verschlossen "\"Die Tür ist fest verschlossen.\""
+      - goto_message_state: "\"Die Tür ist fest verschlossen.\""
     - rein:
       - description: rein gehen
       - only_visible_if_item_equals: [schluessel_pfarrer, 1]
@@ -27,7 +27,7 @@ brief_pfarrer:
   responses:
     - oeffnen:
       - description: den Brief öffnen
-      - set_state_var: brief_pfarrer_geoeffnet
+      - set_state_var: [brief_pfarrer_geoeffnet, 1]
       - goto: brief_pfarrer_offen
     - zurueck:
       - goto: pfarrer_eingang
@@ -53,6 +53,7 @@ brief_pfarrer_offen:
 
 ring_pfarrer_meta:
   text: Im Briefumschlag lag ein goldener Ring mit Datumsinschrift.
+  responses:
     - nehmen:
       - description: Ring nehmen
       - give_item: ring
@@ -75,7 +76,7 @@ pfarrer_briefkasten:
   text: Am Eingang des Hauses gibt es einen Briefkasten
   responses:
     - reinschauen:
-      - description: in den Breifkasten schauen
+      - description: in den Briefkasten schauen
       - goto_message_state: "Ringo späht durch den Briefschlitz. \"Ich glaube da steckt was drin.\""
     - rausziehen:
       - description: Brief aus dem Briefkasten ziehen
