@@ -92,16 +92,83 @@ strasse_werkstatt:
 werkstatt:
   text: "\"Wow hier sieht alles so professionell aus.\" Ringo staunt über die vielen Maschinen und Werkzeuge."
   responses:
-    - schweissgeraet:
-      - description: Schweißgerät
-      - goto: schweissgeraet
-    - metallschere:
-      - only_visible_if_item_equals: [metallschere, 0]
-    - random ding was man machen kann:
-      - description: todo!
+    - maschinen:
+      - goto: maschinen
+    - werkzeuge:
+      - goto: werkzeuge
     - zurueck:
       - description: zurueck in die Gasse
       - goto: strasse_werkstatt
+
+werkzeuge:
+  text: Ringo schaut sich die Werkzeuge an.
+  responses:
+    - feile:
+      - goto: feile
+    - hammer:
+      - goto: hammer_metall
+    - metallschere:
+      - only_visible_if_item_equals: [metallschere, 0]
+      - goto: metallschere
+    - zurueck:
+      - goto: werkstatt
+
+feile:
+  text: Eine Metallfeile hängt an der Wand.
+  responses:
+    - benutzen:
+      - description: etwas feilen
+      - goto_message_state: "Ringo benutzt die Feile. \"So gut war meine Pediküre noch nie.\""
+        target_state: werkzeuge
+    - zurueck:
+      - goto: werkzeuge
+
+
+hammer_metall:
+  text: Ein großer Hammer liegt auf der Werkbank.
+  responses:
+    - benutzen:
+      - description: etwas hämmern
+      - goto_message_state: "Ringo schlägt zweimal auf ein Metallstück. \"Aha.\""
+        target_state: werkzeuge
+    - zurueck:
+      - goto: werkzeuge
+
+maschinen:
+  text: Ringo sieht sich die Maschinen genauer an.
+  responses:
+    - loeteisen:
+      - description: Löteisen
+      - goto: loeteisen
+    - fraese:
+      - description: Fräse
+      - goto: fraese
+    - schweissgeraet:
+      - description: Schweißgerät
+      - goto: schweissgeraet
+    - zurueck:
+      - goto: werkstatt
+
+loeteisen:
+  text: Es gibt ein Löteisen.
+  responses:
+    - benutzen:
+      - description: etwas löten
+      - goto_message_state: Ringo lötet zwei Dinge zusammen.
+        target_state: maschinen
+    - zurueck:
+      - goto: maschinen
+
+
+fraese:
+  text: Es gibt ein Metallfräse.
+  responses:
+    - benutzen:
+      - description: etwas fräsen
+      - goto_message_state: Ringo fräst ein Loch in ein Stück Metall.
+        target_state: maschinen
+    - zurueck:
+      - goto: maschinen
 
 schweissgeraet:
   text: Auf der einen Seite des Raums gibt es ein Schweißgerät.
@@ -144,3 +211,17 @@ gasflasche_meta:
       - goto_message_state: Man hört ein leises Zischen, das Gas strömt aus der Flasche.
     - zurueck:
       - goto: werkstatt
+
+metallschere:
+  text: "\"Eine Metallschere zum Schneiden von Metall - zum Beispiel Dosen.\""
+  responses:
+    - benutzen:
+      - only_visible_if_item_equals: [metallschere, 0]
+      - goto_message_state: Ringo schneidet durch ein beliebiges Stück Metall.
+    - nehmen:
+      - only_visible_if_item_equals: [metallschere, 0]
+      - give_item: metallschere
+      - goto_message_state: "\"Wenn die mal nichts nützlich werden könnte.\""
+        target_state: werkzeuge
+    - zurueck:
+      - goto: werkzeuge

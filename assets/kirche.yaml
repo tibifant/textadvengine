@@ -69,7 +69,7 @@ kirche:
       - goto: kirche_vorraum
 
 spendendose:
-  text: An der Wand neben dem Eingang ist eine Spendendose verbaut.
+  text: An der Wand neben dem Eingang ist eine Spendendose aus Metall verbaut.
   responses:
     - oeffnen:
       - description: die Spendendose öffnen
