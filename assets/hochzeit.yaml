@@ -1,0 +1,14 @@
+hochzeit:
+  text: Ringo befindet sich in einem großen Raum voller Leute.
+  responses:
+    - baby:
+      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
+      - goto: baby_absetzen_meta
+
+baby_absetzen_meta:
+  text: "\"Ich sollte das Baby bei der restlichen Dekoration absetzen, damit es mir nicht in die Quere kommt.\""
+  responses:
+    - absetzen:
+      - description: das Baby absetzen
+      - set_state_var: [baby_abgesetzt, 1]
+      - goto_message_state: "Ringo setzt das Baby neben der Dekoration am Eingang ab. \"Da ist es von der Dekoration kaum noch zu unterscheiden.\""
