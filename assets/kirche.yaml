@@ -148,6 +148,7 @@ taufbecken:
       - description: das Baby waschen
       - only_visible_if_state_var_equals: [baby_gewaschen, 0]
       - set_state_var: [baby_gewaschen, 1]
+      - set_state_var: [baby_klebt_an_flasche, 0]
       - goto_message_state: "Ringo wäscht das Baby im Taufbecken. Im warmen Wasser löst sich die 'Milchflasche' vom Mund des Babys. \n\"Ich dachte schon dein Durst hört gar nicht mehr auf.\" Ringo steckt die Flasche ein."
         target_state: kirche
     - zurueck:

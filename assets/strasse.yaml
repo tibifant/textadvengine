@@ -2,6 +2,7 @@ strasse_vor_kirche:
   text: Ringo steht auf der Straße vor der Kirche.
   responses:
     - schleife:
+      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
       - goto_message_state_once: "Auf dem Boden vor der Kirche liegt eine weiße Schleife.\n\"Das gleiche Weiß wie die Blumen im Blumenstrauß. Bestimmt hilft uns das weiter. Wenn ich doch nur einen Spürhund hätte.\""
         target_state: schleife_kirche_meta
     - hund:
@@ -18,7 +19,7 @@ strasse_vor_kirche:
       - goto: kirche
 
 strasse_werkstatt_meta:
-  text: Das Baby zieht in Richtung der Straße.
+  text: Eine breite Straße verläuft auf der einen Seite.
   responses:
     - entlang gehen:
       - description: die Straße entlang gehen
@@ -28,7 +29,7 @@ strasse_werkstatt_meta:
       - goto: strasse_vor_kirche
 
 fussweg_kreuzung_1_meta:
-  text: Entgegen der Richtung in die das Baby zieht, verläuft ein Fußweg die Straße entlang.
+  text: Ein schmaler Fußweg führt neben einem Fahrradweg entlang.
   responses:
     - entlang gehen:
       - description: den Fußweg entlang gehen
@@ -76,6 +77,7 @@ kreuzung_1:
   text: "Ringo steht an einer Kreuzung. \nAuf der einen Seite verläuft ein Gehweg. \nAuf der anderen Seite verläuft eine hübsche Pflasterstraße.\nUnd es gibt den Weg Richtung Kirche."
   responses:
     - schleife:
+      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
       - only_visible_if_item_equals: [leine, 1]
       - only_visible_if_item_equals: [schleife, 1]
       - goto: schleife_kreuzung_1_meta
@@ -116,7 +118,7 @@ schleife_kreuzung_1_meta:
       - goto: kreuzung_1
 
 gehweg_meta:
-  text: Das Baby zieht den Gehweg entlang.
+  text: Ein Gehweg verläuft zwischen ein paar Büschen.
   responses:
     - entlang gehen:
       - description: den Gehweg entlang gehen
@@ -125,7 +127,7 @@ gehweg_meta:
       - goto: kreuzung_1
 
 sackgasse:
-  text: Der kleine Schnuffler hat Ringo in eine Sackgasse geführt.
+  text: Der Gehweg endet aburpt. Ringo steht in einer Sackgasse.
   responses:
     - zurueck:
       - description: zurueck zur Kreuzung
@@ -135,6 +137,7 @@ kreuzung_2:
   text: "Eine Kreuzung... \nAuf der einen Seite eine dunkle Gasse, \nauf der anderen eine freundliche Allee, \nund der Weg zur anderen Kreuzung."
   responses:
     - schleife:
+      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
       - only_visible_if_item_equals: [leine, 1]
       - only_visible_if_item_equals: [schleife, 1]
       - goto: schleife_kreuzung_2_meta
@@ -166,7 +169,7 @@ schleife_kreuzung_2_meta:
       - goto: kreuzung_2
 
 textadventure_gasse_meta:
-  text: Das Baby zieht in Richtung der dunklen Gasse.
+  text: Eine dunkle Gasse biegt von der Kreuzung ab.
   responses:
     - entlang gehen:
       - description: die dunkle Gasse entlang gehen
