@@ -179,7 +179,7 @@ pfarrer_im_flur:
       - goto_message_state: "\"Hicks!\""
 
 pfarrer_bad:
-  text: Ringo lukt in einen kleinen feuchten Raum. Hinter einem Vorhang ertönt ein Summen.
+  text: Ringo lukt in einen kleinen feuchten Raum. Hinter einem Vorhang ist eine Person.
   responses: 
     - kalt:
       - description: kaltes Wasser am Wasserhahn aufdrehen
@@ -187,6 +187,7 @@ pfarrer_bad:
       - set_state_var: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 1]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - goto_message_state: Hinter dem Vorhang schreit jemand auf.
     - heiss:
       - description: heißes Wasser am Wasserhahn aufdrehen
@@ -194,6 +195,7 @@ pfarrer_bad:
       - set_state_var: [wasserhahn_aufgedreht, 1]
       - set_state_var: [wasserhahn_heiss_aufgedreht, 1]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Hinter dem Vorhang bibbert jemand.
     - zu:
@@ -202,6 +204,7 @@ pfarrer_bad:
       - set_state_var: [wasserhahn_heiss_aufgedreht, 0]
       - set_state_var: [wasserhahn_kalt_aufgedreht, 0]
       - set_state_var: [wasserhahn_aufgedreht, 0]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - goto_message_state: Man hört ein erleichtertes Seufzen.
     - handtuch:
@@ -212,9 +215,10 @@ pfarrer_bad:
       - only_visible_if_item_equals: [buch, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - set_state_var: [pfarrer_bewusstlos_bad, 1]
-      - goto_message_state: 
-          "\"Mal sehen..\" Ringo schlägt das Buch an einer zufälligen Stelle auf.\n\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat;\n
-          und siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\"\n\"Mein Vater spricht zu mir!\" ertoent es von hinter dem Vorhang. Man hoert einen dumpfen Fall und danach das plaetschernde Geraeusch von Wasser, das immer hoeher steigt."
+      - goto_message_states_from_list: 
+          - "\"Mal sehen..\" Ringo schlägt das Buch an einer zufälligen Stelle auf."
+          - "\"Und Gott sah die Erde, und siehe, sie war verdorben; denn alles Fleisch hatte seinen Weg verdorben auf Erden.\nDa sprach Gott zu Noah: Das Ende alles Fleisches ist vor mich gekommen; denn die Erde ist durch sie erfüllt von Gewalttat; \nund siehe, ich will sie verderben mit der Erde.\nDenn ich, siehe, ich bringe eine Sintflut über die Erde.\""
+          - "\"Mein Vater spricht zu mir!\" ertönt es von hinter dem Vorhang. Man hört einen dumpfen Fall und danach das plätschernde Geräusch von Wasser, das immer höher steigt."
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]
@@ -235,11 +239,25 @@ pfarrer_bad:
       - description: Licht an
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 1]
       - set_state_var: [pfarrer_licht_aus, 0]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - goto_message_state: "\"Von selbst wieder reingegangen? Das ist neu.\""
+    - an:
+      - description: Licht an
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 1]
+      - set_state_var: [pfarrer_licht_aus, 0]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
+      - goto_message_state: "Ringo schaltet das Licht an."
     - aus:
       - description: Licht aus
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
       - set_state_var: [pfarrer_licht_aus, 1]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
+      - goto_message_state: "Ringo schaltet das Licht aus."
+    - aus:
+      - description: Licht aus
+      - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
+      - set_state_var: [pfarrer_licht_aus, 1]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
       - goto_message_state: "Ein genervtes Seufzen ertoent von hinter dem Vorhang: \"Immer diese Sicherung...\""
     - zurueck:
       - description: zurück gehen
@@ -287,11 +305,24 @@ pfarrer_garten:
     - zurueck:
       - description: zurück ins Haus
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [anzug, 0]
+      - goto_message_state: "\"Ohne den Anzug gehe ich hier nicht weg!\""
+    - zurueck:
+      - description: zurück ins Haus
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [anzug, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
-      - goto_message_state: "\"Oh oh da ist jemand und die Dusche scheint auch aus zu sein...\""
+      - goto_message_state: "\"Oh oh da ist jemand und die Dusche scheint jetzt auch aus zu sein...\""
         target_state: pfarrer_im_flur
     - zurueck:
       - description: zurück ins Haus
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_item_equals: [anzug, 1]
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
+      - goto: pfarrer_flur
+    - zurueck:
+      - description: zurück ins Haus
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 1]
       - goto: pfarrer_flur
 
@@ -300,12 +331,14 @@ anzug_garten:
   responses:
     - bestaunen:
       - description: den Anzug bestaunen
+      - only_visible_if_item_equals: [anzug, 0]
       - goto_message_state: "\"Wow, was ein toller Stoff!\""
     - nehmen:
       - description: Anzug nehmen
+      - only_visible_if_item_equals: [anzug, 0]
       - give_item: anzug
       - goto_message_state: "\"Mein geliebter Retter in der Not, endlich habe ich dich!\""
-        goto: pfarrer_garten
+        target_state: pfarrer_garten
     - zurueck:
       - goto: pfarrer_garten
 
@@ -318,6 +351,11 @@ baby_pfarrer_garten:
       - only_visible_if_item_equals: [handtuch, 0]
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
       - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss erst irgendwas zum sauber machen holen.\""
+    - hochheben:
+      - description: Baby hochheben
+      - only_visible_if_item_equals: [handtuch, 1]
+      - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
+      - goto_message_state: "\"Pfui Teufel! Alles voll! So heb ich dich nicht hoch, ich muss dich erst sauber machen.\""
     - hochheben:
       - description: Baby hochheben
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]

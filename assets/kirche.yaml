@@ -27,7 +27,7 @@ kirche_vorraum:
     - tuer:
       - description: alte wackelige Tür öffnen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 0]
-      - goto_message_state: "Ringo steckt den Kopf durch die Tür \"Da geht's schonmal nicht zum Baby schon mal nicht. Ich sollte woanders weiter suchen\""
+      - goto_message_state: "Ringo steckt den Kopf durch die Tür \"Da geht's schonmal nicht zum Baby. Ich sollte woanders weiter suchen.\""
     - tuer:
       - description: wackelige Tür öffnen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]

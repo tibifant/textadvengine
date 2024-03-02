@@ -97,7 +97,7 @@ kreuzung_1:
 
 pflasterstrasse:
   text: Die gepflasterte Straße ist hübsch mit Bäumen gesäumt.
-  repsponses:
+  responses:
     - entlang gehen:
       - description: die Pflasterstraße entlang gehen
       - goto: kreuzung_2
@@ -119,7 +119,7 @@ gehweg_meta:
   text: Das Baby zieht den Gehweg entlang.
   responses:
     - entlang gehen:
-      - descirption: den Gehweg entlang gehen
+      - description: den Gehweg entlang gehen
       - goto: sackgasse
     - zurueck:
       - goto: kreuzung_1
@@ -178,7 +178,7 @@ textadventure_gasse:
   text: Vor einem von bunten Lichtern blinkenden Haus steht eine zwielichtige Gestalt und sieht Ringo geheimnisvoll an.
   responses:
     - person:
-      - zur Person gehen
+      - description: zur Person gehen
       - goto: texadventure_typ
     - zurueck:
       - description: der Gasse zurück zur Kreuzung folgen
@@ -266,8 +266,10 @@ allee:
   text: Am Ende der Allee steht ein mit weißen Luftballons geschmücktes Gebäude.
   responses:
     - rein:
-      - tuersteher - andere kleidung, nicht mit baby
-    - baby an luftballons, anzug angezogen: darf rein, drinnen: baby ablegen
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 1]
+      #tuersteher - andere kleidung, nicht mit baby
+    # baby an luftballons, anzug angezogen: darf rein, drinnen: baby ablegen
     - allee zurueck gehen:
       - goto: kreuzung_2
 

@@ -6,7 +6,7 @@ items:
   - rote_farbe: 0
   - parfum: 0
   - milch: 0
-  - handtuch: 0
+  - handtuch: 1
   - ring: 0
   - anzug: 0
   - wein: 0
@@ -54,7 +54,7 @@ state_vars:
   - handtuch_benutzt: 0
   - buerste_benutzt: 0
   - pfarrer_bewusstlos: 0
-  - pfarrer_bewusstlos_bad: 0
+  - pfarrer_bewusstlos_bad: 1
   - pfarrer_licht_aus: 0
   - treppenhaus_sauber: 0
   - rechnung_unterschrieben: 0
@@ -80,5 +80,8 @@ state_vars:
   - helium_in_ballons: 0
   - helium_aufgedreht: 0
   - baby_geschnuppert_kreuzung_1: 0
+  - baby_geschnuppert_kreuzung_2: 0
   - schraubschluessel_angesprochen: 0
-initial_screen: strasse_vor_kirche
+  - anzug_angezogen: 0
+  - geld_eingeworfen: 0
+initial_screen: pfarrer_garten
