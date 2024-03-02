@@ -79,4 +79,6 @@ state_vars:
   - baby_als_spuerhund: 0
   - helium_in_ballons: 0
   - helium_aufgedreht: 0
+  - baby_geschnuppert_kreuzung_1: 0
+  - schraubschluessel_angesprochen: 0
 initial_screen: strasse_vor_kirche

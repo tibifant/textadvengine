@@ -1,0 +1,13 @@
+textadventure_start:
+  text: blablablub
+  responses:
+    - blib:
+      - description: blob
+      - goto: textadventure_end_successful
+
+textadventure_end_successful:
+  text: Ringo freut sich. Er hat es geschafft!
+  responses:
+    - verlassen:
+      - description: Automaten verlassen
+      - goto: textadventure_danach_erfolgreich

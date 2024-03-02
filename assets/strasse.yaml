@@ -3,11 +3,11 @@ strasse_vor_kirche:
   responses:
     - schleife:
       - goto_message_state_once: "Auf dem Boden vor der Kirche liegt eine weiße Schleife.\n\"Das gleiche Weiß wie die Blumen im Blumenstrauß. Bestimmt hilft uns das weiter. Wenn ich doch nur einen Spürhund hätte.\""
-        target_state: schleife_meta
+        target_state: schleife_kirche_meta
     - hund:
       - only_visible_if_item_equals: [leine, 0]
       - goto: hund
-    - gasse:
+    - strasse:
       - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
       - goto: strasse_werkstatt_meta
     - fussweg:
@@ -18,10 +18,10 @@ strasse_vor_kirche:
       - goto: kirche
 
 strasse_werkstatt_meta:
-  text: Das Baby zieht in Richtung der Gasse.
+  text: Das Baby zieht in Richtung der Straße.
   responses:
     - entlang gehen:
-      - description: die Gasse entlang gehen
+      - description: die Straße entlang gehen
       - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
         target_state: strasse_werkstatt
     - zurueck:
@@ -36,7 +36,7 @@ fussweg_kreuzung_1_meta:
     - zurueck:
       - goto: strasse_vor_kirche
 
-schleife_meta:
+schleife_kirche_meta:
   text: "Ringo hält die weiße Schleife in der Hand."
   responses:
     - nehmen:
@@ -50,7 +50,7 @@ schleife_meta:
       - only_visible_if_item_equals: [leine, 1]
       - only_visible_if_item_equals: [schleife, 1]
       - set_state_var: [baby_als_spuerhund, 1]
-      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der Gasse zu ziehen."
+      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der Straße zu ziehen."
         target_state: strasse_vor_kirche
     - zurueck:
       - goto: strasse_vor_kirche
@@ -73,16 +73,206 @@ hund:
       - goto: strasse_vor_kirche
 
 kreuzung_1:
-  text: jo
+  text: "Ringo steht an einer Kreuzung. \nAuf der einen Seite verläuft ein Gehweg. \nAuf der anderen Seite verläuft eine hübsche Pflasterstraße.\nUnd es gibt den Weg Richtung Kirche."
   responses:
-    - yeah:
-      - description: lets go
+    - schleife:
+      - only_visible_if_item_equals: [leine, 1]
+      - only_visible_if_item_equals: [schleife, 1]
+      - goto: schleife_kreuzung_1_meta
+    - gehweg:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
+      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
+    - gehweg:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
+      - goto: gehweg_meta
+    - pflasterstrasse:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
+      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
+    - pflasterstrasse:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
+      - goto: pflasterstrasse
     - kirche:
       - description: dem Weg zur Kirche folgen
       - goto: strasse_vor_kirche
 
+pflasterstrasse:
+  text: Die gepflasterte Straße ist hübsch mit Bäumen gesäumt.
+  repsponses:
+    - entlang gehen:
+      - description: die Pflasterstraße entlang gehen
+      - goto: kreuzung_2
+    - zurueck:
+      - goto: kreuzung_1
+
+schleife_kreuzung_1_meta:
+  text: "Ringo hält die weiße Schleife in der Hand."
+  responses:
+    - schnuppern lassen:
+      - description: das Baby an der Schleife schnuppern lassen
+      - set_state_var: [baby_geschnuppert_kreuzung_1, 1]
+      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung des Gehwegs zu ziehen."
+        target_state: kreuzung_1
+    - zurueck:
+      - goto: kreuzung_1
+
+gehweg_meta:
+  text: Das Baby zieht den Gehweg entlang.
+  responses:
+    - entlang gehen:
+      - descirption: den Gehweg entlang gehen
+      - goto: sackgasse
+    - zurueck:
+      - goto: kreuzung_1
+
+sackgasse:
+  text: Der kleine Schnuffler hat Ringo in eine Sackgasse geführt.
+  responses:
+    - zurueck:
+      - description: zurueck zur Kreuzung
+      - goto: kreuzung_1
+
+kreuzung_2:
+  text: "Eine Kreuzung... \nAuf der einen Seite eine dunkle Gasse, \nauf der anderen eine freundliche Allee, \nund der Weg zur anderen Kreuzung."
+  responses:
+    - schleife:
+      - only_visible_if_item_equals: [leine, 1]
+      - only_visible_if_item_equals: [schleife, 1]
+      - goto: schleife_kreuzung_2_meta
+    - gasse:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
+      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
+    - gasse:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
+      - goto: textadventure_gasse_meta
+    - allee:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
+      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
+    - allee:
+      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
+      - goto: allee_meta
+    - kreuzung:
+      - description: dem Weg zur anderen Kreuzung folgen
+      - goto: kreuzung_1
+
+schleife_kreuzung_2_meta:
+  text: "Ringo hält die weiße Schleife in der Hand."
+  responses:
+    - schnuppern lassen:
+      - description: das Baby an der Schleife schnuppern lassen
+      - set_state_var: [baby_geschnuppert_kreuzung_2, 1]
+      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der dunklen Gasse zu ziehen."
+        target_state: kreuzung_2
+    - zurueck:
+      - goto: kreuzung_2
+
+textadventure_gasse_meta:
+  text: Das Baby zieht in Richtung der dunklen Gasse.
+  responses:
+    - entlang gehen:
+      - description: die dunkle Gasse entlang gehen
+      - goto: textadventure_gasse
+    - zurueck:
+      - goto: kreuzung_2
+
+textadventure_gasse:
+  text: Vor einem von bunten Lichtern blinkenden Haus steht eine zwielichtige Gestalt und sieht Ringo geheimnisvoll an.
+  responses:
+    - person:
+      - zur Person gehen
+      - goto: texadventure_typ
+    - zurueck:
+      - description: der Gasse zurück zur Kreuzung folgen
+      - goto: kreuzung_2
+
+texadventure_typ:
+  text: Die zwielichtige Gestalt lehnt lässig an einer Wand und kaut auf ... etwas.
+  responses:
+    - raeuspern:
+      - description: sich räuspern
+      - only_visible_if_state_var_equals: [schraubschluessel_angesprochen, 1]
+      - goto_message_states_from_list:
+        - "Die Person bedeutet Ringo näher zu kommen."
+        - "\"Hey du Bursche mit dem Rotzlöffel. Ich glaube ich hab' was, was du suchst.\""
+        - "\"Ach nein wirklich? Du hast einen R14 47 B Schraubschluessel?\""
+        - "\"Die Gestalt zuckt mit den Schultern. Willst du's haben?\""
+        - "\"Na klar will ich!\""
+        - "\"Geht klar, aber nur, wenn du es schaffst in diesem Spiel zu überleben.\""
+        - "Die Gestalt tritt zur Seite und deutet mit einem Nicken auf einen heruntergekommenen Spieleautomaten in der Ecke.\n    'Textadvent-o-mat'\n'Your adventure begins here'"
+        target_state: textadventure_automat
+    - raeuspern:
+      - description: sich räuspern
+      - only_visible_if_state_var_equals: [schraubschluessel_angesprochen, 0]
+      - goto_message_states_from_list:
+        - "Die Person bedeutet Ringo näher zu kommen."
+        - "\"Hey du Bursche mit dem Rotzlöffel. Ich glaube ich hab' was, was dir noch nützlich werden könnte.\""
+        - "\"Ach wirklich? Was dennn?\""
+        - "\"Einen R14 47 B Schraubschluessel.\""
+        - "\"Immer her damit. Ich kann nützliche Dinge immer gebrauchen.\""
+        - "\"Zuerst musst du es schaffen in diesem Spiel zu überleben.\""
+        - "Die Gestalt tritt zur Seite und deutet mit einem Nicken auf einen heruntergekommenen Spieleautomaten in der Ecke.\n    'Textadvent-o-mat'\n'Your adventure begins here'"
+        target_state: textadventure_automat
+    - zurueck:
+      - goto: textadventure_gasse
+
+textadventure_automat:
+  text: "Ringo tritt an den Automaten heran. Es gibt einen großen grünen Knopf auf dem 'start' steht"
+  responses:
+    - druecken:
+      - description: Startknopf drücken
+      - only_visible_if_item_equals: [geld, 0]
+      - goto_message_state: "'Insert money to play.' \"Mist! Ich hab kein Geld dabei.\""
+    - druecken:
+      - description: Startknopf drücken
+      - only_visible_if_item_equals: [geld, 1]
+      - only_visible_if_state_var_equals: [geld_eingeworfen, 0]
+      - goto_message_state: "'Insert money to play.' Alles klar."
+    - druecken:
+      - description: Startknopf drücken
+      - only_visible_if_state_var_equals: [geld_eingeworfen, 1]
+      - set_state_var: [geld_eingeworfen, 0]
+      - goto_message_state: "Ringo drückt den Startknopf."
+        target_state: textadventure_start
+    - geld:
+      - description: Geld einwerfen
+      - only_visible_if_item_equals: [geld, 0]
+      - goto_message_state: "Ringo greift in seine Hosentaschen. Da ist vieles drin, aber Geld findet er nicht."
+    - geld:
+      - description: Geld einwerfen
+      - only_visible_if_item_equals: [geld, 1]
+      - set_state_var: [geld_eingeworfen, 1]
+      - goto_message_state: "Ringo kramt nach einer Münze und schiebt sie durch den Münzschlitz."
+    - zurueck:
+      - goto: textadventure_gasse
+
+textadventure_danach_erfolgreich:
+  text: Die zwielichtige Gestalt taucht wieder auf und hält Ringo den R14 47 B Schraubschluessel hin.
+  responses:
+    - nehmen:
+      - description: den Schraubschlüssel entgegen nehmen
+      - give_item: schraubschluessel
+      - goto_message_state: "Wortlos überreicht die Getalt Ringo den Schraubschlüssel. Ringo freut sich: \"Was ein töfte R14 47 B.\""
+        target_state: textadventure_gasse
+
+allee_meta:
+  text: Eine freundlich aussehende Allee führt einen kleinen Bach entlang.
+  responses:
+    - entlang gehen:
+      - description: die Allee entlang gehen
+      - goto: allee
+    - zurueck:
+      - goto: kreuzung_2
+
+allee:
+  text: Am Ende der Allee steht ein mit weißen Luftballons geschmücktes Gebäude.
+  responses:
+    - rein:
+      - tuersteher - andere kleidung, nicht mit baby
+    - baby an luftballons, anzug angezogen: darf rein, drinnen: baby ablegen
+    - allee zurueck gehen:
+      - goto: kreuzung_2
+
 strasse_werkstatt:
-  text: "Am Ende der Gasse ist ein Gebäude mit der Aufschrift 'Metallverarbeitung Hans E. Jürgen'."
+  text: "Am Ende der Straße ist ein Gebäude mit der Aufschrift 'Metallverarbeitung Hans E. Jürgen'."
   responses:
     - gebaeude:
       - description: in das Gebäude gehen
@@ -92,14 +282,14 @@ strasse_werkstatt:
       - goto: strasse_vor_kirche
 
 werkstatt:
-  text: "\"Wow hier sieht alles so professionell aus.\" Ringo staunt über die vielen Maschinen und Werkzeuge."
+  text: "\"Wow hier sieht alles so professionell aus.\" Ringo staunt über die vielen Maschinen und Werkzeuge. \"Damit kann man bestimmt viel Spaß haben.\""
   responses:
     - maschinen:
       - goto: maschinen
     - werkzeuge:
       - goto: werkzeuge
     - zurueck:
-      - description: zurueck in die Gasse
+      - description: zurueck in die Straße
       - goto: strasse_werkstatt
 
 werkzeuge:
@@ -161,7 +351,6 @@ loeteisen:
     - zurueck:
       - goto: maschinen
 
-
 fraese:
   text: Es gibt ein Metallfräse.
   responses:
@@ -195,6 +384,7 @@ gasflasche_meta:
     - luftballons:
       - description: Ballons mit Helium füllen
       - only_visible_if_item_equals: [schraubschluessel, 0]
+      - set_state_var: [schraubschluessel_angesprochen, 1]
       - goto_message_state: "\"Man braucht einen R14 47 B Schraubschluessel um das Gas aufzudrehen, sowas habe ich nicht.\""
     - luftballons:
       - description: Ballons mit Helium füllen
