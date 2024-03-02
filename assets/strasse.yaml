@@ -267,11 +267,137 @@ allee:
   responses:
     - rein:
       - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 0]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mit der Kleidung und dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 0]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Oh das Kleine wurde hübsch gemacht - und dennoch mit der Kleidung und dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
+    - rein:
+      - description: ins Gebäude gehen
       - only_visible_if_state_var_equals: [anzug_angezogen, 1]
-      #tuersteher - andere kleidung, nicht mit baby
-    # baby an luftballons, anzug angezogen: darf rein, drinnen: baby ablegen
-    - allee zurueck gehen:
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Oh das Kleine wurde hübsch gemacht - und dennoch mit dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mehr Dekoration? Geht klar - Heh! Moment mal, das ist doch immer noch dieser Rotzlöffel. Keine Kinder auf dieser Feier!\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 0]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mehr Dekoration? Geht klar - Heh! Moment mal, das ist doch immer noch dieser Rotzlöffel. Keine Kinder auf dieser Feier und dein Aufzug geht auch gar nicht.!\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_states_from_list:
+        - "Neben der Tür steht jemand und hält Ringo auf. \"Was soll das denn sein? Warum hast du Kondome an dein Baby gehängt? Nachträgliche Verhütung oder was? So kommt ihr hier ganz sicher nicht rein.\""
+        - "Ringo murmelt: \"Ich sollte die Luftballons befüllen.\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - set_state_var: [von_tuersteher_aufgehalten, 1]
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mit Rotzlöffel, kommst du hier nicht rein.\""
+    - rein:
+      - description: ins Gebäude gehen
+      - only_visible_if_state_var_equals: [anzug_angezogen, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
+      - goto_message_state: "Ringo darf ungestört ins Gebäude gehen."
+        target_state: hochzeit
+    - anzug:
+      - only_visible_if_state_var_equals: [anzug_angezogen, 0]
+      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
+      - goto: anzug_anziehen_meta
+    - baby:
+      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - goto: baby_verkleiden_meta
+    - baby:
+      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - goto: baby_verkleiden_meta
+    - baby:
+      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
+      - goto: baby_verkleiden_meta
+    - allee:
+      - description: die Allee entlang gehen
       - goto: kreuzung_2
+
+baby_verkleiden_meta:
+  text: "\"Ich muss das Baby irgendwie tarnen!\""
+  responses:
+    - rote farbe:
+      - description: rote Farbe verwenden
+      - only_visible_if_item_equals: [rote_farbe, 1]
+      - goto_message_state: Ringo malt das Baby rot an.
+    - lappen:
+      - description: Lappen verwenden
+      - only_visible_if_item_equals: [lappen, 1]
+      - goto_message_state: Ringo legt dem Baby den Lappen auf den Kopf.
+    - wein:
+      - description: Wein verwenden
+      - only_visible_if_item_equals: [wein, 1]
+      - goto_message_state: "\"Hicks!\""
+    - schleife:
+      - description: Schleife verwenden
+      - only_visible_if_item_equals: [schleife, 1]
+      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
+      - set_state_var: [schleife_dekoriert, 1]
+      - goto_message_state: Ringo steckt dem Baby die Schleife ins Haar.
+    - luftballons:
+      - description: Luftballons verwenden
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_state_var_equals: [helium_in_ballons, 1]
+      - remove_item: luftballons
+      - set_state_var: [luftballons_dekoriert, 1]
+      - goto_message_state: Ringo bindet die Luftballons am Baby fest. Es sieht der Dekoration an der Tür zum verwechseln ähnlich.
+    - luftballons:
+      - description: Luftballons verwenden
+      - only_visible_if_item_equals: [luftballons, 1]
+      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - set_state_var: [luftballons_leer_dekoriert, 0]
+      - only_visible_if_state_var_equals: [helium_in_ballons, 0]
+      - set_state_var: [luftballons_leer_dekoriert, 1]
+      - goto_message_state: Ringo bindet die Luftballons am Baby fest.
+    - zurueck:
+      - goto: allee
+
+anzug_anziehen_meta:
+  text: Ringo hält seinen geliebten Anzug in der Hand
+  responses:
+    - bestaunen:
+      - description: den Anzug bestaunen
+      - goto_message_state: "\"Wow, was ein toller Stoff!\""
+    - anziehen: 
+      - description: den Anzug anziehen
+      - goto_message_state: Ringo zieht den Anzug an.
+    - zurueck:
+      - goto: allee
+
 
 strasse_werkstatt:
   text: "Am Ende der Straße ist ein Gebäude mit der Aufschrift 'Metallverarbeitung Hans E. Jürgen'."

@@ -342,7 +342,6 @@ anzug_garten:
     - zurueck:
       - goto: pfarrer_garten
 
-
 baby_pfarrer_garten:
   text: Das Baby sitzt in der Mitte des Gartens.
   responses:
