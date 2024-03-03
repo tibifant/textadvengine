@@ -31,7 +31,7 @@ hochzeit:
       - goto: warten_braut
     - torte:
       - only_visible_if_item_equals: [kuchen, 0]
-      - goto: kuchen #todo!
+      - goto: kuchen
     - bar:
       - description: zur Bar gehen
       - goto: bar
@@ -63,8 +63,48 @@ hochzeit:
       - only_visible_if_item_equals: [papierhandtuch, 1]
       - only_visible_if_item_equals: [diplom, 0]
       - goto: papierhandtuch_beschriften
+    - pistole:
+      - only_visible_if_item_equals: [kuchen, 1]
+      - only_visible_if_item_equals: [strauss, 1]
+      - only_visible_if_item_equals: [pistole, 1]
+      - goto: schiessen
+    - luftballons:
+      - only_visible_if_state_var_equals: [erstes_schiessen, 0]
+      - only_visible_if_item_equals: [neue_luftballons, 0]
+      - goto: neue_luftballons
     - gast:
       - goto: amerikaner
+
+neue_luftballons:
+  text: Im ganzen Raum gibt es Dekoration mit Luftballons.
+  responses:
+    - nehmen:
+      - description: Luftballons nehmen
+      - give_item: neue_luftballons
+      - goto_message_state: Ringo steckt ein Bündel Luftballons ein.
+        target_state: hochzeit
+    - zurueck:
+      - goto: hochzeit
+
+schiessen:
+  text: Ringo zielt mit der Pistole auf die Luftballons an denen das Baby hängt.
+  responses:
+    - schiessen:
+      - description: auf die Luftballons schießen
+      - only_visible_if_state_var_equals: [erstes_schiessen, 0]
+      - only_visible_if_item_equals: [neue_luftballons, 0]
+      - set_state_var: [erstes_schiessen, 1]
+      - goto_message_state: "\"Oh Moment, ich sollte noch schnell neue Luftballons einpacken, hier gibt es ja genug.\""
+        target_state: hochzeit
+    - schiessen:
+      - description: auf die Luftballons schießen
+      - only_visible_if_state_var_equals: [erstes_schiessen, 1]
+      - only_visible_if_item_equals: [neue_luftballons, 1]
+      - goto_message_states_from_list:
+          - "Ringo schießt einen nach dem anderen 'Luftballon' ab bis das Baby langsam zu Boden segelt. Ringo sieht sehr zufrieden mit sich aus, er hat alles was er für sein Date braucht und ist bereit zu gehen.\nDie Schüße haben für Aufruhr gesorgt, zwei Personen stürmen besonders Richtung Baby - es sind seine Eltern.\n\n \"RINGOOOOO!!!\""
+        target_state: ende
+    - zurueck:
+      - goto: hochzeit
 
 kuchen:
   text: Auf einem Tisch in der Mitte des Raums steht eine große Torte.
@@ -110,9 +150,40 @@ amerikaner:
       - goto_message_state: "\"Hallo!\"\n\"Howdy!\""
     - pistole:
       - goto: pistole_amerikaner
-    - 
+    - wein:
+      - only_visible_if_state_var_equals: [diplom_abgelehnt, 1]
+      - only_visible_if_state_var_equals: [amerikaner_betrunken, 0]
+      - only_visible_if_item_equals: [wein, 1]
+      - goto: wein_geben
+    - alkohol:
+      - only_visible_if_state_var_equals: [diplom_abgelehnt, 1]
+      - only_visible_if_state_var_equals: [amerikaner_betrunken, 0]
+      - only_visible_if_item_equals: [alkohol, 1]
+      - goto: alokohl_geben
     - zurueck:
       - goto: hochzeit
+
+alokohl_geben:
+  text: Ringo bietet dem Amerikaner ein Getränk an.
+  responses:
+    - einschenken:
+      - description: der Person vom Alkohol einschenken
+      - set_state_var: [amerikaner_betrunken, 1]
+      - goto_message_state: "Ringo schenkt dem Amerikaner einige Gläser Alkohol ein, bis dieser leicht schielt. \"Wenn er mein Diplom jetzt nicht anerkennt weiß ich auch nicht.\""
+        target_state: amerikaner
+    - zurueck:
+      - goto: amerikaner
+
+wein_geben: 
+  text: Ringo holt den Wein aus der Kirche hervor.
+  responses:
+    - einschenken:
+      - description: der Person ein Glas Wein einschenken
+      - set_state_var: [amerikaner_betrunken, 1]
+      - goto_message_state: "Ringo schenkt dem Amerikaner einige Gläser Wein ein, bis dieser leicht schielt. \"Wenn er mein Diplom jetzt nicht anerkennt weiß ich auch nicht.\""
+        target_state: amerikaner
+    - zurueck:
+      - goto: amerikaner
 
 pistole_amerikaner:
   text: Die Person hat eine Pistole im Holster an ihrem Gürtel.
@@ -127,7 +198,16 @@ pistole_amerikaner:
       - goto_message_states_from_list: 
           - "\"Darf ich mir die mal kurz ausleihen?\" \n\"Nur wenn du ein Jagddiplom hast!\""
           - "Ringo murmelt: \"Sowas hab ich nicht, aber das heißt ja nicht, dass ich mir keins machen kann. Einen Stift habe ich...\""
-      # zeigen und er will nciht
+    - nehmen:
+      - description: die Pistole nehmen
+      - only_visible_if_item_equals: [diplom, 0]
+      - set_state_var: [amerikaner_geredet, 1]
+      - set_state_var: [diplom_abgelehnt, 1]
+      - only_visible_if_state_var_equals: [amerikaner_betrunken, 1]
+      - goto_message_states_from_list: 
+          - "Ringo hält der Person sein selbstgeschriebenes Diplom hin. \"Schau mal, mein Jagddiplom, darf ich die Pistole damit ausleihen?\""
+          - "\"Lass mal sehen. Das ist kein rictiges Diplom, versuc nict mic zu verapplen.\""
+          - "\"Die müssen hier alle mal lockerer werden\""
     - nehmen:
       - description: die Pistole nehmen
       - only_visible_if_item_equals: [diplom, 1]
@@ -324,8 +404,12 @@ bar:
       - goto_message_state: "\"Für mich gerade nicht.\""
     - cocktail mixen:
       - only_visible_if_state_var_equals: [cocktail_gemixt, 0]
+      - only_visible_if_state_var_equals: [cocktail_gegeben, 0]
       - only_visible_if_state_var_equals: [braut_gepinkelt, 1]
       - goto: cocktail_mixen
+    - whisky:
+      - only_visible_if_item_equals: [alkohol, 0]
+      - goto: whisky_meta
     - zurueck:
       - goto: braut_nocht_auf_hochzeit
 
@@ -367,6 +451,17 @@ cocktail_mixen:
       - only_visible_if_item_equals: [rote_farbe, 1]
       - set_state_var: [cocktail_gemixt, 1]
       - goto_message_state: "Ringo kippt etwas von der roten Farbe aus dem Keller in den Cocktail."
+    - zurueck:
+      - goto: bar
+
+whisky_meta:
+  text: Es gibt guten amerikanischen Whisky.
+  responses:
+    - nehmen:
+      - description: vom Whisky nehmen
+      - give_item: alkohol
+      - goto_message_state: Ringo nimmt gleich die ganze Flasche mit.
+        target_state: bar
     - zurueck:
       - goto: bar
 

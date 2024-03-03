@@ -253,7 +253,7 @@ textadventure_danach_erfolgreich:
     - nehmen:
       - description: den Schraubschlüssel entgegen nehmen
       - give_item: schraubschluessel
-      - goto_message_state: "Wortlos überreicht die Getalt Ringo den Schraubschlüssel. Ringo freut sich: \"Was ein töfte R14 47 B.\""
+      - goto_message_state: "Wortlos überreicht die Gestalt Ringo den Schraubschlüssel. Ringo freut sich: \"Was ein töfte R14 47 B. Sag mal, wer hat das eigentlich programmiert?\" Ringo deutet zum Automaten. \"Eine unkreative Studentin.\""
         target_state: textadventure_gasse
 
 allee_meta:

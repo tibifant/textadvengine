@@ -36,6 +36,7 @@ items:
   - pistole: 0
   - strauss: 0
   - kuchen: 0
+  - neue_luftballons: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -102,4 +103,7 @@ state_vars:
   - braut_durchfall: 0
   - cocktail_gegeben: 0
   - kleid_angezogen: 0
+  - diplom_abgelehnt: 0
+  - amerikaner_betrunken: 0
+  - erstes_schiessen: 0
 initial_screen: pfarrer_garten

@@ -1,3 +1,14 @@
+beispiel:
+  text: "\"So eine Käse\" Ringo beißt in sein Butterbrot"
+  responses:
+     - hullu:
+      - description: hullu schok
+      - only_visible_if_item_sum_greater: [pupu, butterbrot, 1]
+      - goto_message_states_from_list:
+          - "Hullu Schok!"
+          - "Vielen danky!"
+        target_state: dunkelraum
+
 dunkelraum:
   text: |
     du kommst in einen dunklen raum

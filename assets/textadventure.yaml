@@ -1,9 +1,53 @@
 textadventure_start:
-  text: blablablub
+  text: "Welcome to this Text Adventure!\nCan you get out of this or will you be eaten by a grue?"
   responses:
-    - blib:
-      - description: blob
-      - goto: textadventure_end_successful
+    - x:
+      - accept_any_input
+      - goto: beginning
+
+beginning:
+  text: |
+    You startle awake from a deep sleep. Why are you not
+    in your bed? Instead, you find yourself sunny on a beach.
+    Wearing your pyjamas...
+
+    Something feels odd about all this. As if you were not really awake.
+  responses:
+    - x:
+      - accept_any_input
+      - goto: east_end_beach
+
+east_end_beach:
+  text: |
+    East end of the beach
+
+    There is a very high palm tree here and a lot of sand.
+    A lot of sand.
+    You see dense jungle to the north. East of you are sharp
+    rocks. Better not go there. To the south is ocean which
+    stretches to the horizon. The sandy beach goes on to the
+    west.
+  responses:
+    s:
+      - description: go south
+      - goto: ocean
+
+ocean:
+  text: |
+    You almost drown as a big wave swept you off your feet.
+    With some difficulty you make it back to the beach. Have
+    you forgotten that you cannot swim?
+  responses:
+    n:
+      - description: go north
+      - goto: jungle
+
+jungle:
+  text: |
+    The jungle seems very dark... Something hisses at you.
+    No way you are going in there!
+  responses:
+    #todo!
 
 textadventure_end_successful:
   text: Ringo freut sich. Er hat es geschafft!
