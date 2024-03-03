@@ -6,3 +6,15 @@ ende:
     Gerade reiten sie zusammen in den Sonnenuntergang und eine schnulzige Melodie läuft im Hintergrund. Oder Ringo brennt versehentlich das Nachbarshaus ab - wer weiß das schon.
 
     THE END
+
+test:
+  text: test this
+  responses:
+    - test:
+      - call: pupu
+
+pupu:
+  text: this is pupu
+  responses:
+    - hullu:
+      - goto: $return

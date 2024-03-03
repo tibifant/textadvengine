@@ -114,4 +114,4 @@ state_vars:
   - erstes_schiessen: 0
   - baby_abgesetzt: 0
   - wasserhahn_wc_aufgedreht: 0
-initial_screen: pfarrer_garten
+initial_screen: test

@@ -87,7 +87,7 @@ public class ScreenFactory {
               break;
             case "call":
               targetScreen = (String) item.getValue();
-              decorators.add(new PushScreenNameToStackDecorator(targetScreen));
+              decorators.add(new PushScreenNameToStackDecorator(screenName));
               break;
             case "description":
               descriptionText = (String) item.getValue();

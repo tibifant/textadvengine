@@ -44,8 +44,10 @@ public class Response {
     return keyword.equals(response);
   }
 
+  final String returnKeyword = "$return";
+
   public ScreenTransitionException getGotoTargetScreenException(GameState gameState) {
-    if (targetScreen.equals("$return"))
+    if (targetScreen.equals(returnKeyword))
       return new ScreenTransitionException(gameState.popScreenName());
     else
       return new ScreenTransitionException(targetScreen);
@@ -63,7 +65,8 @@ public class Response {
   }
 
   public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {
-    validator.validateScreenName(targetScreen);
+    if (!targetScreen.equals(returnKeyword))
+      validator.validateScreenName(targetScreen);
 
     for (var d : decorators)
       d.validate(validator);
