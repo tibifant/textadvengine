@@ -85,6 +85,10 @@ public class ScreenFactory {
             case "goto":
               targetScreen = (String) item.getValue();
               break;
+            case "call":
+              targetScreen = (String) item.getValue();
+              decorators.add(new PushScreenNameToStackDecorator(targetScreen));
+              break;
             case "description":
               descriptionText = (String) item.getValue();
               break;
@@ -99,6 +103,7 @@ public class ScreenFactory {
               break;
             default:
               decorators.add(parseDecorator(screenName, item.getKey(), item.getValue()));
+              break;
           }
         } else { // multi-key decorators.
           if (containedValues.containsKey(GotoMessageStateAttribute) || containedValues.containsKey(GotoMessageStateOnceAttribute)) {

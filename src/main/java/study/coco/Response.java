@@ -44,8 +44,11 @@ public class Response {
     return keyword.equals(response);
   }
 
-  public String getTargetScreenName() {
-    return targetScreen;
+  public ScreenTransitionException getGotoTargetScreenException(GameState gameState) {
+    if (targetScreen.equals("$return"))
+      return new ScreenTransitionException(gameState.popScreenName());
+    else
+      return new ScreenTransitionException(targetScreen);
   }
 
   public void print() {

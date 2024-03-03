@@ -2,11 +2,13 @@ package study.coco;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class GameState {
 
   private Map<String, Integer> stateVars = new HashMap<>();
   private Map<String, Item> items = new HashMap<>();
+  private Stack<String> screenNamesToReturn = new Stack<>();
 
   public int getItemCount(String itemName) {
     return !items.containsKey(itemName) ? 0 : items.get(itemName).getCount();
@@ -39,5 +41,13 @@ public class GameState {
 
   public boolean containsStateVarName(String stateVarName) {
     return stateVars.containsKey(stateVarName);
+  }
+
+  public String popScreenName() {
+    return screenNamesToReturn.pop();
+  }
+
+  public void pushScreenName(String screenName) {
+    screenNamesToReturn.push(screenName);
   }
 }

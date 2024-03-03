@@ -17,7 +17,7 @@ public class CmpStateVarResponseDecorator implements IResponseDecorator {
   }
 
   @Override
-  public void onChoose(GameState engine) { }
+  public void onChoose(GameState gameState) { }
 
   @Override
   public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {

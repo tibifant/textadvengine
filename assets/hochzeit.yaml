@@ -20,7 +20,8 @@ baby_absetzen_meta:
           - "\"Jetzt wo das erledigt ist, kann ich mir endlich den Blumenstrauß besorgen.\" Ringo stürzt sich ins Getümmel."
           - In der Mitte des Raums sitzt eine Person im weißen Kleid mit dem Blumenstrauß in ihrer Hand.
         target_state: hochzeit
-    - zurueck: hochzeit_baby_ablegen
+    - zurueck: 
+      - goto: hochzeit_baby_ablegen
 
 hochzeit:
   text: Ein festlich geschmückter Raum, voll festlich gekleideter Leute.
@@ -226,13 +227,13 @@ wc:
   responses:
     - zudrehen:
       - description: Wasserhahn zudrehen
-      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 1]
-      - set_state_var: [wasserhahn_haus_aufgedreht, 0]
+      - only_visible_if_state_var_equals: [wasserhahn_wc_aufgedreht, 1]
+      - set_state_var: [wasserhahn_wc_aufgedreht, 0]
       - goto_message_state: Das Wasser hört auf zu plätschern.
     - aufdrehen:
       - description: Wasserhahn aufdrehen
-      - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 0]
-      - set_state_var: [wasserhahn_haus_aufgedreht, 1]
+      - only_visible_if_state_var_equals: [wasserhahn_wc_aufgedreht, 0]
+      - set_state_var: [wasserhahn_wc_aufgedreht, 1]
       - goto_message_state: Wasser plätschert aus dem Wasserhahn.
     - kabine:
       - only_visible_if_state_var_equals: [braut_durchfall, 1]
@@ -246,10 +247,11 @@ wc:
       - goto: papierhandtuch_nehmen
     - zurueck:
       - description: zurück gehen
-      - goto: hochzeit_braut_noch_da
+      - goto: hochzeit
 
 papierhandtuch_nehmen:
   text: Neben dem Waschbecken gibt es Papierhandtücher.
+  responses:
     - nehmen:
       - description: ein Papierhandtuch nehmen
       - only_visible_if_item_equals: [papierhandtuch, 0]
@@ -335,8 +337,8 @@ cocktail_geben:
           - "Ringo wartet ab, aber sie geht einfach nicht zur Toilette."
           - "\"Da fehlen noch ein paar ausgefallene Zutaten in meinem Cocktail...\""
         target_state: hochzeit
-      - zurueck:
-        - goto: hochzeit
+    - zurueck:
+      - goto: hochzeit
 
 wasser_geben:
   text: "\"Wenn ich der Braut Wasser gebe, muss sie auf Toilette und schwupps - der Strauß ist mein.\""
@@ -411,7 +413,7 @@ bar:
       - only_visible_if_item_equals: [alkohol, 0]
       - goto: whisky_meta
     - zurueck:
-      - goto: braut_nocht_auf_hochzeit
+      - goto: hochzeit
 
 cocktail_mixen:
   text: Man kann sich selbst Cocktails mischen. Ringo hält ein Cocktailglas in der Hand und beschaut die Zutaten - er hat auch noch einiges dabei.
@@ -482,17 +484,3 @@ warten_braut:
       - description: abwarten
       - set_state_var: [gewartet_hochzeit, 1]
       - goto_message_state: "\"Sie lässt das Ding einfach nicht aus den Augen... Ich muss sie irgendwie dazu bringen den Raum zu verlassen.\""
-        target_state: hochzeit
-
-braut_bewusstlos_hochzeit:
-  text: ringo bemerkt baby an decke, muss hochzeit dinge mitmachen, findet waffenmann, waffe bekommen
-
-waffe_hochzeit:
-  text: baby abschiessen
-
-ende:
-  text: ringo geht, hat alles
-
-credits:
-  text: zeitungsartikel pastor, ringo date top (hint auf waffenmann)
-

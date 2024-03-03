@@ -37,6 +37,9 @@ items:
   - strauss: 0
   - kuchen: 0
   - neue_luftballons: 0
+  - alkohol: 0
+  - papierhandtuch: 0
+  - kleid: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -100,10 +103,15 @@ state_vars:
   - alkohol_in_cocktail: 0
   - leim_oder_hotsauce: 0
   - cocktail_gemixt: 0
+  - braut_auf_pinkel: 0
+  - braut_gepinkelt: 0
   - braut_durchfall: 0
   - cocktail_gegeben: 0
   - kleid_angezogen: 0
   - diplom_abgelehnt: 0
   - amerikaner_betrunken: 0
+  - amerikaner_geredet: 0
   - erstes_schiessen: 0
+  - baby_abgesetzt: 0
+  - wasserhahn_wc_aufgedreht: 0
 initial_screen: pfarrer_garten

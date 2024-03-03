@@ -30,7 +30,7 @@ public class Screen {
       if (r.isValid(gameState) && r.keywordMatches(response)) {
         anyMatched = true;
         r.performAction(gameState);
-        throw new ScreenTransitionException(r.getTargetScreenName());
+        throw r.getGotoTargetScreenException(gameState);
       }
     }
 

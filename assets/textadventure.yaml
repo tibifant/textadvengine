@@ -28,7 +28,7 @@ east_end_beach:
     stretches to the horizon. The sandy beach goes on to the
     west.
   responses:
-    s:
+    - s:
       - description: go south
       - goto: ocean
 
@@ -38,7 +38,7 @@ ocean:
     With some difficulty you make it back to the beach. Have
     you forgotten that you cannot swim?
   responses:
-    n:
+    - n:
       - description: go north
       - goto: jungle
 
@@ -48,6 +48,8 @@ jungle:
     No way you are going in there!
   responses:
     #todo!
+    - blib:
+      - description: blub
 
 textadventure_end_successful:
   text: Ringo freut sich. Er hat es geschafft!
