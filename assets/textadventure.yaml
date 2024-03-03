@@ -1,58 +1,962 @@
 textadventure_start:
-  text: "Welcome to this Text Adventure!\nCan you get out of this or will you be eaten by a grue?"
+  text: |
+    Welcome to this Text Adventure!\nCan you get out of this or will you be eaten by a grue?
+
+    "Och nee, ein Text Adventure. Sind die nicht Ende der 80er aus der Mode gekommen? Naja, dann Augen zu und durch!"
   responses:
     - x:
       - accept_any_input
-      - goto: beginning
+      - goto: ta_beginning
 
-beginning:
+###################################################################
+
+.text_adventure_common: &text_adventure_common
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+
+.ta_ocean: &ta_ocean
+  - description: go towards the ocean
+  - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
+
+.ta_cliff: &ta_cliff
+  - description: go towards the island
+  - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+
+.ta_branch_not_usable: &ta_branch_not_usable
+  - u branch:
+    - description: use the branch
+    - only_visible_if_item_equals: [ta_branch, 1]
+    - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+
+.ta_axe_not_usable: &ta_axe_not_usable
+  - u axe:
+    - description: use the axe
+    - only_visible_if_item_equals: [ta_axe, 1]
+    - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
+
+.ta_torch_drop_no_use: &ta_torch_drop_no_use
+  - u torch:
+    - description: use the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+  - d torch:
+    - description: drop the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - remove_item: ta_torch
+    - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+
+.ta_lit_torch_drop_bad_idea: &ta_lit_torch_drop_bad_idea
+  - u torch:
+    - description: use the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+  - d torch:
+    - description: drop the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - goto_message_state: You may be of questionable mental capacity to imagine such a stereotypical adventure in your sleep, but dropping a lit torch in a dark cave even exceeds your abilities.
+
+.ta_torch_drop_bad_idea: &ta_torch_drop_bad_idea
+  - u torch:
+    - description: use the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+  - d torch:
+    - description: drop the torch
+    - only_visible_if_item_equals: [ta_torch, 1]
+    - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+
+###################################################################
+
+.ta_55_common: &ta_55_common
+  - n:
+    - description: go north
+    - goto: ta_54_beach
+  - s:
+    - description: go south
+    - goto: ta_56_beach
+  - e:
+    - <<: *ta_ocean
+  - w:
+    - description: go towards the island
+    - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+  - i:
+    - description: open the inventory
+    - call: ta_inventory
+  - d shell:
+    - description: drop the shell
+    - only_visible_if_item_equals: [ta_shell, 1]
+    - remove_item: ta_shell
+    - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+  - u shell:
+    - description: use the shell
+    - only_visible_if_item_equals: [ta_shell, 1]
+    - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+  - d branch:
+    - description: drop the branch
+    - only_visible_if_item_equals: [ta_branch, 1]
+    - remove_item: ta_branch
+    - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+  - u fertilizer:
+    - description: use the plant fertilizer
+    - only_visible_if_item_equals: [ta_fertilizer, 1]
+    - remove_item: ta_fertilizer
+    - goto_message_states_from_list:
+      - You place the plant fertilizer in your mouth, close your eyes and ...
+      - Nothing happens.
+      - Hmm...
+  - d fertilizer:
+    - description: drop the plant fertilizer
+    - only_visible_if_item_equals: [ta_fertilizer, 1]
+    - remove_item: ta_fertilizer
+    - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+  - d axe:
+    - description: drop the axe
+    - only_visible_if_item_equals: [ta_axe, 1]
+    - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+  - <<: *ta_branch_not_usable
+  - <<: *ta_torch_drop_no_use
+  - <<: *ta_axe_not_usable
+
+ta_beginning:
   text: |
     You startle awake from a deep sleep. Why are you not
     in your bed? Instead, you find yourself sunny on a beach.
     Wearing your pyjamas...
 
-    Something feels odd about all this. As if you were not really awake.
+    Something feels odd - and somewhat familiar - about this...
   responses:
-    - x:
-      - accept_any_input
-      - goto: east_end_beach
+    - <<: *ta_55_common
 
-east_end_beach:
+ta_55_beach:
   text: |
-    East end of the beach
-
-    There is a very high palm tree here and a lot of sand.
-    A lot of sand.
-    You see dense jungle to the north. East of you are sharp
-    rocks. Better not go there. To the south is ocean which
-    stretches to the horizon. The sandy beach goes on to the
-    west.
+    You return to the place where you woke up in this strange, yet somewhat familiar world.
+    The footprints in the sand seem to simply end where you first woke up.
   responses:
-    - s:
-      - description: go south
-      - goto: ocean
+    - <<: *ta_55_common
 
-ocean:
+ta_54_beach:
   text: |
-    You almost drown as a big wave swept you off your feet.
-    With some difficulty you make it back to the beach. Have
-    you forgotten that you cannot swim?
+    The beach continues. This particular stretch appears to be filled with many colorful shells.
   responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
     - n:
       - description: go north
-      - goto: jungle
+      - goto: ta_53_beach
+    - s:
+      - description: go south
+      - goto: ta_55_beach
+    - e:
+      - <<: *ta_ocean
+    - w:
+      - only_visible_if_item_equals: [ta_torch, 0]
+      - description: go towards the island
+      - goto_message_state: A tall cliff stretches the horizon. But there seems to be a large crack in the Rocks. You stare into the utter darkness of the cave. If you only had something that providing a bit of light, this would seem like an exciting adventure to go on in your pyjamas.
+    - w:
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - description: go towards the island
+      - goto_message_state: You light the makeshift torch with a stroke on the rough rock surface. To your surprise - and the convenience of the puzzle designer - this works flawlessly.
+        target_state: ta_44_cave
+    - t shell:
+      - only_visible_if_item_equals: [ta_shell, 0]
+      - give_item: ta_shell
+      - goto_message_state: You take a beautiful curled shell. The hermit crab living inside the shell seems to protest at first, but after a round of negititations he surrenders to its new purpose and hangs limp from your beautiful souvenir.
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_no_use
+    - <<: *ta_axe_not_usable
 
-jungle:
+ta_56_beach:
   text: |
-    The jungle seems very dark... Something hisses at you.
-    No way you are going in there!
+    You're still on the beach.
+    A few branches seem to have fallen from the trees growing atop the cliff onto the sandy shore. 
   responses:
-    #todo!
-    - blib:
-      - description: blub
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_55_beach
+    - s:
+      - description: go south
+      - goto: ta_57_beach
+    - e:
+      - <<: *ta_ocean
+    - w:
+      - description: go towards the island
+      - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+    - t branch:
+      - only_visible_if_item_equals: [ta_branch, 0]
+      - give_item: ta_branch
+      - goto_message_state: You pay little attention to the flock of rattle snakes hiding within the branches and simply grab the first branch you can reach. It's surprisingly bendy and slippery - what an interesting wood type this must be. You observe the scale-like bark pattern as you plan to make notes in your wood-journal once you'd return to your beloved home.
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_no_use
+    - <<: *ta_axe_not_usable
+
+ta_53_beach:
+  text: |
+    Finally the sandy shore is interruped, by a somewhat goopy and smelly tar pit.
+    The tar seems to originate in a facility that stretches a large part of the rocky cliff and flows straight into the ocean.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto_message_state: As much as you'd like to cross the tar pit, you wouldn't want to get your pyjamas dirty.
+    - s:
+      - description: go south
+      - goto: ta_54_beach
+    - e:
+      - <<: *ta_ocean
+    - w:
+      - description: go towards the facility
+      - goto_message_state: |
+          The facility seems to be a large industrial complex. Sadly it's fenced off from the shore and marked with a sign that says in big red letters "PROPERTY OF NESTLE CORPORATION. KEEP OUT.".
+          You interpret the writings of the indigenous people as a friendly invitation onto the island, but can't manage to squeze between the fenceposts.
+          Where's your bottle of lubricant whenever you need it the most?
+    - u branch:
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - give_item: ta_torch
+      - goto_message_state: The branch wiggels vigorously as you dip one end into the tar pit.
+    - <<: *ta_torch_drop_no_use
+    - <<: *ta_axe_not_usable
+
+ta_57_beach:
+  text: |
+    You follow the beach until it rocky cliff suddenly interrupts the sandy shore and stretches far into the ocean.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_56_beach
+    - s:
+      - description: go south
+      - goto_message_state: the path ahead is blocked by the rocky cliff. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+    - e:
+      - <<: *ta_ocean
+    - w:
+      - description: go towards the island
+      - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_no_use
+    - <<: *ta_axe_not_usable
+
+###################################################################
+
+.goto_rock_wall: &goto_rock_wall
+  - goto_message_state: |
+      You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
+      It's always good to challenge your assumptions.
+
+ta_44_cave:
+  text: |
+    As you stumble through the dark guided by the flickering light of your torch. You reach a little cavity where the path forks in two directions: One to the north, one to the west.
+    You're surprised by the fact that you've perfectly kept track of cardinal directions through such a long cave, but you're stuck in a dark cavity in your pyjamas holding a slithering makeshift torch, so it's best to not question your abilities at this exact point in time.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_43_cave
+    - s:
+      - description: go south
+      - <<: *goto_rock_wall
+    - e:
+      - description: go east
+      - goto: ta_54_beach
+    - w:
+      - description: go west
+      - goto: ta_34_jungle_emerge
+    - <<: *ta_branch_not_usable
+    - <<: *ta_lit_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_43_cave:
+  text: |
+    You follow the cave to the north until the path suddenly stops at a small lake, surrounded by beautiful - yet very pointy looking - dripstones.
+
+    To the side of the lake sits a small wooden chest made of brazilian rosewood.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - s:
+      - description: go south
+      - goto: ta_44_cave
+    - n:
+      - description: go north
+      - <<: *goto_rock_wall
+    - e:
+      - description: go east
+      <<: *goto_rock_wall
+    - w:
+      - description: go west
+      - <<: *goto_rock_wall
+    - <<: *ta_branch_not_usable
+    - <<: *ta_lit_torch_drop_bad_idea
+    - u chest:
+      - description: use the chest
+      - goto_message_state: The chest is locked - and there's no key in sight.
+    - t chest:
+      - description: take the chest
+      - goto_message_state: Surprisingly, the chest seems to be too large and heavy to carry. That's not part of the plan, is it?
+    - u axe:
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_states_from_list:
+        - After a few minutes of fiddeling around in your pocket you finally manage to get the axe back out again.
+        - You strike out and smash the axe into the little rosewood chest. On impact it burst into pieces.
+        - You bring the torch closer to reveal the contents of the chest...
+        - A few ziplock bags filled with a white poweder and a bunch of plastic containers are revealed.
+        - "You open the plastic containers: Blue, Purple, Green, ... finally! Red - one container is filled with little red pills."
+        - This is what you've been looking for.
+
+        target_state: ta_take_pill
+
+###################################################################
+
+ta_take_pill:
+  text: |
+    You stand there - paralyzed - and stare at the red pill that you've managed to retrieve from the container.
+    
+    What are you waiting for?
+  responses:
+    - t pill:
+      - description: take the red pill
+      - goto: textadventure_end_successful
+
+###################################################################
+
+.ta_34_common: &ta_34_common
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_33_jungle
+    - s:
+      - description: go south
+      - goto: ta_35_jungle
+    - e:
+      - description: go into the cave
+      - goto: ta_44_cave
+    - w:
+      - description: go west
+      - goto: ta_24_jungle
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_34_jungle_emerge:
+  text: |
+    As you emerge from the cave, you find yourself surrounded by a jungle of bushes with small red berries. The trees seem to be growing in very clear rows, so it's easy to walk on the path inbetween.
+  <<: *ta_34_common
+
+ta_34_jungle:
+  text: |
+    You spot a cave opening between the bushes. This must be the cave that leads to the beach.
+  <<: *ta_34_common
+
+ta_33_jungle:
+  text: The bushes continue. You're tempted to try one of the red berries, but decide against it, as you haven't brought your toothbrush.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto_message_state: The area appears to be fenced off to the north.
+    - s:
+      - description: go south
+      - goto: ta_34_jungle
+    - e:
+      - description: go east
+      - goto_message_state: To the east the forest is too dense to continue - especially not whilst holding a flaming torch.
+    - w:
+      - description: go west
+      - goto: ta_23_jungle
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_35_jungle:
+  text: The bushes continue. The leaves seem to have a strong scent to them. Curious how the trees have naturally arranged in such an orderly manner.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_34_jungle
+    - s:
+      - description: go south
+      - goto_message_state: The area appears to be fenced off to the south.
+    - e:
+      - description: go east
+      - goto_message_state: To the east the forest is too dense to continue - especially not whilst holding a flaming torch.
+    - w:
+      - description: go west
+      - goto: ta_25_jungle
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_24_jungle:
+  text: The bushes are a bit lower here. But still to tall to be able to spot anything in the distance.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_23_jungle
+    - s:
+      - description: go south
+      - goto: ta_25_jungle
+    - e:
+      - description: go east
+      - goto: ta_34_jungle
+    - w:
+      - description: go west
+      - goto_message_state: To the west a large water tank blocks your path.
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_23_jungle:
+  text: You step onto a large field, the bushes are so low here, that you can easily see the fences surrounding the area to the north and west.
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto_message_state: You try to climb the fence, but you're sadly unable to wield a flaming torch whilst climbing a jungle fence in your pyjamas.
+    - s:
+      - description: go south
+      - goto: ta_24_jungle
+    - e:
+      - description: go east
+      - goto: ta_33_jungle
+    - w:
+      - description: go west
+      - goto_message_state: You try to climb the fence, but you're sadly unable to wield a flaming torch whilst climbing a jungle fence in your pyjamas.
+    - <<: *ta_branch_not_usable
+    - <<: *ta_torch_drop_bad_idea
+    - <<: *ta_axe_not_usable
+
+ta_25_jungle:
+  text: "As you walk through the bushes, you stumble upon a small building.\nYou enter and run directly into an annoyed-looking man in a gardening outfit."
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_24_jungle
+    - s:
+      - description: go south
+      - goto_message_state: The area seems to be fenced off to the south.
+    - e:
+      - description: go east
+      - goto: ta_35_jungle
+    - w:
+      - description: go west
+      - goto_message_state: The building blocks your path to the west.
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: The man looks at you cluelessly as you clumsily fiddle with your wiggling stick. This is probably not the friendliest way to interact with a stranger...
+    - u man:
+      - description: talk to the man
+      - goto_message_states_from_list:
+        - "\"Excuse me... \" you proclaim, \"I'm looking for an badly-smelling ork trading pills in the neighborhood, where can I find him.\""
+        - The man looks even more confused as before. your bare feet feel the cold stone floor of the building as you're awaiting his response.
+        - "As every good tourist would do, you slowly and loudly repeat your question\"I ' m   l o o k i n g   f o r   a n   o g r e   s e l l i n g   p i l l s!\""
+        - "Finally, the man seems to understand and responds \"you're looking for an ogre selling pills in the jungle?\""
+        - "\"Yes!\" - you're slightly annoyed by the question."
+        - "The man examines your peculiar outfit: \"Are you mad?\""
+        - "You feel offended by the question: \"I woke up on the beach, can't remember how I got here and need to find an ogre trading red pills for a locked chest to get back to my reality.\""
+        - "The man explains: \"Well, good sir. I'm selling all sorts of hallucinogenics in this establishment, but I'm not aware of any competition in the area.\""
+        - How unfortunate, the man doesn't seem to be able to help us.
+    - t man:
+      - description: take ... the man?
+      - goto_message_state: No, the man seems to large and unwieldy to fit into your pyjama pockets. But it would be quite convenient to have a gardener around sometimes.
+    - t scissors:
+      - description: take a pair of gardening scissors
+      - goto_message_states_from_list:
+        - "You reach out to a pair of garnening scissors - the man interrupts you: \"What exactly are trying to do?\""
+        - "\"Oh, I'm just wandering around the island and taking everything that's useful to see if that advances my adventure somehow.\""
+        - "\"What exactly would gardening scissors be useful for?\""
+        - Disappointedly you let go of the gardening scissors.
+    - t fertilizer:
+      - only_visible_if_item_equals: [ta_fertilizer, 0]
+      - description: take plant fertilizer
+      - give_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You reach out to a large bag of fertilizer sitting on the floor.
+        - "\"That is plant fertilizer\" the man says"
+        - "\"Is it any good?\" you ask"
+        - "\"We've had better, but it's not terrible.\""
+        - "\"Do you mind if I take some?\" you ask"
+        - "\"What would you use it for?\""
+        - "\"Oh, I don't know, I might need it at some point.\""
+        - "He shrugs: \"Fine... Take some.\""
+    - t axe:
+      - only_visible_if_item_equals: [ta_axe, 0]
+      - description: take an axe that's resting against the wall
+      - give_item: ta_axe
+      - goto_message_state: You sneakily slide the axe into your - surprisingly large - pyjama pocket. The man doesn't seem to have noticed the thievery. 
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: Decapitation might seem very enticing, but you decide to keep the burglary a secret for now.
+    - <<: *ta_torch_drop_bad_idea
+
+###################################################################
+
+ta_inventory:
+  text:
+  responses:
+    - shell:
+      - description: a beautiful shell
+      - only_visible_if_item_sum_greater: [ta_shell,  0]
+      - goto_message_state: "The hermit crab doesn't seem particularly happy about its new home in my pyjama pocket. \"When life gives you lemons ...\" you whisper to it."
+    - branch:
+      - description: a branch
+      - only_visible_if_item_sum_greater: [ta_branch,  0]
+      - goto_message_state: The branch is very bendy moves around slightly. But what it lacks in structural integrity, it more than makes up for in beauty!
+    - torch:
+      - description: a makeshift torch
+      - only_visible_if_item_sum_greater: [ta_torch,  0]
+      - goto_message_state: The torch consists of a branch with a beautiful scale-like bark pattern, that has been dipped in the tar pit that flows from the village of the indigenous people straight into the ocean. I'm sure they don't mind me using it.
+    - axe:
+      - description: an axe
+      - only_visible_if_item_sum_greater: [ta_axe,  0]
+      - goto_message_state: You're still surprised by how you managed to fit this large axe into your pyjama pocket.
+    - fertilizer:
+      - description: plant fertilizer
+      - only_visible_if_item_sum_greater: [ta_fertilizer,  0]
+      - goto_message_state: Apparently it's ok, but not perfect. I wonder how this could become useful to me. 
+    - back:
+      - goto: $return
+
+###################################################################
 
 textadventure_end_successful:
-  text: Ringo freut sich. Er hat es geschafft!
+  text: |
+    Ringo freut sich. Er hat es endlich geschafft!
+
+    "Dröges Abenteuer... Ich wüsste nicht mal wo Norden hier überhaupt ist!"
   responses:
     - verlassen:
       - description: Automaten verlassen

@@ -23,9 +23,10 @@ baby_absetzen_meta:
     - zurueck: 
       - goto: hochzeit_baby_ablegen
 
+######################################################################################
+
 hochzeit:
   text: Ein festlich geschmückter Raum, voll festlich gekleideter Leute.
-  #versuchen die braut wegzulotsen, laesst strauss nicht aus den augen, nimmt selbst mit auf klo
   responses:
     - abwarten:
       - only_visible_if_state_var_equals: [gewartet_hochzeit, 0]
@@ -70,7 +71,7 @@ hochzeit:
       - only_visible_if_item_equals: [pistole, 1]
       - goto: schiessen
     - luftballons:
-      - only_visible_if_state_var_equals: [erstes_schiessen, 0]
+      - only_visible_if_state_var_equals: [erstes_schiessen, 1]
       - only_visible_if_item_equals: [neue_luftballons, 0]
       - goto: neue_luftballons
     - gast:
@@ -103,6 +104,7 @@ schiessen:
       - only_visible_if_item_equals: [neue_luftballons, 1]
       - goto_message_states_from_list:
           - "Ringo schießt einen nach dem anderen 'Luftballon' ab bis das Baby langsam zu Boden segelt. Ringo sieht sehr zufrieden mit sich aus, er hat alles was er für sein Date braucht und ist bereit zu gehen.\nDie Schüße haben für Aufruhr gesorgt, zwei Personen stürmen besonders Richtung Baby - es sind seine Eltern.\n\n \"RINGOOOOO!!!\""
+          - "*fade to black*"
         target_state: ende
     - zurueck:
       - goto: hochzeit
@@ -142,6 +144,8 @@ papierhandtuch_beschriften:
         target_state: hochzeit
     - zurueck:
       - goto: hochzeit
+
+######################################################################################
 
 amerikaner:
   text: Ringo fällt ein Gast mit rot-blau-weißer Krawatte auf, er hat eine Pistole dabei.
@@ -222,6 +226,8 @@ pistole_amerikaner:
     - zurueck:
       - goto: amerikaner
 
+######################################################################################
+
 wc:
   text: Es gibt eine Toiletten-Kabinen und ein Waschbecken.
   responses:
@@ -299,6 +305,8 @@ kabine:
     - zurueck:
       - goto: wc
 
+######################################################################################
+
 cocktail_geben:
   text: "\"Hoffentlich ist mein Cocktail besser darin sie auf Toilette zu halten.\""
   responses:
@@ -353,6 +361,8 @@ wasser_geben:
           - "Und tatsächlich bewegt sich die Gute nach einiger Zeit Richtung Toilette. \"Meine Zeit ist gekommen.\""
         target_state: hochzeit
 
+######################################################################################
+
 strauss_nehmen_pinkel:
   text: Der Strauß liegt unbeobachtet auf einem Tisch.
   responses:
@@ -395,6 +405,8 @@ strauss_nehmen:
         target_state: hochzeit
     - zurueck:
       - goto: hochzeit
+
+######################################################################################
 
 bar:
   text: Es gibt eine Bar mit allerhand Getränken.
@@ -476,6 +488,8 @@ wasser_meta:
       - goto_message_state: Ringo nimmt sich ein Glas Wasser.
     - zurueck:
       - goto: bar
+
+######################################################################################
 
 warten_braut:
   text: "\"Ich könnte warten, bis sie den Blumenstrauß ablegt und ihn dann schnell nehmen.\""

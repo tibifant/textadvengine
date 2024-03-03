@@ -74,7 +74,7 @@ besen_meta:
 sofa_garage:
   text: In der Ecke steht ein altes Sofa.
   responses:
-    - setzen:
+    - setzen: &sofa-setzen
       - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
       - set_state_var: [hingesetzt_sofa, 1]
       - goto_message_state: Das Sofa ächzt unter Ringos Gewicht.
@@ -84,6 +84,8 @@ sofa_garage:
       - goto: garage
     - zurueck:
       - goto: garage
+
+######################################################################################
 
 leiter_meta:
   text: Die Leiter hat Sprossen aus Holz.
@@ -168,6 +170,8 @@ kabel_meta:
     - zurueck:
       - goto: leiter_an_decke
 
+######################################################################################
+
 garage_fuettern:
   text: |
     Der Sproessling hockt ganz oben auf dem Schrank.
@@ -225,13 +229,15 @@ garage_fuettern:
       - description: die Leiter wieder runter klettern
       - goto: garage
 
+######################################################################################
+
 garage_bewusstlos:
   text:
     "\"Wo ist eigentlich das Baby?\" Ringo tastet neben sich den Boden ab. \"Ah puh da bist du ja. Warst du schon immer so pelzig?\"\n
     Das nächste was Ringo spürt sind Krallen in seiner Hand."
   responses:
-    - suchen:
-      - description: das Baby suchen
+    - x:
+      - accept_any_input
       - goto: garage_suche
 
 garage_suche:
@@ -245,8 +251,7 @@ garage_suche:
       - description: zurueck durch die Katzenklappe gehen
       - goto_message_state: "\"Falls es da nochmal durch gegangen ist, ist es ja in Sicherheit. Ich gehe da jedenfalls nicht nochmal durch!\""
     - sofa:
-      - description: unterm alten Sofa nachsehen
-      - goto_message_state: "\"Pah nur Spinnweben!\""
+      - goto: sofa_garage
     - katze:
       - description: Katze fragen
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
@@ -266,8 +271,25 @@ garage_suche:
     - raus:
       - description: raus gehen
       - only_visible_if_state_var_equals: [spur_gefunden, 1]
-      - goto_message_state: "\"Och neee hier gibt's auch ne Katzenklappe!\" Gerade als Ringo zögernd, sehr zögernd, seinen Kopf durch die Klappe steckt, springt die Katze auf, fängt die Türklinke in der Luft und die Tür schwingt sammt Ringo auf."
-        target_state: garten 
+      - goto_message_states_from_list: 
+          - "\"Och neee hier gibt's auch ne Katzenklappe!\""
+          - "Gerade als Ringo zögernd, sehr zögernd, seinen Kopf durch die Klappe steckt, springt die Katze auf, fängt die Türklinke in der Luft und die Tür schwingt sammt Ringo auf."
+          - "\"Ich will noch noch nicht ins Gras beißen.\" Ringo spuck einen Klumpen Erde aus."
+        target_state: garten
+
+sofa_suche:
+  text: In der Ecke steht ein altes Sofa.
+  responses:
+    - setzen: *sofa-setzen
+    - aufstehen:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 1]
+      - set_state_var: [hingesetzt_sofa, 0]
+      - goto: garage
+    - suchen:
+      - description: unterm Sofa nach dem Baby suchen
+      - goto_message_state: "\"Pah nur Spinnweben!\""
+    - zurueck:
+      - goto: garage
 
 spur_garage:
   text: Eine braeunliche Spur zieht sich ueber den Boden.
@@ -278,4 +300,3 @@ spur_garage:
         target_state: garage_suche
     - zurueck:
       - goto: garage_suche
-

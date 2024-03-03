@@ -29,8 +29,10 @@ public class ScreenFactory {
       InputStream inputStream = new FileInputStream(file);
       Map<String, Object> allScreens = new Yaml().load(inputStream);
 
-      for (var kvp : allScreens.entrySet())
-        screens.put(kvp.getKey(), parseScreen(kvp.getKey(), (Map)kvp.getValue()));
+      for (var kvp : allScreens.entrySet()) {
+        if (!kvp.getKey().startsWith("."))
+        screens.put(kvp.getKey(), parseScreen(kvp.getKey(), (Map) kvp.getValue()));
+      }
 
     } catch (Exception e) {
       System.out.println("Failed to parse Screens from '" + file.getAbsolutePath() + "' with Exception: " + e.toString());

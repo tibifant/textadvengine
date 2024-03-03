@@ -22,12 +22,30 @@ garten:
       - description: rechts rum gehen
       - only_visible_if_state_var_equals: [spur_gefolgt, 1]
       - goto: rechts
+    - rasensprenger:
+      - goto: rasensprenger
     - kaninchen:
       - description: zum Kaninchenstall
       - goto: kaninchenstall_meta
     - garage:
       - description: in die Garage gehen
       - goto: garage
+
+rasensprenger:
+  text: Ein Rasensprenger sprengt Rasen.
+  responses:
+    - ein:
+      - description: einschalten
+      - only_visible_if_state_var_equals: [rasensprenger_aus, 1]
+      - set_state_var: [rasensprenger_aus, 0]
+    - aus:
+      - description: ausschalten
+      - only_visible_if_state_var_equals: [rasensprenger_aus, 0]
+      - set_state_var: [rasensprenger_aus, 1]
+    - zurueck:
+      - goto: garten
+
+######################################################################################
 
 links:
   text: |
@@ -41,12 +59,14 @@ links:
     - weiter:
       - description: durch die Rosenhecke
       - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
+      - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
     - zurueck: 
       - description: zurück gehen
       - goto: garten
 
-      - set_state_var: [zerkratzt, 1]
+######################################################################################
+
 rechts:
   text: |
     Ringo folgt dem Zaun bis er auf Brombeerranken stoesst.
@@ -59,10 +79,13 @@ rechts:
     - weiter:
       - description: durch die Ranken
       - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
+      - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
     - zurueck:
       - description: zurück gehen
       - goto: garten
+
+######################################################################################
 
 kaninchenstall_meta:
   text: In der Ecke des Gartens steht ein Kaninchenstall, darin hoppeln zwei Kaninchen.

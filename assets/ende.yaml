@@ -1,20 +1,11 @@
 ende:
   text: |
-    Auch wenn Ringo seinen Job verloren hat, hatte er ein vorzügliches Date und Liebe ist schließlich alles was zählt.
-    Sein Date war ein großer Fan von goldenen Ringen, weißen Luftballons, Rotwein, dem Blumenstrauß und Ringo natürlich - wie könnte man ihr das verübeln.
+    Auch wenn Ringo seinen Job verloren hat, hatte er ein vorzügliches Date - und Liebe ist schließlich alles was zählt.
+    Sein Date war ein großer Fan von goldenen Ringen, weißen Luftballons, Rotwein, herrlichen Blumensträußen und Ringo natürlich - wie könnte man ihr das verübeln.
 
     Gerade reiten sie zusammen in den Sonnenuntergang und eine schnulzige Melodie läuft im Hintergrund. Oder Ringo brennt versehentlich das Nachbarshaus ab - wer weiß das schon.
 
     THE END
-
-test:
-  text: test this
   responses:
-    - test:
-      - call: pupu
-
-pupu:
-  text: this is pupu
-  responses:
-    - hullu:
-      - goto: $return
+    - x:
+      - accept_any_input

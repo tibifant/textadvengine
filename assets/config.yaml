@@ -40,6 +40,11 @@ items:
   - alkohol: 0
   - papierhandtuch: 0
   - kleid: 0
+  - ta_shell: 0
+  - ta_branch: 0
+  - ta_torch: 0
+  - ta_axe: 0
+  - ta_fertilizer: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -80,6 +85,7 @@ state_vars:
   - saft_gefuettert: 0
   - mayo_gefuettert: 0
   - hingesetzt_sofa: 0
+  - rasensprenger_aus: 0
   - zerkratzt: 0
   - brief_pfarrer_geoeffnet: 0
   - linker_weg_ausprobiert: 0
@@ -114,4 +120,4 @@ state_vars:
   - erstes_schiessen: 0
   - baby_abgesetzt: 0
   - wasserhahn_wc_aufgedreht: 0
-initial_screen: test
+initial_screen: start
