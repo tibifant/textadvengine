@@ -325,7 +325,7 @@ allee:
       - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
       - goto_message_state: "Ringo darf ungestört ins Gebäude gehen."
-        target_state: hochzeit
+        target_state: hochzeit_baby_ablegen
     - anzug:
       - only_visible_if_state_var_equals: [anzug_angezogen, 0]
       - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]

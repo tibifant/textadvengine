@@ -81,7 +81,7 @@ pfarrer_briefkasten:
     - rausziehen:
       - description: Brief aus dem Briefkasten ziehen
       - only_visible_if_item_equals: [brief_pfarrer, 0]
-      - goto_message_state: "\"Meine Finger sind immer noch zu dick für schmale Öffnungen, das muss was anderes her.\""
+      - goto_message_state: "\"Meine Finger sind immer noch zu dick für schmale Öffnungen, das muss was anderes her - irgendwas langes biegsames.\""
     - kabel:
       - description: mit dem Kabel nach dem Brief angeln
       - only_visible_if_item_equals: [kabel, 1]

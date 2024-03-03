@@ -30,6 +30,12 @@ items:
   - leine: 0
   - befuellte_luftballons: 0
   - schraubschluessel: 0
+  - wasser: 0
+  - hochzeitkleid: 0
+  - diplom: 0
+  - pistole: 0
+  - strauss: 0
+  - kuchen: 0
 state_vars:
   - abgesetzt: 0
   - hingelegt: 0
@@ -88,4 +94,12 @@ state_vars:
   - luftballons_dekoriert: 0
   - luftballons_leer_dekoriert: 0
   - von_tuersteher_aufgehalten: 0
+  - gewartet_hochzeit: 0
+  - braut_gepinkelt: 0
+  - alkohol_in_cocktail: 0
+  - leim_oder_hotsauce: 0
+  - cocktail_gemixt: 0
+  - braut_durchfall: 0
+  - cocktail_gegeben: 0
+  - kleid_angezogen: 0
 initial_screen: pfarrer_garten

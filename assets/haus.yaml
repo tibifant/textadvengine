@@ -69,7 +69,7 @@ bad:
       - description: Wasserhahn aufdrehen
       - only_visible_if_state_var_equals: [wasserhahn_haus_aufgedreht, 0]
       - set_state_var: [wasserhahn_haus_aufgedreht, 1]
-      - goto_message_state: Wasser plätschert aus dem Wasserhahn
+      - goto_message_state: Wasser plätschert aus dem Wasserhahn.
     - giesskanne:
       - description: Gießkanne auffüllen
       - only_visible_if_item_equals: [giesskanne, 1]

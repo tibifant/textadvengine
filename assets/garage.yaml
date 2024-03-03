@@ -149,7 +149,7 @@ leiter_an_decke:
       - goto: garage
 
 kabel_meta:
-  text: Neben der Deckenlampe ragt ein Kabel aus der Wand.
+  text: Neben der Deckenlampe ragt ein langes Kabel aus der Wand.
   responses:
     - abmachen:
       - description: Kabel abmachen
