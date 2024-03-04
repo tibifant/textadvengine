@@ -51,7 +51,7 @@ public class ScreenFactory {
         case "responses":
           for (var r : ((List)item.getValue())) {
             var entry = (Map.Entry<String, List>)((Map)r).entrySet().stream().findFirst().get();
-            responses.add(parseResponse(screenName, entry.getKey(), entry.getValue()));
+            responses.add(parseResponse(screenName, Integer.toString(responses.size() + 1), entry.getKey(), entry.getValue()));
           }
           break;
         default: throw new InvalidParameterException("Unexpected key: '" + item.getKey() + "'.");
@@ -66,7 +66,7 @@ public class ScreenFactory {
   final String GotoMessageStateOnceAttribute = "goto_message_state_once";
   final String GotoMessageStateAttributeTargetState = "target_state";
 
-  private Response parseResponse(String screenName, String responseKeyword, List responseContents) {
+  private Response parseResponse(String screenName, String responseCount, String responseKeyword, List responseContents) {
     List<IResponseDecorator> decorators = new ArrayList<>();
 
     String targetScreen = screenName; // may be overwritten later.
@@ -141,7 +141,7 @@ public class ScreenFactory {
     if (isAcceptAnyResponse)
       return new AcceptAnyInputResponse(decorators, targetScreen);
     else
-      return new Response(responseKeyword, decorators, targetScreen, new ColoredTextElement(descriptionText));
+      return new Response(responseKeyword, responseCount, decorators, targetScreen, new ColoredTextElement(descriptionText));
   }
 
   private IResponseDecorator parseDecorator(String screenName, String decoratorName, Object decoratorContents) {

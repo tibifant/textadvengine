@@ -5,14 +5,16 @@ import java.util.List;
 
 public class Response {
   private String keyword;
+  private String index;
   private List<IResponseDecorator> decorators;
   private String targetScreen;
   private ColoredTextElement description;
 
   private boolean isValid = true;
 
-  public Response(String keyword, List<IResponseDecorator> decorators, String targetScreen, ColoredTextElement description) {
+  public Response(String keyword, String index, List<IResponseDecorator> decorators, String targetScreen, ColoredTextElement description) {
     this.keyword = keyword;
+    this.index = index;
     this.decorators = decorators;
     this.targetScreen = targetScreen;
     this.description = description;
@@ -41,7 +43,7 @@ public class Response {
   }
 
   public boolean keywordMatches(String response) {
-    return keyword.equals(response);
+    return keyword.equals(response) || index.equals(response);
   }
 
   final String returnKeyword = "$return";
@@ -54,6 +56,7 @@ public class Response {
   }
 
   public void print() {
+    ColoredText.print(index + ": ", Color.BRIGHTGRAY);
     ColoredText.print(keyword, Color.BRIGHTBLUE);
 
     if (!description.isEmpty()) {

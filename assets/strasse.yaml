@@ -530,7 +530,7 @@ gasflasche_meta:
       - description: Schraubschlüssel verwenden
       - only_visible_if_item_equals: [schraubschluessel, 1]
       - only_visible_if_state_var_equals: [helium_aufgedreht, 0]
-      - set_state_var: [helium_aufgedreht, 0]
+      - set_state_var: [helium_aufgedreht, 1]
       - goto_message_state: Man hört ein leises Zischen, das Gas strömt aus der Flasche.
     - zurueck:
       - goto: werkstatt

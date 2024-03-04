@@ -48,12 +48,15 @@ buch_nehmen:
       - goto: kirche_vorraum
 
 wein_nehmen:
-  text: An der Wand dtapeln sich Kartons mit Weinflaschen.
+  text: An der Wand stapeln sich Kartons mit Weinflaschen.
   responses:
     - nehmen:
       - description: eine Flasche Wein nehmen
       - give_item: wein
       - goto_message_state: "\"Das eignet sich hervorragend für einen romantischen Abend\""
+        target_state: kirche_vorraum
+    - zurueck:
+      - goto: kirche_vorraum
 
 ######################################################################################
 

@@ -58,9 +58,10 @@ links:
       - goto_message_state: "\"Aua! Das zerkratzt mir alles, ich sollte den anderen Weg ausprobieren.\""
     - weiter:
       - description: durch die Rosenhecke
-      - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
+      - only_visible_if_state_var_equals: [rechter_weg_ausprobiert, 1]
       - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
+        target_state: pfarrer_eingang
     - zurueck: 
       - description: zurück gehen
       - goto: garten
@@ -81,6 +82,7 @@ rechts:
       - only_visible_if_state_var_equals: [linker_weg_ausprobiert, 1]
       - set_state_var: [zerkratzt, 1]
       - goto_message_state: "\"Es scheint kein Weg daran an Dornen vorbei zu führen...\" Ringo beißt die Zähne zusammen und quetscht sich an den Ranken vorbei."
+        target_state: pfarrer_eingang
     - zurueck:
       - description: zurück gehen
       - goto: garten

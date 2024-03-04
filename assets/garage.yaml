@@ -74,7 +74,7 @@ besen_meta:
 sofa_garage:
   text: In der Ecke steht ein altes Sofa.
   responses:
-    - setzen: &sofa-setzen
+    - setzen:
       - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
       - set_state_var: [hingesetzt_sofa, 1]
       - goto_message_state: Das Sofa ächzt unter Ringos Gewicht.
@@ -106,7 +106,7 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 1]
-      - only_visible_if_state_var_equals: [leiter_benutzt, 1]
+      - only_visible_if_state_var_equals: [leiter_benutzt, 0]
       - only_visible_if_item_equals: [rote_farbe, 0]
       - only_visible_if_item_equals: [parfum, 0]
       - only_visible_if_item_equals: [milch, 0]
@@ -118,11 +118,14 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 1]
-      - set_state_var: [leiter_benutzt, 1]
+      - set_state_var: [leiter_benutzt, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_item_sum_greater: [parfum, rote_farbe, milch, 0]
       - goto_message_state:
           "\"So jetzt komm ich an dich dran. Dann komm mal her!\"\n
           Das Weinen wird lauter.\n
           \"Was ist den los? Du willst nicht? Ah ich weiss, jemand ist hungrig! Lieferservice ist schon unterwegs.\""
+        target_state: garage_fuettern
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_benutzt, 1]
@@ -154,7 +157,7 @@ kabel_meta:
   text: Neben der Deckenlampe ragt ein langes Kabel aus der Wand.
   responses:
     - abmachen:
-      - description: Kabel abmachen
+      - description: Kabel abmachenso
       - only_visible_if_item_equals: [kaninchen, 0] 
       - goto_message_state: "\"Die bekomme ich so nicht ab.\""
     - kaninchen:
@@ -251,7 +254,7 @@ garage_suche:
       - description: zurueck durch die Katzenklappe gehen
       - goto_message_state: "\"Falls es da nochmal durch gegangen ist, ist es ja in Sicherheit. Ich gehe da jedenfalls nicht nochmal durch!\""
     - sofa:
-      - goto: sofa_garage
+      - goto: sofa_suche
     - katze:
       - description: Katze fragen
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
@@ -280,16 +283,19 @@ garage_suche:
 sofa_suche:
   text: In der Ecke steht ein altes Sofa.
   responses:
-    - setzen: *sofa-setzen
+    - setzen:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
+      - set_state_var: [hingesetzt_sofa, 1]
+      - goto_message_state: Das Sofa ächzt unter Ringos Gewicht.
     - aufstehen:
       - only_visible_if_state_var_equals: [hingesetzt_sofa, 1]
       - set_state_var: [hingesetzt_sofa, 0]
-      - goto: garage
+      - goto: garage_suche
     - suchen:
       - description: unterm Sofa nach dem Baby suchen
       - goto_message_state: "\"Pah nur Spinnweben!\""
     - zurueck:
-      - goto: garage
+      - goto: garage_suche
 
 spur_garage:
   text: Eine braeunliche Spur zieht sich ueber den Boden.

@@ -1,35 +1,35 @@
 items:
-  - luftballons: 0
-  - pflaster: 0
-  - bad_schrank_schluessel: 0
-  - gel: 0
-  - rote_farbe: 0
-  - parfum: 0
-  - milch: 0
-  - handtuch: 0
-  - ring: 0
-  - anzug: 0
-  - wein: 0
-  - buch: 0
-  - kaninchen: 0
-  - giesskanne: 0
+  - luftballons: 1
+  - pflaster: 1
+  - bad_schrank_schluessel: 1
+  - gel: 1
+  - rote_farbe: 1
+  - parfum: 1
+  - milch: 1
+  - handtuch: 1
+  - ring: 1
+  - anzug: 1
+  - wein: 1
+  - buch: 1
+  - kaninchen: 1
+  - giesskanne: 1
   - stift: 0
-  - spitzer_stift: 0
-  - besen: 0
-  - lappen: 0
-  - saft: 0
-  - mayo: 0
-  - hotsauce: 0
-  - schluessel_keller: 0
-  - kabel: 0
-  - schluessel_pfarrer: 0
-  - brief_pfarrer: 0
-  - metallschere: 0
-  - geld: 0
-  - schleife: 0
-  - leine: 0
+  - spitzer_stift: 1
+  - besen: 1
+  - lappen: 1
+  - saft: 1
+  - mayo: 1
+  - hotsauce: 1
+  - schluessel_keller: 1
+  - kabel: 1
+  - schluessel_pfarrer: 1
+  - brief_pfarrer: 1
+  - metallschere: 1
+  - geld: 1
+  - schleife: 1
+  - leine: 1
   - befuellte_luftballons: 0
-  - schraubschluessel: 0
+  - schraubschluessel: 1
   - wasser: 0
   - hochzeitkleid: 0
   - diplom: 0
@@ -46,64 +46,64 @@ items:
   - ta_axe: 0
   - ta_fertilizer: 0
 state_vars:
-  - abgesetzt: 0
+  - abgesetzt: 1
   - hingelegt: 0
-  - wunde_gesehen: 0
-  - baby_abgelegt: 0
-  - baby_nicht_in_wohnzimmer_bemerkt: 0
-  - baby_in_garage_gefunden: 0
-  - katzenklappe_entdeckt: 0
-  - gel_benutzt: 0
-  - gel_idee: 0
-  - leiter_benutzt: 0
-  - leiter_verschoben: 0
+  - wunde_gesehen: 1
+  - baby_abgelegt: 1
+  - baby_nicht_in_wohnzimmer_bemerkt: 1
+  - baby_in_garage_gefunden: 1
+  - katzenklappe_entdeckt: 1
+  - gel_benutzt: 1
+  - gel_idee: 1
+  - leiter_benutzt: 1
+  - leiter_verschoben: 1
   - farbe_fuettern: 0
   - parfum_fuettern: 0
-  - leim_gefuettert: 0
-  - baby_klebt_an_flasche: 0
-  - spur_gefunden: 0
-  - spur_gefolgt: 0
+  - leim_gefuettert: 1
+  - baby_klebt_an_flasche: 1
+  - spur_gefunden: 1
+  - spur_gefolgt: 1
   - wasserhahn_aufgedreht: 0
   - wasserhahn_heiss_aufgedreht: 0
   - wasserhahn_kalt_aufgedreht: 0
-  - handtuch_benutzt: 0
+  - handtuch_benutzt: 1
   - buerste_benutzt: 0
-  - pfarrer_bewusstlos: 0
+  - pfarrer_bewusstlos: 1
   - pfarrer_bewusstlos_bad: 0
   - pfarrer_licht_aus: 0
-  - treppenhaus_sauber: 0
-  - rechnung_unterschrieben: 0
-  - realization: 0
-  - papierschredder_an: 0
+  - treppenhaus_sauber: 1
+  - rechnung_unterschrieben: 1
+  - realization: 1
+  - papierschredder_an: 1
   - wasserhahn_haus_aufgedreht: 0
-  - giesskanne_voll: 0
-  - lappen_nass: 0
-  - kueche_richtiger_code: 0
-  - schluessel_aus_dem_loch_geschoben: 0
+  - giesskanne_voll: 1
+  - lappen_nass: 1
+  - kueche_richtiger_code: 1
+  - schluessel_aus_dem_loch_geschoben: 1
   - keller_licht_an: 0
   - hotsauce_gefuettert: 0
   - saft_gefuettert: 0
   - mayo_gefuettert: 0
   - hingesetzt_sofa: 0
   - rasensprenger_aus: 0
-  - zerkratzt: 0
-  - brief_pfarrer_geoeffnet: 0
-  - linker_weg_ausprobiert: 0
-  - rechter_weg_ausprobiert: 0
-  - spendendose_offen: 0
-  - baby_gewaschen: 0
-  - baby_als_spuerhund: 0
+  - zerkratzt: 1
+  - brief_pfarrer_geoeffnet: 1
+  - linker_weg_ausprobiert: 1
+  - rechter_weg_ausprobiert: 1
+  - spendendose_offen: 1
+  - baby_gewaschen: 1
+  - baby_als_spuerhund: 1
   - helium_in_ballons: 0
   - helium_aufgedreht: 0
-  - baby_geschnuppert_kreuzung_1: 0
-  - baby_geschnuppert_kreuzung_2: 0
-  - schraubschluessel_angesprochen: 0
-  - anzug_angezogen: 0
-  - geld_eingeworfen: 0
-  - schleife_dekoriert: 0
+  - baby_geschnuppert_kreuzung_1: 1
+  - baby_geschnuppert_kreuzung_2: 1
+  - schraubschluessel_angesprochen: 1
+  - anzug_angezogen: 1
+  - geld_eingeworfen: 1
+  - schleife_dekoriert: 1
   - luftballons_dekoriert: 0
-  - luftballons_leer_dekoriert: 0
-  - von_tuersteher_aufgehalten: 0
+  - luftballons_leer_dekoriert: 1
+  - von_tuersteher_aufgehalten: 1
   - gewartet_hochzeit: 0
   - braut_gepinkelt: 0
   - alkohol_in_cocktail: 0
@@ -120,4 +120,4 @@ state_vars:
   - erstes_schiessen: 0
   - baby_abgesetzt: 0
   - wasserhahn_wc_aufgedreht: 0
-initial_screen: start
+initial_screen: werkstatt

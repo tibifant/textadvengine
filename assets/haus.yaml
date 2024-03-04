@@ -884,6 +884,7 @@ schluesselloch:
       - only_visible_if_item_equals: [stift, 0]
       - only_visible_if_item_equals: [spitzer_stift, 1]
       - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 0]
+      - set_state_var: [schluessel_aus_dem_loch_geschoben, 1]
       - goto_message_state: "\"Ha! Mit dem gespitzen Stift geht es.\" Ringo schiebt mit dem Stift den Schlüssel aus dem Schlüsselloch. Man hört ein Klirren auf der anderen Seite der Tür."
     - zurueck:
       - goto: kellertuer

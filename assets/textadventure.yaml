@@ -10,7 +10,26 @@ textadventure_start:
 
 ###################################################################
 
-.text_adventure_common: &text_adventure_common
+ta_beginning:
+  text: |
+    You startle awake from a deep sleep. Why are you not
+    in your bed? Instead, you find yourself sunny on a beach.
+    Wearing your pyjamas...
+
+    Something feels odd - and somewhat familiar - about this...
+  responses:
+    - n:
+      - description: go north
+      - goto: ta_54_beach
+    - s:
+      - description: go south
+      - goto: ta_56_beach
+    - e:
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
+    - w:
+      - description: go towards the island
+      - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
     - i:
       - description: open the inventory
       - call: ta_inventory
@@ -45,126 +64,92 @@ textadventure_start:
       - description: drop the axe
       - only_visible_if_item_equals: [ta_axe, 1]
       - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
-
-.ta_ocean: &ta_ocean
-  - description: go towards the ocean
-  - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
-
-.ta_cliff: &ta_cliff
-  - description: go towards the island
-  - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
-
-.ta_branch_not_usable: &ta_branch_not_usable
-  - u branch:
-    - description: use the branch
-    - only_visible_if_item_equals: [ta_branch, 1]
-    - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
-
-.ta_axe_not_usable: &ta_axe_not_usable
-  - u axe:
-    - description: use the axe
-    - only_visible_if_item_equals: [ta_axe, 1]
-    - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
-
-.ta_torch_drop_no_use: &ta_torch_drop_no_use
-  - u torch:
-    - description: use the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
-  - d torch:
-    - description: drop the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - remove_item: ta_torch
-    - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
-
-.ta_lit_torch_drop_bad_idea: &ta_lit_torch_drop_bad_idea
-  - u torch:
-    - description: use the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
-  - d torch:
-    - description: drop the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - goto_message_state: You may be of questionable mental capacity to imagine such a stereotypical adventure in your sleep, but dropping a lit torch in a dark cave even exceeds your abilities.
-
-.ta_torch_drop_bad_idea: &ta_torch_drop_bad_idea
-  - u torch:
-    - description: use the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
-  - d torch:
-    - description: drop the torch
-    - only_visible_if_item_equals: [ta_torch, 1]
-    - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
-
-###################################################################
-
-.ta_55_common: &ta_55_common
-  - n:
-    - description: go north
-    - goto: ta_54_beach
-  - s:
-    - description: go south
-    - goto: ta_56_beach
-  - e:
-    - <<: *ta_ocean
-  - w:
-    - description: go towards the island
-    - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
-  - i:
-    - description: open the inventory
-    - call: ta_inventory
-  - d shell:
-    - description: drop the shell
-    - only_visible_if_item_equals: [ta_shell, 1]
-    - remove_item: ta_shell
-    - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
-  - u shell:
-    - description: use the shell
-    - only_visible_if_item_equals: [ta_shell, 1]
-    - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
-  - d branch:
-    - description: drop the branch
-    - only_visible_if_item_equals: [ta_branch, 1]
-    - remove_item: ta_branch
-    - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
-  - u fertilizer:
-    - description: use the plant fertilizer
-    - only_visible_if_item_equals: [ta_fertilizer, 1]
-    - remove_item: ta_fertilizer
-    - goto_message_states_from_list:
-      - You place the plant fertilizer in your mouth, close your eyes and ...
-      - Nothing happens.
-      - Hmm...
-  - d fertilizer:
-    - description: drop the plant fertilizer
-    - only_visible_if_item_equals: [ta_fertilizer, 1]
-    - remove_item: ta_fertilizer
-    - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
-  - d axe:
-    - description: drop the axe
-    - only_visible_if_item_equals: [ta_axe, 1]
-    - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
-  - <<: *ta_branch_not_usable
-  - <<: *ta_torch_drop_no_use
-  - <<: *ta_axe_not_usable
-
-ta_beginning:
-  text: |
-    You startle awake from a deep sleep. Why are you not
-    in your bed? Instead, you find yourself sunny on a beach.
-    Wearing your pyjamas...
-
-    Something feels odd - and somewhat familiar - about this...
-  responses:
-    - <<: *ta_55_common
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_55_beach:
   text: |
     You return to the place where you woke up in this strange, yet somewhat familiar world.
     The footprints in the sand seem to simply end where you first woke up.
   responses:
-    - <<: *ta_55_common
+    - n:
+      - description: go north
+      - goto: ta_54_beach
+    - s:
+      - description: go south
+      - goto: ta_56_beach
+    - e:
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
+    - w:
+      - description: go towards the island
+      - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_54_beach:
   text: |
@@ -211,7 +196,8 @@ ta_54_beach:
       - description: go south
       - goto: ta_55_beach
     - e:
-      - <<: *ta_ocean
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
     - w:
       - only_visible_if_item_equals: [ta_torch, 0]
       - description: go towards the island
@@ -225,9 +211,23 @@ ta_54_beach:
       - only_visible_if_item_equals: [ta_shell, 0]
       - give_item: ta_shell
       - goto_message_state: You take a beautiful curled shell. The hermit crab living inside the shell seems to protest at first, but after a round of negititations he surrenders to its new purpose and hangs limp from your beautiful souvenir.
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_no_use
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_56_beach:
   text: |
@@ -275,7 +275,8 @@ ta_56_beach:
       - description: go south
       - goto: ta_57_beach
     - e:
-      - <<: *ta_ocean
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
     - w:
       - description: go towards the island
       - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
@@ -283,9 +284,23 @@ ta_56_beach:
       - only_visible_if_item_equals: [ta_branch, 0]
       - give_item: ta_branch
       - goto_message_state: You pay little attention to the flock of rattle snakes hiding within the branches and simply grab the first branch you can reach. It's surprisingly bendy and slippery - what an interesting wood type this must be. You observe the scale-like bark pattern as you plan to make notes in your wood-journal once you'd return to your beloved home.
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_no_use
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_53_beach:
   text: |
@@ -333,7 +348,8 @@ ta_53_beach:
       - description: go south
       - goto: ta_54_beach
     - e:
-      - <<: *ta_ocean
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
     - w:
       - description: go towards the facility
       - goto_message_state: |
@@ -345,8 +361,19 @@ ta_53_beach:
       - remove_item: ta_branch
       - give_item: ta_torch
       - goto_message_state: The branch wiggels vigorously as you dip one end into the tar pit.
-    - <<: *ta_torch_drop_no_use
-    - <<: *ta_axe_not_usable
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_57_beach:
   text: |
@@ -393,20 +420,30 @@ ta_57_beach:
       - description: go south
       - goto_message_state: the path ahead is blocked by the rocky cliff. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
     - e:
-      - <<: *ta_ocean
+      - description: go towards the ocean
+      - goto_message_state: Wetting your Pyjamas may be a fond memory of yours - and the warm salt water may seem appealing - but you'd rather not go swimming without your diving watch. We can't let this workout go to waste!
     - w:
       - description: go towards the island
       - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_no_use
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: What you've pieced together seems to resemble a makeshift torch. I wonder if it's flammable!
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - remove_item: ta_torch
+      - goto_message_state: You may be proud of your creation, but it's best to learn to let go early in life. As the torch reaches the ground it quickly slithers aways, leaving a thin black trail behind.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ###################################################################
-
-.goto_rock_wall: &goto_rock_wall
-  - goto_message_state: |
-      You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
-      It's always good to challenge your assumptions.
 
 ta_44_cave:
   text: |
@@ -452,16 +489,31 @@ ta_44_cave:
       - goto: ta_43_cave
     - s:
       - description: go south
-      - <<: *goto_rock_wall
+      - goto_message_state: |
+          You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
+          It's always good to challenge your assumptions.
     - e:
       - description: go east
       - goto: ta_54_beach
     - w:
       - description: go west
       - goto: ta_34_jungle_emerge
-    - <<: *ta_branch_not_usable
-    - <<: *ta_lit_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You may be of questionable mental capacity to imagine such a stereotypical adventure in your sleep, but dropping a lit torch in a dark cave even exceeds your abilities.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_43_cave:
   text: |
@@ -508,15 +560,31 @@ ta_43_cave:
       - goto: ta_44_cave
     - n:
       - description: go north
-      - <<: *goto_rock_wall
+      - goto_message_state: |
+          You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
+          It's always good to challenge your assumptions.
     - e:
       - description: go east
-      <<: *goto_rock_wall
+      - goto_message_state: |
+          You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
+          It's always good to challenge your assumptions.
     - w:
       - description: go west
-      - <<: *goto_rock_wall
-    - <<: *ta_branch_not_usable
-    - <<: *ta_lit_torch_drop_bad_idea
+      - goto_message_state: |
+          You aren't easily fooled by a potential hidden door disguising as a solid rock surface. So, you take a run-up and launch yourself straight into ... a solid stone wall.
+          It's always good to challenge your assumptions.
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You may be of questionable mental capacity to imagine such a stereotypical adventure in your sleep, but dropping a lit torch in a dark cave even exceeds your abilities.
     - u chest:
       - description: use the chest
       - goto_message_state: The chest is locked - and there's no key in sight.
@@ -549,7 +617,9 @@ ta_take_pill:
 
 ###################################################################
 
-.ta_34_common: &ta_34_common
+ta_34_jungle_emerge:
+  text: |
+    As you emerge from the cave, you find yourself surrounded by a jungle of bushes with small red berries. The trees seem to be growing in very clear rows, so it's easy to walk on the path inbetween.
   responses:
     - i:
       - description: open the inventory
@@ -597,19 +667,89 @@ ta_take_pill:
     - w:
       - description: go west
       - goto: ta_24_jungle
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
-
-ta_34_jungle_emerge:
-  text: |
-    As you emerge from the cave, you find yourself surrounded by a jungle of bushes with small red berries. The trees seem to be growing in very clear rows, so it's easy to walk on the path inbetween.
-  <<: *ta_34_common
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_34_jungle:
   text: |
     You spot a cave opening between the bushes. This must be the cave that leads to the beach.
-  <<: *ta_34_common
+  responses:
+    - i:
+      - description: open the inventory
+      - call: ta_inventory
+    - d shell:
+      - description: drop the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - remove_item: ta_shell
+      - goto_message_state: The hermit crab doesn't seem as pleased as you anticipaed as you launch the beautiful shell towards the horizon.
+    - u shell:
+      - description: use the shell
+      - only_visible_if_item_equals: [ta_shell, 1]
+      - goto_message_state: As you attempt to establish an ssh connection, the hermit crab seems very displeased and doesn't grant you the required privileges.
+    - d branch:
+      - description: drop the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - remove_item: ta_branch
+      - goto_message_state: You take one more glance at the unique bark pattern of this obscure wood and let go of the branch. As it reaches the ground it quickly slithers away. What a marvelous kind of new wood you've discovered on this foreign island.
+    - u fertilizer:
+      - description: use the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_states_from_list:
+        - You place the plant fertilizer in your mouth, close your eyes and ...
+        - Nothing happens.
+        - Hmm...
+    - d fertilizer:
+      - description: drop the plant fertilizer
+      - only_visible_if_item_equals: [ta_fertilizer, 1]
+      - remove_item: ta_fertilizer
+      - goto_message_state: You drop the plant fertilizer onto the ground. Whatever grows here will be plentiful!
+    - d axe:
+      - description: drop the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You're glad that you've managed to fit the axe into your pocket. Just getting it out to drop it here seems a bit pointless...
+    - n:
+      - description: go north
+      - goto: ta_33_jungle
+    - s:
+      - description: go south
+      - goto: ta_35_jungle
+    - e:
+      - description: go into the cave
+      - goto: ta_44_cave
+    - w:
+      - description: go west
+      - goto: ta_24_jungle
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_33_jungle:
   text: The bushes continue. You're tempted to try one of the red berries, but decide against it, as you haven't brought your toothbrush.
@@ -660,9 +800,22 @@ ta_33_jungle:
     - w:
       - description: go west
       - goto: ta_23_jungle
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_35_jungle:
   text: The bushes continue. The leaves seem to have a strong scent to them. Curious how the trees have naturally arranged in such an orderly manner.
@@ -713,9 +866,22 @@ ta_35_jungle:
     - w:
       - description: go west
       - goto: ta_25_jungle
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_24_jungle:
   text: The bushes are a bit lower here. But still to tall to be able to spot anything in the distance.
@@ -766,9 +932,22 @@ ta_24_jungle:
     - w:
       - description: go west
       - goto_message_state: To the west a large water tank blocks your path.
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_23_jungle:
   text: You step onto a large field, the bushes are so low here, that you can easily see the fences surrounding the area to the north and west.
@@ -819,9 +998,22 @@ ta_23_jungle:
     - w:
       - description: go west
       - goto_message_state: You try to climb the fence, but you're sadly unable to wield a flaming torch whilst climbing a jungle fence in your pyjamas.
-    - <<: *ta_branch_not_usable
-    - <<: *ta_torch_drop_bad_idea
-    - <<: *ta_axe_not_usable
+    - u branch:
+      - description: use the branch
+      - only_visible_if_item_equals: [ta_branch, 1]
+      - goto_message_state: You marvel at the unique scale-like bark structure and flexible composition of the wood.
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
+    - u axe:
+      - description: use the axe
+      - only_visible_if_item_equals: [ta_axe, 1]
+      - goto_message_state: You might smell pretty bad, but it's still considerably better than the dorm room of an average teenager.
 
 ta_25_jungle:
   text: "As you walk through the bushes, you stumble upon a small building.\nYou enter and run directly into an annoyed-looking man in a gardening outfit."
@@ -920,12 +1112,19 @@ ta_25_jungle:
       - description: use the axe
       - only_visible_if_item_equals: [ta_axe, 1]
       - goto_message_state: Decapitation might seem very enticing, but you decide to keep the burglary a secret for now.
-    - <<: *ta_torch_drop_bad_idea
+    - u torch:
+      - description: use the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: You marvel at your flammable creation and wonder if it can also be used in less useful ways, but decide not to give way to your wood carving desires.
+    - d torch:
+      - description: drop the torch
+      - only_visible_if_item_equals: [ta_torch, 1]
+      - goto_message_state: Due to your strong concerns regarding being responsible for a forest fire, you decide against dropping your burning torch in such a flammable environment.
 
 ###################################################################
 
 ta_inventory:
-  text:
+  text: "Your inventory contains the following items:"
   responses:
     - shell:
       - description: a beautiful shell
