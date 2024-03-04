@@ -28,18 +28,17 @@ items:
   - geld: 1
   - schleife: 1
   - leine: 1
-  - befuellte_luftballons: 0
+  - befuellte_luftballons: 1
   - schraubschluessel: 1
   - wasser: 0
-  - hochzeitkleid: 0
-  - diplom: 0
-  - pistole: 0
-  - strauss: 0
-  - kuchen: 0
+  - hochzeitkleid: 1
+  - diplom: 1
+  - pistole: 1
+  - strauss: 1
+  - kuchen: 1
   - neue_luftballons: 0
-  - alkohol: 0
-  - papierhandtuch: 0
-  - kleid: 0
+  - alkohol: 1
+  - papierhandtuch: 1
   - ta_shell: 0
   - ta_branch: 0
   - ta_torch: 0
@@ -93,8 +92,8 @@ state_vars:
   - spendendose_offen: 1
   - baby_gewaschen: 1
   - baby_als_spuerhund: 1
-  - helium_in_ballons: 0
-  - helium_aufgedreht: 0
+  - helium_in_ballons: 1
+  - helium_aufgedreht: 1
   - baby_geschnuppert_kreuzung_1: 1
   - baby_geschnuppert_kreuzung_2: 1
   - schraubschluessel_angesprochen: 1
@@ -104,20 +103,20 @@ state_vars:
   - luftballons_dekoriert: 0
   - luftballons_leer_dekoriert: 1
   - von_tuersteher_aufgehalten: 1
-  - gewartet_hochzeit: 0
-  - braut_gepinkelt: 0
+  - gewartet_hochzeit: 1
+  - braut_gepinkelt: 1
   - alkohol_in_cocktail: 0
-  - leim_oder_hotsauce: 0
+  - leim_oder_hotsauce_oder_farbe: 0
   - cocktail_gemixt: 0
   - braut_auf_pinkel: 0
-  - braut_gepinkelt: 0
-  - braut_durchfall: 0
-  - cocktail_gegeben: 0
-  - kleid_angezogen: 0
+  - braut_gepinkelt: 1
+  - braut_durchfall: 1
+  - cocktail_gegeben: 1
+  - kleid_angezogen: 1
   - diplom_abgelehnt: 0
   - amerikaner_betrunken: 0
-  - amerikaner_geredet: 0
+  - amerikaner_geredet: 1
   - erstes_schiessen: 0
-  - baby_abgesetzt: 0
+  - baby_abgesetzt: 1
   - wasserhahn_wc_aufgedreht: 0
-initial_screen: werkstatt
+initial_screen: hochzeit

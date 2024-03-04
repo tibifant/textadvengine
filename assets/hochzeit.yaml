@@ -1,5 +1,5 @@
 hochzeit_baby_ablegen:
-  text: Ringo befindet sich im Eingansbereich eines großen Raums voller Leute. In der Mitte sitzt eine Person in weißem Kleid und hält den begehrten Blumenstrauß in den Hand. 
+  text: Ringo befindet sich im Eingangsbereich eines großen Raums voller Leute. In der Mitte sitzt eine Person in weißem Kleid und hält den begehrten Blumenstrauß in den Hand. 
   responses:
     - baby:
       - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
@@ -29,8 +29,12 @@ hochzeit:
   text: Ein festlich geschmückter Raum, voll festlich gekleideter Leute.
   responses:
     - abwarten:
+      - description: auf eine Gelegenheit zum Strauß nehmen warten
       - only_visible_if_state_var_equals: [gewartet_hochzeit, 0]
-      - goto: warten_braut
+      - set_state_var: [gewartet_hochzeit, 1]
+      - goto_message_states_from_list:
+          - "\"Ich könnte warten, bis sie den Blumenstrauß ablegt und ihn dann schnell nehmen.\""
+          - "\"Sie lässt das Ding einfach nicht aus den Augen... Ich muss sie irgendwie dazu bringen den Raum zu verlassen.\""
     - torte:
       - only_visible_if_item_equals: [kuchen, 0]
       - goto: kuchen
@@ -42,6 +46,7 @@ hochzeit:
       - goto: wasser_geben
     - cocktail:
       - only_visible_if_state_var_equals: [cocktail_gemixt, 1]
+      - only_visible_if_state_var_equals: [braut_durchfall, 0]
       - goto: cocktail_geben
     - strauss:
       - only_visible_if_state_var_equals: [braut_auf_pinkel, 1]
@@ -65,15 +70,21 @@ hochzeit:
       - only_visible_if_item_equals: [papierhandtuch, 1]
       - only_visible_if_item_equals: [diplom, 0]
       - goto: papierhandtuch_beschriften
-    - pistole:
+    - schiessen:
       - only_visible_if_item_equals: [kuchen, 1]
       - only_visible_if_item_equals: [strauss, 1]
       - only_visible_if_item_equals: [pistole, 1]
-      - goto: schiessen
-    - luftballons:
-      - only_visible_if_state_var_equals: [erstes_schiessen, 1]
+      - description: auf die Luftballons schießen
+      - only_visible_if_state_var_equals: [erstes_schiessen, 0]
       - only_visible_if_item_equals: [neue_luftballons, 0]
-      - goto: neue_luftballons
+      - set_state_var: [erstes_schiessen, 1]
+      - goto_message_states_from_list: 
+          - "\"Oh Moment, ich sollte noch schnell neue Luftballons einpacken, hier gibt es ja genug.\""
+          - Ringo steckt ein Bündel Luftballons ein.
+          - "\"Jetzt aber!\""
+          - "Ringo schießt einen nach dem anderen 'Luftballon' ab bis das Baby langsam zu Boden segelt. Ringo sieht sehr zufrieden mit sich aus, er hat alles was er für sein Date braucht und ist bereit zu gehen.\nDie Schüße haben für Aufruhr gesorgt, zwei Personen stürmen besonders Richtung Baby - es sind seine Eltern.\n\n \"RINGOOOOO!!!\""
+          - "*fade to black*"
+        target_state: ende
     - gast:
       - goto: amerikaner
 
@@ -91,21 +102,6 @@ neue_luftballons:
 schiessen:
   text: Ringo zielt mit der Pistole auf die Luftballons an denen das Baby hängt.
   responses:
-    - schiessen:
-      - description: auf die Luftballons schießen
-      - only_visible_if_state_var_equals: [erstes_schiessen, 0]
-      - only_visible_if_item_equals: [neue_luftballons, 0]
-      - set_state_var: [erstes_schiessen, 1]
-      - goto_message_state: "\"Oh Moment, ich sollte noch schnell neue Luftballons einpacken, hier gibt es ja genug.\""
-        target_state: hochzeit
-    - schiessen:
-      - description: auf die Luftballons schießen
-      - only_visible_if_state_var_equals: [erstes_schiessen, 1]
-      - only_visible_if_item_equals: [neue_luftballons, 1]
-      - goto_message_states_from_list:
-          - "Ringo schießt einen nach dem anderen 'Luftballon' ab bis das Baby langsam zu Boden segelt. Ringo sieht sehr zufrieden mit sich aus, er hat alles was er für sein Date braucht und ist bereit zu gehen.\nDie Schüße haben für Aufruhr gesorgt, zwei Personen stürmen besonders Richtung Baby - es sind seine Eltern.\n\n \"RINGOOOOO!!!\""
-          - "*fade to black*"
-        target_state: ende
     - zurueck:
       - goto: hochzeit
 
@@ -154,6 +150,7 @@ amerikaner:
       - description: Hallo sagen
       - goto_message_state: "\"Hallo!\"\n\"Howdy!\""
     - pistole:
+      - only_visible_if_item_equals: [pistole, 0]
       - goto: pistole_amerikaner
     - wein:
       - only_visible_if_state_var_equals: [diplom_abgelehnt, 1]
@@ -199,16 +196,18 @@ pistole_amerikaner:
     - nehmen:
       - description: die Pistole nehmen
       - only_visible_if_item_equals: [diplom, 0]
+      - only_visible_if_item_equals: [pistole, 0]
       - set_state_var: [amerikaner_geredet, 1]
       - goto_message_states_from_list: 
           - "\"Darf ich mir die mal kurz ausleihen?\" \n\"Nur wenn du ein Jagddiplom hast!\""
           - "Ringo murmelt: \"Sowas hab ich nicht, aber das heißt ja nicht, dass ich mir keins machen kann. Einen Stift habe ich...\""
     - nehmen:
       - description: die Pistole nehmen
-      - only_visible_if_item_equals: [diplom, 0]
+      - only_visible_if_item_equals: [diplom, 1]
+      - only_visible_if_item_equals: [pistole, 0]
       - set_state_var: [amerikaner_geredet, 1]
       - set_state_var: [diplom_abgelehnt, 1]
-      - only_visible_if_state_var_equals: [amerikaner_betrunken, 1]
+      - only_visible_if_state_var_equals: [amerikaner_betrunken, 0]
       - goto_message_states_from_list: 
           - "Ringo hält der Person sein selbstgeschriebenes Diplom hin. \"Schau mal, mein Jagddiplom, darf ich die Pistole damit ausleihen?\""
           - "\"Lass mal sehen. Das ist kein rictiges Diplom, versuc nict mic zu verapplen.\""
@@ -216,6 +215,7 @@ pistole_amerikaner:
     - nehmen:
       - description: die Pistole nehmen
       - only_visible_if_item_equals: [diplom, 1]
+      - only_visible_if_item_equals: [pistole, 0]
       - only_visible_if_state_var_equals: [amerikaner_betrunken, 1]
       - set_state_var: [amerikaner_geredet, 1]
       - give_item: pistole
@@ -229,7 +229,7 @@ pistole_amerikaner:
 ######################################################################################
 
 wc:
-  text: Es gibt eine Toiletten-Kabinen und ein Waschbecken.
+  text: Es gibt eine Toiletten-Kabine und ein Waschbecken.
   responses:
     - zudrehen:
       - description: Wasserhahn zudrehen
@@ -242,14 +242,22 @@ wc:
       - set_state_var: [wasserhahn_wc_aufgedreht, 1]
       - goto_message_state: Wasser plätschert aus dem Wasserhahn.
     - kabine:
+      - description: unter der Kabinentür ragt etwas hervor
       - only_visible_if_state_var_equals: [braut_durchfall, 1]
+      - only_visible_if_item_equals: [hochzeitkleid, 0]
       - goto: kabine
     - kleid:
-      - only_visible_if_item_equals: [kleid, 1]
+      - only_visible_if_item_equals: [hochzeitkleid, 1]
       - only_visible_if_state_var_equals: [kleid_angezogen, 0]
       - goto: kleid_anziehen
     - papierhandtuch:
       - only_visible_if_item_equals: [diplom, 0]
+      - only_visible_if_item_equals: [papierhandtuch, 0]
+      - goto: papierhandtuch_nehmen
+    - papierhandtuch:
+      - only_visible_if_item_equals: [diplom, 0]
+      - only_visible_if_item_equals: [papierhandtuch, 1]
+      - only_visible_if_state_var_equals: [amerikaner_geredet, 1]
       - goto: papierhandtuch_nehmen
     - zurueck:
       - description: zurück gehen
@@ -261,11 +269,21 @@ papierhandtuch_nehmen:
     - nehmen:
       - description: ein Papierhandtuch nehmen
       - only_visible_if_item_equals: [papierhandtuch, 0]
+      - only_visible_if_state_var_equals: [amerikaner_geredet, 1]
       - only_visible_if_item_equals: [diplom, 0]
       - give_item: papierhandtuch
       - goto_message_state: Ringo steckt ein Papierhandtuch ein.
+    - nehmen:
+      - description: ein Papierhandtuch nehmen
+      - only_visible_if_item_equals: [papierhandtuch, 0]
+      - only_visible_if_state_var_equals: [amerikaner_geredet, 0]
+      - only_visible_if_item_equals: [diplom, 0]
+      - give_item: papierhandtuch
+      - goto_message_state: Ringo steckt ein Papierhandtuch ein.
+        target_state: wc
     - beschriften:
       - description: das Handtuch beschriften
+      - only_visible_if_item_equals: [papierhandtuch, 1]
       - only_visible_if_state_var_equals: [amerikaner_geredet, 1]
       - give_item: diplom
       - remove_item: papierhandtuch
@@ -290,8 +308,14 @@ kleid_auf_wc:
   responses:
     - nehmen:
       - description: das Kleid nehmen
+      - only_visible_if_item_equals: [hochzeitkleid, 0]
       - give_item: hochzeitkleid
       - goto_message_state: "Ringo zieht das Kleid unter der Kabine hervor."
+    - anziehen:
+      - description: das Kleid anziehen
+      - only_visible_if_item_equals: [hochzeitkleid, 1]
+      - set_state_var: [kleid_angezogen, 1]
+      - goto_message_state: "Ringo zieht sich das Kleid an und beschaut sich im Spiegel. \"Ich sehe ihr zum verwechseln ähnlich.\""
         target_state: wc
     - zurueck:
       - goto: wc
@@ -313,7 +337,7 @@ cocktail_geben:
     - geben:
       - description: der Braut den Cocktail geben
       - only_visible_if_state_var_equals: [alkohol_in_cocktail, 1]
-      - only_visible_if_state_var_equals: [leim_oder_hotsauce, 1]
+      - only_visible_if_state_var_equals: [leim_oder_hotsauce_oder_farbe, 1]
       - set_state_var: [cocktail_gegeben, 1]
       - set_state_var: [braut_durchfall, 1]
       - goto_message_states_from_list: 
@@ -324,7 +348,7 @@ cocktail_geben:
     - geben:
       - description: der Braut den Cocktail geben
       - only_visible_if_state_var_equals: [alkohol_in_cocktail, 0]
-      - only_visible_if_state_var_equals: [leim_oder_hotsauce, 1]
+      - only_visible_if_state_var_equals: [leim_oder_hotsauce_oder_farbe, 1]
       - set_state_var: [cocktail_gegeben, 1]
       - set_state_var: [cocktail_gemixt, 0]
       - goto_message_states_from_list: 
@@ -336,13 +360,24 @@ cocktail_geben:
     - geben:
       - description: der Braut den Cocktail geben
       - only_visible_if_state_var_equals: [alkohol_in_cocktail, 1]
-      - only_visible_if_state_var_equals: [leim_oder_hotsauce, 0]
+      - only_visible_if_state_var_equals: [leim_oder_hotsauce_oder_farbe, 0]
       - set_state_var: [cocktail_gegeben, 1]
       - set_state_var: [cocktail_gemixt, 0]
       - goto_message_states_from_list: 
           - "\"Hier probier mal!\" Ringo reicht der Braut seinen Cocktail. \"Oh danke schön, wie nett!\""
           - "Ringo wartet während die Braut den Cocktail trinkt. Nach einer Weile murmelt sie: \"*hicks*\""
           - "Ringo wartet ab, aber sie geht einfach nicht zur Toilette."
+          - "\"Da fehlen noch ein paar ausgefallene Zutaten in meinem Cocktail...\""
+        target_state: hochzeit
+    - geben:
+      - description: der Braut den Cocktail geben
+      - only_visible_if_state_var_equals: [alkohol_in_cocktail, 0]
+      - only_visible_if_state_var_equals: [leim_oder_hotsauce_oder_farbe, 0]
+      - set_state_var: [cocktail_gegeben, 1]
+      - set_state_var: [cocktail_gemixt, 0]
+      - goto_message_states_from_list: 
+          - "\"Hier probier mal!\" Ringo reicht der Braut seinen Cocktail. \"Oh danke schön, wie nett!\""
+          - "Ringo wartet ab, aber die Braut geht einfach nicht zur Toilette."
           - "\"Da fehlen noch ein paar ausgefallene Zutaten in meinem Cocktail...\""
         target_state: hochzeit
     - zurueck:
@@ -360,6 +395,8 @@ wasser_geben:
           - "\"Jetzt muss ich nur noch warten bis sie zur Toilette muss.\""
           - "Und tatsächlich bewegt sich die Gute nach einiger Zeit Richtung Toilette. \"Meine Zeit ist gekommen.\""
         target_state: hochzeit
+    - zurueck:
+      - goto: hochzeit
 
 ######################################################################################
 
@@ -412,18 +449,24 @@ bar:
   text: Es gibt eine Bar mit allerhand Getränken.
   responses:
     - wasser:
+      - only_visible_if_item_equals: [wasser, 0]
       - goto: wasser_meta
     - cocktail mixen:
       - only_visible_if_state_var_equals: [braut_gepinkelt, 0]
       - goto_message_state: "\"Für mich gerade nicht.\""
     - cocktail mixen:
       - only_visible_if_state_var_equals: [cocktail_gemixt, 0]
-      - only_visible_if_state_var_equals: [cocktail_gegeben, 0]
       - only_visible_if_state_var_equals: [braut_gepinkelt, 1]
+      - only_visible_if_state_var_equals: [braut_durchfall, 0]
       - goto: cocktail_mixen
     - whisky:
       - only_visible_if_item_equals: [alkohol, 0]
+      - only_visible_if_state_var_equals: [amerikaner_geredet, 1]
       - goto: whisky_meta
+    - whisky:
+      - only_visible_if_item_equals: [alkohol, 0]
+      - only_visible_if_state_var_equals: [amerikaner_geredet, 0]
+      - goto_message_state: "\"Für mich gerade nicht.\""
     - zurueck:
       - goto: hochzeit
 
@@ -453,17 +496,18 @@ cocktail_mixen:
       - description: Hotsauce in den Cocktail mischen
       - only_visible_if_item_equals: [hotsauce, 1]
       - set_state_var: [cocktail_gemixt, 1]
-      - set_state_var: [leim_oder_hotsauce, 1]
+      - set_state_var: [leim_oder_hotsauce_oder_farbe, 1]
       - goto_message_state: "\"Das sollte ordentlich Feuer unterm Hintern machen.\""
     - milch:
       - description: "'Milch' vom Baby in den Cocktail mischen"
-      - set_state_var: [leim_oder_hotsauce, 1]
+      - set_state_var: [leim_oder_hotsauce_oder_farbe, 1]
       - set_state_var: [cocktail_gemixt, 1]
       - goto_message_state: "\"Beim Baby war, nachdem es davon getrunken hat, jedenfalls ein Toilettengang notwendig.\""
     - farbe:
       - description: rote Farbe in den Cocktail mischen
       - only_visible_if_item_equals: [rote_farbe, 1]
       - set_state_var: [cocktail_gemixt, 1]
+      - set_state_var: [leim_oder_hotsauce_oder_farbe, 1]
       - goto_message_state: "Ringo kippt etwas von der roten Farbe aus dem Keller in den Cocktail."
     - zurueck:
       - goto: bar
@@ -486,15 +530,6 @@ wasser_meta:
       - description: ein Glas Wasser nehmen
       - give_item: wasser
       - goto_message_state: Ringo nimmt sich ein Glas Wasser.
+        target_state: bar
     - zurueck:
       - goto: bar
-
-######################################################################################
-
-warten_braut:
-  text: "\"Ich könnte warten, bis sie den Blumenstrauß ablegt und ihn dann schnell nehmen.\""
-  responses:
-    - abwarten:
-      - description: abwarten
-      - set_state_var: [gewartet_hochzeit, 1]
-      - goto_message_state: "\"Sie lässt das Ding einfach nicht aus den Augen... Ich muss sie irgendwie dazu bringen den Raum zu verlassen.\""

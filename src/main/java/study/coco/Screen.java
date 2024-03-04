@@ -38,15 +38,25 @@ public class Screen {
       throw new InvalidResponseException();
   }
 
+  final String acceptAnyInputResponseIndicator = "#";
   public void print()
   {
     text.print();
 
     ColoredText.print("\n\n", Color.WHITE);
 
-    for (Response r : responses)
-      if (r.isValid(null))
+    int validResponseCount = 0;
+
+    for (var r : responses) {
+      if (r.isValid(null)) {
+        if (r instanceof AcceptAnyInputResponse)
+          r.setIndex(acceptAnyInputResponseIndicator);
+        else
+          r.setIndex(Integer.toString(++validResponseCount));
+
         r.print();
+      }
+    }
   }
 
   public void validate(StaticObjectKeyValidator validator) throws NameNotFoundException {

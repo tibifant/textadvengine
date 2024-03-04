@@ -12,7 +12,7 @@ public class Response {
 
   private boolean isValid = true;
 
-  public Response(String keyword, String index, List<IResponseDecorator> decorators, String targetScreen, ColoredTextElement description) {
+  public Response(String keyword, List<IResponseDecorator> decorators, String targetScreen, ColoredTextElement description) {
     this.keyword = keyword;
     this.index = index;
     this.decorators = decorators;
@@ -42,6 +42,10 @@ public class Response {
       d.onChoose(gameState);
   }
 
+  public void setIndex(String index) {
+    this.index = index;
+  }
+
   public boolean keywordMatches(String response) {
     return keyword.equals(response) || index.equals(response);
   }
@@ -56,7 +60,9 @@ public class Response {
   }
 
   public void print() {
-    ColoredText.print(index + ": ", Color.BRIGHTGRAY);
+    if (!index.equals("#"))
+      ColoredText.print(index + ": ", Color.BRIGHTGRAY);
+
     ColoredText.print(keyword, Color.BRIGHTBLUE);
 
     if (!description.isEmpty()) {

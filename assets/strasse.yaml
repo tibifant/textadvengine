@@ -372,14 +372,14 @@ baby_verkleiden_meta:
       - goto_message_state: Ringo steckt dem Baby die Schleife ins Haar.
     - luftballons:
       - description: Luftballons verwenden
-      - only_visible_if_item_equals: [luftballons, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_item_equals: [befuellte_luftballons, 1]
       - only_visible_if_state_var_equals: [helium_in_ballons, 1]
-      - remove_item: luftballons
       - set_state_var: [luftballons_dekoriert, 1]
       - goto_message_state: Ringo bindet die Luftballons am Baby fest. Es sieht der Dekoration an der Tür zum verwechseln ähnlich.
     - luftballons:
       - description: Luftballons verwenden
+      - only_visible_if_item_equals: [befuellte_luftballons, 0]
       - only_visible_if_item_equals: [luftballons, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
       - set_state_var: [luftballons_leer_dekoriert, 0]
@@ -525,7 +525,7 @@ gasflasche_meta:
       - remove_item: luftballons
       - give_item: befuellte_luftballons
       - goto_message_state: "Ringo befüllt nach und nach alle seine 'Luftballons' mit Helium und freut sich: \"Dem perfekten Date einen Schritt näher!\""
-        target-state: werkstatt
+        target_state: werkstatt
     - schraubschluessel:
       - description: Schraubschlüssel verwenden
       - only_visible_if_item_equals: [schraubschluessel, 1]
