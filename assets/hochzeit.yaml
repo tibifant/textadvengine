@@ -157,7 +157,7 @@ amerikaner:
       - only_visible_if_state_var_equals: [amerikaner_betrunken, 0]
       - only_visible_if_item_equals: [wein, 1]
       - goto: wein_geben
-    - alkohol:
+    - whisky:
       - only_visible_if_state_var_equals: [diplom_abgelehnt, 1]
       - only_visible_if_state_var_equals: [amerikaner_betrunken, 0]
       - only_visible_if_item_equals: [alkohol, 1]
@@ -169,9 +169,9 @@ alokohl_geben:
   text: Ringo bietet dem Amerikaner ein Getränk an.
   responses:
     - einschenken:
-      - description: der Person vom Alkohol einschenken
+      - description: der Person vom Whisky einschenken
       - set_state_var: [amerikaner_betrunken, 1]
-      - goto_message_state: "Ringo schenkt dem Amerikaner einige Gläser Alkohol ein, bis dieser leicht schielt. \"Wenn er mein Diplom jetzt nicht anerkennt weiß ich auch nicht.\""
+      - goto_message_state: "Ringo schenkt dem Amerikaner einige Gläser Whisky ein, bis dieser leicht schielt. \"Wenn er mein Diplom jetzt nicht anerkennt weiß ich auch nicht.\""
         target_state: amerikaner
     - zurueck:
       - goto: amerikaner

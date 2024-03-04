@@ -105,7 +105,7 @@ kaninchenstall_meta:
       - description: ein Kaninchen nehmen
       - only_visible_if_item_equals: [kaninchen, 0]
       - give_item: kaninchen
-      - goto_message_state: Ringo nimmt eins der Kaninchen aus dem Gehege und steckt es ein. Er scheint Platz für vieles zu haben.
+      - goto_message_state: "Ringo nimmt eins der Kaninchen aus dem Gehege und steckt es ein. Er scheint Platz für vieles zu haben. \"Es ist immer gut jemanden mit scharfen Zähnen und dem Willen alles durchzuknabbern dabei zu haben. Das eröffnet einem ganz neue Möglichkeiten. Zum Beispiel beim Durchtrennen von Dingen.\""
     - zurueck setzen:
       - description: das Kaninchen zurück in den Stall setzen
       - only_visible_if_item_equals: [kaninchen, 1]

@@ -158,7 +158,7 @@ spendendose_offen:
         - description: das Geld nehmen
         - only_visible_if_item_equals: [geld, 0]
         - give_item: geld
-        - goto_message_state: Ringo steckt alles Münzen ein.
+        - goto_message_state: Ringo steckt alle Münzen ein.
           target_state: kirche
     - zurueck:
       - goto: kirche

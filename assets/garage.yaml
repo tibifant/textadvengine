@@ -15,13 +15,11 @@ garage:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
-      - only_visible_if_item_equals: [parfuem, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
       - goto: treppenhaus
     - haus:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
-      - only_visible_if_item_equals: [parfuem, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
       - goto: treppenhaus_sauber
@@ -48,8 +46,9 @@ garage:
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
       - only_visible_if_item_equals: [parfuem, 1]
-      - goto_message_states_from_list: 
-          - "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt ... \n ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*, ich werde es direkt ausprobieren\""
+      - goto_message_states_from_list:
+          - "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt ...\n ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*.\""
+          - "\"Ich bin mir sicher, dass das Parfüm ist, so wie ich miefe, werde es direkt ausprobieren\""
           - "Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz."
           - "Nach einger Zeit blinzelt er vorsichtig.\n\"Parfüm: Check! Das hat reingehauen!\""
           - "Nach noch ein bisschen mehr Zeit regt sich wieder etwas.\n\"Wo bin ich eigentlich? Das muss wohl wieder eins meiner berühmten ungewollten Mittagsschläfchen gewesen sein, die passieren sonst nur beim Zahnarzt.\"\nRingos Augen fallen wieder zu. Nach einer Weile erneutes Blinzeln.\n"
@@ -58,12 +57,6 @@ garage:
       - description: nach draußen gehen
       - only_visible_if_state_var_equals: [spur_gefunden, 1]
       - goto: garten
-    - raus:
-      - description: nach draußen gehen
-      - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
-      - only_visible_if_state_var_equals: [spur_gefunden, 0]
-      - only_visible_if_item_equals: [parfuem, 0]
-      - goto_message_state: "\"Moment kurz, ich will noch mal im Keller nach der durchsichtigen Flüssigkeit schauen. Die sah mir sehr hilfreich aus.\""
 
 besen_meta:
   text: In der Ecke lehnt ein Besen mit langem Stiel.
@@ -245,11 +238,28 @@ garage_fuettern:
     - milch:
       - description: Milch wieder abnehmen
       - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - only_visible_if_item_equals: [parfuem, 1]
       - set_state_var: [baby_klebt_an_flasche, 1]
       - goto_message_states_from_list: 
-          - "Das Baby hatte sich offenbar an der Flasche festgesaugt. \n\"Auch gut, wenn du so sehr daran haengst will ich sie dir nicht wegnehmen!\" \nRingo traegt den Stropp sammt liebgewonnener Milch die Leiter runter."
+          - "Das Baby hatte sich offenbar an der Flasche festgesaugt. \n\"Auch gut, wenn du so sehr daran haengst will ich sie dir nicht wegnehmen!\" \nRingo traegt den Stropp sammt liebgewonnener 'Milch' die Leiter runter."
           - "\"Lass uns nach draußen gehen\""
         target_state: garage
+    - milch:
+      - description: Milch wieder abnehmen
+      - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - only_visible_if_item_equals: [parfuem, 0]
+      - give_item: parfuem
+      - set_state_var: [baby_klebt_an_flasche, 1]
+      - goto_message_states_from_list: 
+          - "Das Baby hatte sich offenbar an der Flasche festgesaugt. \n\"Auch gut, wenn du so sehr daran haengst will ich sie dir nicht wegnehmen!\" \nRingo hebt den Stropp sammt liebgewonnener 'Milch' hoch."
+          - "\"Lass uns nach draußen gehen.\" sagt Ringo, doch da springt ihm etwas ins Auge."
+          - Hinter dem Baby hat sich ein Gefäss mit durchsichtiger Flüssigkeit versteckt.
+          - "Der Text auf der Flasche ist kaum noch lesbar. Er faengt mit 'Ch' an. \"Das ist doch Parfüm. Channel No 5 oder sowas! Das erkenne ich auf den ersten Blick.\""
+          - ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*, ich werde es direkt ausprobieren\""
+          - "Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz."
+          - "Nach einger Zeit blinzelt er vorsichtig.\n\"Parfüm: Check! Das hat reingehauen!\""
+          - "Nach noch ein bisschen mehr Zeit regt sich wieder etwas.\n\"Wo bin ich eigentlich? Das muss wohl wieder eins meiner berühmten ungewollten Mittagsschläfchen gewesen sein, die passieren sonst nur beim Zahnarzt.\"\nRingos Augen fallen wieder zu. Nach einer Weile erneutes Blinzeln.\n"
+        target_state: garage_bewusstlos
     - runter:
       - description: die Leiter wieder runter klettern
       - goto: garage
