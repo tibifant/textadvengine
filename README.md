@@ -13,3 +13,21 @@ Manchmal gibt es keine besonderen Aktionen, dann drück die Enter-Taste um fortz
 Petri Heil!
 
 Dauer: Ca. 2h+
+
+Solltest du irgendwo nicht weiter kommen, findest du unten ein paar Tipps. Aber - Achtung Spoiler!
+
+  <details>
+  <summary>ACHTUNG SPOILER!</summary>
+    Wo kommst du nicht weiter?
+    <details>
+    <summary>im Haus</summary>
+      <details>
+      <summary>Ich finde die Pflaster nicht</summary>
+          In der Küche gibt es eine Schublade, schau mal da.
+      </details>   
+      <details>
+      <summary>Ich bekomme das Zahlenschloss nicht auf</summary>
+          Im Arbeitszimmer findest du einen Hinweis, schau mal auf dem Schreibtisch.
+      </details>
+    </details>    
+  </details>
