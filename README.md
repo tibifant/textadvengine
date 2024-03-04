@@ -78,6 +78,7 @@ Solltest du irgendwo nicht weiter kommen, findest du unten ein paar Tipps. Aber 
       <summary>Ich bekomme die Spendenbox nicht auf</summary>
           Gehe die Straße entlang, dort wirst du fündig werden.
       </details>
+    </details>
     <details>
     <summary>in der Metallwerkstatt</summary>
       <details>
