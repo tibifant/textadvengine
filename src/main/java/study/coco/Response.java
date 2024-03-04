@@ -14,7 +14,6 @@ public class Response {
 
   public Response(String keyword, List<IResponseDecorator> decorators, String targetScreen, ColoredTextElement description) {
     this.keyword = keyword;
-    this.index = index;
     this.decorators = decorators;
     this.targetScreen = targetScreen;
     this.description = description;
@@ -60,7 +59,7 @@ public class Response {
   }
 
   public void print() {
-    if (!index.equals("#"))
+    if (!(this instanceof AcceptAnyInputResponse))
       ColoredText.print(index + ": ", Color.BRIGHTGRAY);
 
     ColoredText.print(keyword, Color.BRIGHTBLUE);

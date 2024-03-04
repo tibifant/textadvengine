@@ -9,6 +9,7 @@ kirche_vorraum:
     - flur:
       - description: zurueck in den Flur gehen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
+      - only_visible_if_state_var_equals: [baby_gewaschen, 0]
       - goto_message_state: "\"Kommt nicht in die Tuete. Da kann ich nicht nochmal reingehen.\""
     - flur:
       - description: in den Flur des Nachbarhauses gehen
@@ -27,7 +28,7 @@ kirche_vorraum:
     - tuer:
       - description: wackelige Tür öffnen
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
-      - goto_message_states_from_list: 
+      - goto_message_states_from_list_once: 
           - "Ringo schlüpft, das stinkende Kleinkind unterm Arm, durch die Tür.\nEr befindet sich in einem weiten, offenen Raum mit hoher Decke und großen bunten Fenstern."
           - Einige Personen verlassen gerade das Gebäude. In ihren schicken Kleidern und Anzügen bewegen sie sich zur Tür.
           - "\"Hier muss wohl eine Festlichkeit stattgefunden ha...\"\nGerade in diesem Moment, während die letzte Person durch die großen Eingangstüren schlüpft, sieht Ringo ihn."
@@ -116,10 +117,10 @@ spendendose_oeffnen:
       - description: rote Farbe verwenden
       - only_visible_if_item_equals: [rote_farbe, 1]
       - only_visible_if_state_var_equals: [spendendose_offen, 0]
-      - goto_message_state: "\"Jetzt hat es einen roten Farbklecks drauf, aber offen ist es immer noch nicht\""
-    - parfum:
-      - description: "'Parfum' verwenden"
-      - only_visible_if_item_equals: [parfum, 1]
+      - goto_message_state: "\"Jetzt hat es einen roten Farbklecks drauf, aber offen ist es immer noch nicht. Ich müsste irgendwo richtiges Werkzeug herbekommen.\""
+    - parfuem:
+      - description: "'Parfüm' verwenden"
+      - only_visible_if_item_equals: [parfuem, 1]
       - only_visible_if_state_var_equals: [spendendose_offen, 0]
       - goto_message_states_from_list: 
           - Ringo wird langsam schwarz vor Augen.
@@ -129,7 +130,7 @@ spendendose_oeffnen:
       - description: Ring verwenden
       - only_visible_if_item_equals: [ring, 1]
       - only_visible_if_state_var_equals: [spendendose_offen, 0]
-      - goto_message_state: "\"Den geb ich nicht her.\""
+      - goto_message_state: "\"Der zwar *aus* Metall, aber ich brauche etwas um Metall *durchzuschneiden*.\""
     - wein:
       - description: Wein verwenden
       - only_visible_if_item_equals: [wein, 1]
@@ -139,7 +140,7 @@ spendendose_oeffnen:
       - description: Kaninchen verwenden
       - only_visible_if_item_equals: [kaninchen, 1]
       - only_visible_if_state_var_equals: [spendendose_offen, 0]
-      - goto_message_state: "\"Durch das Metall kommt selbst da Kaninchen nicht durch.\""
+      - goto_message_state: "\"Durch das Metall kommt selbst das Kaninchen nicht durch, dafür braucht es schon ein richtiges Werkzeug - mal schauen wo sich in der Umgebung was auftreiben lässt.\""
     - metallschere:
       - description: Metallschere verwenden
       - only_visible_if_item_equals: [metallschere, 1]

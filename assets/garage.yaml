@@ -1,6 +1,6 @@
 garage:
   text: |
-    Hier gibt es viele Werkzeuge und was der Hobby-Bastler sonst noch so braucht.
+    In der Garage gibt es viele Dinge - insbesondere solche, die man durch Schlitze und Löcher stecken kann.
   responses:
     - baby:
       - description: zum Baby gehen
@@ -14,11 +14,13 @@ garage:
     - haus:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
       - goto: treppenhaus
     - haus:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
+      - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
       - goto: treppenhaus_sauber
     - haus:
@@ -43,7 +45,7 @@ garage:
       - description: nach draußen gehen
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
-      - only_visible_if_item_equals: [parfum, 1]
+      - only_visible_if_item_equals: [parfuem, 1]
       - goto_message_states_from_list: 
           - "Ringo haelt inne. \"Moment, ich hab doch vorhin diese durchsichtige Fluessigkeit eingepackt ... \n ... was wohl eine 'chloro-form' ist - steht auf der Rückseite - wie dem auch sei. Jedenfalls bringt es mich sicher top in *form*, ich werde es direkt ausprobieren\""
           - "Ringo wurde ganz schummrig und nach wenigen Sekunden war die Welt für ihn nur noch schwarz."
@@ -58,7 +60,7 @@ garage:
       - description: nach draußen gehen
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 1]
       - only_visible_if_state_var_equals: [spur_gefunden, 0]
-      - only_visible_if_item_equals: [parfum, 0]
+      - only_visible_if_item_equals: [parfuem, 0]
       - goto_message_state: "\"Moment kurz, ich will noch mal im Keller nach der durchsichtigen Flüssigkeit schauen. Die sah mir sehr hilfreich aus.\""
 
 besen_meta:
@@ -83,6 +85,7 @@ sofa_garage:
       - set_state_var: [hingesetzt_sofa, 0]
       - goto: garage
     - zurueck:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
       - goto: garage
 
 ######################################################################################
@@ -101,14 +104,16 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 0]
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
       - goto_message_state: Ringo klettert die Leiter hoch bis er sich den Kopf an der Decke anstößt.
         target_state: leiter_an_decke
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 1]
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
       - only_visible_if_state_var_equals: [leiter_benutzt, 0]
       - only_visible_if_item_equals: [rote_farbe, 0]
-      - only_visible_if_item_equals: [parfum, 0]
+      - only_visible_if_item_equals: [parfuem, 0]
       - only_visible_if_item_equals: [milch, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - goto_message_state:
@@ -118,9 +123,10 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_verschoben, 1]
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
       - set_state_var: [leiter_benutzt, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
-      - only_visible_if_item_sum_greater: [parfum, rote_farbe, milch, 0]
+      - only_visible_if_item_sum_greater: [parfuem, rote_farbe, milch, 0]
       - goto_message_state:
           "\"So jetzt komm ich an dich dran. Dann komm mal her!\"\n
           Das Weinen wird lauter.\n
@@ -129,7 +135,8 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leiter_benutzt, 1]
-      - only_visible_if_item_sum_greater: [rote_farbe, parfum, milch, 0]
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
+      - only_visible_if_item_sum_greater: [rote_farbe, parfuem, milch, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
       - goto_message_state: "\"Mal sehen, ob ich was Gutes für dich gefunden habe...\""
@@ -137,8 +144,13 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [leim_gefuettert, 1]
+      - only_visible_if_state_var_equals: [spur_gefunden, 0]
       - only_visible_if_state_var_equals: [baby_klebt_an_flasche, 0]
       - goto: garage_fuettern
+    - benutzen:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - goto_message_state: Gähnende Leere auf dem Schrank.
     - zurueck:
       - goto: garage
 
@@ -154,12 +166,13 @@ leiter_an_decke:
       - goto: garage
 
 kabel_meta:
-  text: Neben der Deckenlampe ragt ein langes Kabel aus der Wand.
+  text: "Neben der Deckenlampe ragt ein langes Kabel aus der Wand."
   responses:
     - abmachen:
       - description: Kabel abmachenso
       - only_visible_if_item_equals: [kaninchen, 0] 
-      - goto_message_state: "\"Die bekomme ich so nicht ab.\""
+      - goto_message_state: "\"Die bekomme ich so nicht ab. Meine Zähne sind nicht scharf genug.\""
+        target_state: leiter_an_decke
     - kaninchen:
       - description: Kabel abknabbern lassen
       - only_visible_if_item_equals: [kaninchen, 1]
@@ -167,9 +180,10 @@ kabel_meta:
       - give_item: kabel
       - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
       
-      Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
+        Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
       
-      Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+        Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+      target_state: leiter_an_decke
     - zurueck:
       - goto: leiter_an_decke
 
@@ -189,10 +203,10 @@ garage_fuettern:
     - durchsichtig:
       - description: durchsichtige Fluessigkeit fuettern
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
-      - only_visible_if_item_equals: [parfum, 1]
-      - only_visible_if_state_var_equals: [parfum_fuettern, 0]
-      - set_state_var: [parfum_fuettern, 1]
-      - goto_message_state: "\"Das kann man doch keinem Baby fuettern! Fuer mein Date heute Abend hingegen kann ich das noch sehr gut gebrauchen.\""
+      - only_visible_if_item_equals: [parfuem, 1]
+      - only_visible_if_state_var_equals: [parfuem_fuettern, 0]
+      - set_state_var: [parfuem_fuettern, 1]
+      - goto_message_state: "\"Das Parfüm kann man doch keinem Baby fuettern! Fuer mein Date heute Abend hingegen kann ich das noch sehr gut gebrauchen.\""
     - weiss:
       - description: weisse Fluessigkeit fuettern
       - only_visible_if_item_equals: [milch, 1]
@@ -248,10 +262,9 @@ garage_suche:
     Irgendwo muss das Baby doch sein.
   responses:
     - leiter:
-      - description: Leiter benutzen
-      - goto_message_state: Gähnende Leere auf dem Schrank.
-    - zurueck:
-      - description: zurueck durch die Katzenklappe gehen
+      - goto: leiter_meta_suche
+    - haus:
+      - description: durch die Katzenklappe ins Haus gehen
       - goto_message_state: "\"Falls es da nochmal durch gegangen ist, ist es ja in Sicherheit. Ich gehe da jedenfalls nicht nochmal durch!\""
     - sofa:
       - goto: sofa_suche
@@ -277,7 +290,6 @@ garage_suche:
       - goto_message_states_from_list: 
           - "\"Och neee hier gibt's auch ne Katzenklappe!\""
           - "Gerade als Ringo zögernd, sehr zögernd, seinen Kopf durch die Klappe steckt, springt die Katze auf, fängt die Türklinke in der Luft und die Tür schwingt sammt Ringo auf."
-          - "\"Ich will noch noch nicht ins Gras beißen.\" Ringo spuck einen Klumpen Erde aus."
         target_state: garten
 
 sofa_suche:
@@ -293,8 +305,10 @@ sofa_suche:
       - goto: garage_suche
     - suchen:
       - description: unterm Sofa nach dem Baby suchen
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
       - goto_message_state: "\"Pah nur Spinnweben!\""
     - zurueck:
+      - only_visible_if_state_var_equals: [hingesetzt_sofa, 0]
       - goto: garage_suche
 
 spur_garage:
@@ -306,3 +320,58 @@ spur_garage:
         target_state: garage_suche
     - zurueck:
       - goto: garage_suche
+
+leiter_meta_suche:
+  text: Die Leiter hat Sprossen aus Holz.
+  responses:
+    - verschieben:
+      - description: Leiter an den Schrank lehnen
+      - only_visible_if_state_var_equals: [leiter_verschoben, 0]
+      - set_state_var: [leiter_verschoben, 1]
+    - verschieben:
+      - description: Leiter an die Wand lehnen
+      - only_visible_if_state_var_equals: [leiter_verschoben, 1]
+      - set_state_var: [leiter_verschoben, 0]
+    - benutzen:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [leiter_verschoben, 1]
+      - goto_message_state: Gähnende Leere auf dem Schrank.
+    - benutzen:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [leiter_verschoben, 0]
+      - goto: leiter_an_decke_suche
+    - zurueck:
+      - goto: garage_suche
+
+leiter_an_decke_suche:
+  text: "\"Von hier oben kann man die toten Motten sehen, die auf der Deckenlampe dahingesiecht sind.\""
+  responses:
+    - kabel:
+      - description: Kabel
+      - only_visible_if_item_equals: [kabel, 0]
+      - goto: kabel_meta_suche
+    - runter:
+      - description: wieder runter klettern
+      - goto: garage_suche
+
+kabel_meta_suche:
+  text: "Neben der Deckenlampe ragt ein langes Kabel aus der Wand."
+  responses:
+    - abmachen:
+      - description: Kabel abmachenso
+      - only_visible_if_item_equals: [kaninchen, 0] 
+      - goto_message_state: "\"Die bekomme ich so nicht ab. Meine Zähne sind nicht scharf genug.\""
+        target_state: garage_suche
+    - kaninchen:
+      - description: Kabel abknabbern lassen
+      - only_visible_if_item_equals: [kaninchen, 1]
+      - only_visible_if_item_equals: [kabel, 0]
+      - give_item: kabel
+      - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
+      
+        Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
+      
+        Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+      taeget_state: garage_suche
+    - zurueck:
+      - goto: leiter_an_decke_suche

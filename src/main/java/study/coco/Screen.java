@@ -38,7 +38,6 @@ public class Screen {
       throw new InvalidResponseException();
   }
 
-  final String acceptAnyInputResponseIndicator = "#";
   public void print()
   {
     text.print();
@@ -49,11 +48,7 @@ public class Screen {
 
     for (var r : responses) {
       if (r.isValid(null)) {
-        if (r instanceof AcceptAnyInputResponse)
-          r.setIndex(acceptAnyInputResponseIndicator);
-        else
-          r.setIndex(Integer.toString(++validResponseCount));
-
+        r.setIndex(Integer.toString(++validResponseCount));
         r.print();
       }
     }

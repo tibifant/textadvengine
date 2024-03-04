@@ -1,5 +1,5 @@
 strasse_vor_kirche:
-  text: Ringo steht auf der Straße vor der Kirche.
+  text: Ringo steht auf der Straße vor der Kirche. Eine breite Straße verläuft auf der einen Seite. Eine dunkle Gasse auf der anderen. Und ein dritter Weg führt eine hübsche Allee entlang.
   responses:
     - schleife:
       - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
@@ -9,33 +9,21 @@ strasse_vor_kirche:
       - only_visible_if_item_equals: [leine, 0]
       - goto: hund
     - strasse:
+      - description: die Straße entlang gehen
       - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
-      - goto: strasse_werkstatt_meta
-    - fussweg:
+      - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
+        target_state: strasse_werkstatt
+    - gasse:
+      - description: die dunkle Gasse entlang gehen
       - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
-      - goto: kreuzung_1
+      - goto: textadventure_gasse
+    - allee:
+      - description: die Allee entlang gehen
+      - only_visible_if_state_var_equals: [baby_als_spuerhund, 1]
+      - goto: allee
     - kirche:
       - description: in die Kirche gehen
       - goto: kirche
-
-strasse_werkstatt_meta:
-  text: Eine breite Straße verläuft auf der einen Seite.
-  responses:
-    - entlang gehen:
-      - description: die Straße entlang gehen
-      - goto_message_state_once: "\"Das sieht nicht nach Fete aus.\""
-        target_state: strasse_werkstatt
-    - zurueck:
-      - goto: strasse_vor_kirche
-
-fussweg_kreuzung_1_meta:
-  text: Ein schmaler Fußweg führt neben einem Fahrradweg entlang.
-  responses:
-    - entlang gehen:
-      - description: den Fußweg entlang gehen
-      - goto: kreuzung_1
-    - zurueck:
-      - goto: strasse_vor_kirche
 
 schleife_kirche_meta:
   text: "Ringo hält die weiße Schleife in der Hand."
@@ -43,9 +31,16 @@ schleife_kirche_meta:
     - nehmen:
       - description: Schleife nehmen
       - only_visible_if_item_equals: [schleife, 0]
+      - only_visible_if_item_equals: [leine, 0]
       - give_item: schleife
       - goto_message_state: "Ringo steckt die Schleife ein."
         target_state: strasse_vor_kirche
+    - nehmen:
+      - description: Schleife nehmen
+      - only_visible_if_item_equals: [schleife, 0]
+      - only_visible_if_item_equals: [leine, 1]
+      - give_item: schleife
+      - goto_message_state: "Ringo steckt die Schleife ein."
     - schnuppern lassen:
       - description: das Baby an der Schleife schnuppern lassen
       - only_visible_if_item_equals: [leine, 1]
@@ -73,119 +68,16 @@ hund:
     - zurueck:
       - goto: strasse_vor_kirche
 
-kreuzung_1:
-  text: "Ringo steht an einer Kreuzung. \nAuf der einen Seite verläuft ein Gehweg. \nAuf der anderen Seite verläuft eine hübsche Pflasterstraße.\nUnd es gibt den Weg Richtung Kirche."
-  responses:
-    - schleife:
-      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
-      - only_visible_if_item_equals: [leine, 1]
-      - only_visible_if_item_equals: [schleife, 1]
-      - goto: schleife_kreuzung_1_meta
-    - gehweg:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
-      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
-    - gehweg:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
-      - goto: gehweg_meta
-    - pflasterstrasse:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
-      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
-    - pflasterstrasse:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
-      - goto: pflasterstrasse
-    - kirche:
-      - description: dem Weg zur Kirche folgen
-      - goto: strasse_vor_kirche
-
-pflasterstrasse:
-  text: Die gepflasterte Straße ist hübsch mit Bäumen gesäumt.
-  responses:
-    - entlang gehen:
-      - description: die Pflasterstraße entlang gehen
-      - goto: kreuzung_2
-    - zurueck:
-      - goto: kreuzung_1
-
-schleife_kreuzung_1_meta:
-  text: "Ringo hält die weiße Schleife in der Hand."
-  responses:
-    - schnuppern lassen:
-      - description: das Baby an der Schleife schnuppern lassen
-      - set_state_var: [baby_geschnuppert_kreuzung_1, 1]
-      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung des Gehwegs zu ziehen."
-        target_state: kreuzung_1
-    - zurueck:
-      - goto: kreuzung_1
-
-gehweg_meta:
-  text: Ein Gehweg verläuft zwischen ein paar Büschen.
-  responses:
-    - entlang gehen:
-      - description: den Gehweg entlang gehen
-      - goto: sackgasse
-    - zurueck:
-      - goto: kreuzung_1
-
-sackgasse:
-  text: Der Gehweg endet aburpt. Ringo steht in einer Sackgasse.
-  responses:
-    - zurueck:
-      - description: zurueck zur Kreuzung
-      - goto: kreuzung_1
-
-kreuzung_2:
-  text: "Eine Kreuzung... \nAuf der einen Seite eine dunkle Gasse, \nauf der anderen eine freundliche Allee, \nund der Weg zur anderen Kreuzung."
-  responses:
-    - schleife:
-      - only_visible_if_state_var_equals: [baby_abgesetzt, 0]
-      - only_visible_if_item_equals: [leine, 1]
-      - only_visible_if_item_equals: [schleife, 1]
-      - goto: schleife_kreuzung_2_meta
-    - gasse:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
-      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
-    - gasse:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
-      - goto: textadventure_gasse_meta
-    - allee:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 0]
-      - goto_message_state: "\"Ich muss erst schauen, was mein Spür-Baby sagt.\""
-    - allee:
-      - only_visible_if_state_var_equals: [baby_geschnuppert_kreuzung_1, 1]
-      - goto: allee_meta
-    - kreuzung:
-      - description: dem Weg zur anderen Kreuzung folgen
-      - goto: kreuzung_1
-
-schleife_kreuzung_2_meta:
-  text: "Ringo hält die weiße Schleife in der Hand."
-  responses:
-    - schnuppern lassen:
-      - description: das Baby an der Schleife schnuppern lassen
-      - set_state_var: [baby_geschnuppert_kreuzung_2, 1]
-      - goto_message_state: "\"Such Baby! Such!\" Das Baby fängt an in Richtung der dunklen Gasse zu ziehen."
-        target_state: kreuzung_2
-    - zurueck:
-      - goto: kreuzung_2
-
-textadventure_gasse_meta:
-  text: Eine dunkle Gasse biegt von der Kreuzung ab.
-  responses:
-    - entlang gehen:
-      - description: die dunkle Gasse entlang gehen
-      - goto: textadventure_gasse
-    - zurueck:
-      - goto: kreuzung_2
-
 textadventure_gasse:
   text: Vor einem von bunten Lichtern blinkenden Haus steht eine zwielichtige Gestalt und sieht Ringo geheimnisvoll an.
   responses:
     - person:
       - description: zur Person gehen
+      - only_visible_if_item_equals: [schraubschluessel, 0]
       - goto: texadventure_typ
     - zurueck:
-      - description: der Gasse zurück zur Kreuzung folgen
-      - goto: kreuzung_2
+      - description: zurück Richtung Kirche gehen.
+      - goto: strasse_vor_kirche
 
 texadventure_typ:
   text: Die zwielichtige Gestalt lehnt lässig an einer Wand und kaut auf ... etwas.
@@ -193,19 +85,19 @@ texadventure_typ:
     - raeuspern:
       - description: sich räuspern
       - only_visible_if_state_var_equals: [schraubschluessel_angesprochen, 1]
-      - goto_message_states_from_list:
+      - goto_message_states_from_list_once:
         - "Die Person bedeutet Ringo näher zu kommen."
         - "\"Hey du Bursche mit dem Rotzlöffel. Ich glaube ich hab' was, was du suchst.\""
         - "\"Ach nein wirklich? Du hast einen R14 47 B Schraubschluessel?\""
         - "\"Die Gestalt zuckt mit den Schultern. Willst du's haben?\""
         - "\"Na klar will ich!\""
         - "\"Geht klar, aber nur, wenn du es schaffst in diesem Spiel zu überleben.\""
-        - "Die Gestalt tritt zur Seite und deutet mit einem Nicken auf einen heruntergekommenen Spieleautomaten in der Ecke.\n    'Textadvent-o-mat'\n'Your adventure begins here'"
+        - "Die Gestalt tritt zur Seite und deutet mit einem Nicken auf einen heruntergekommenen Spieleautomaten in der Ecke.\n\n    'Textadvent-o-mat'\n'Your adventure begins here'"
         target_state: textadventure_automat
     - raeuspern:
       - description: sich räuspern
       - only_visible_if_state_var_equals: [schraubschluessel_angesprochen, 0]
-      - goto_message_states_from_list:
+      - goto_message_states_from_list_once:
         - "Die Person bedeutet Ringo näher zu kommen."
         - "\"Hey du Bursche mit dem Rotzlöffel. Ich glaube ich hab' was, was dir noch nützlich werden könnte.\""
         - "\"Ach wirklich? Was dennn?\""
@@ -223,7 +115,7 @@ textadventure_automat:
     - druecken:
       - description: Startknopf drücken
       - only_visible_if_item_equals: [geld, 0]
-      - goto_message_state: "'Insert money to play.' \"Mist! Ich hab kein Geld dabei.\""
+      - goto_message_state: "'Insert money to play.' \"Mist! Ich hab kein Geld dabei. Aber es gibt einen Ort, wo ich mit dem richtigen Werkzeug welches ausborgen kann.\""
     - druecken:
       - description: Startknopf drücken
       - only_visible_if_item_equals: [geld, 1]
@@ -232,7 +124,6 @@ textadventure_automat:
     - druecken:
       - description: Startknopf drücken
       - only_visible_if_state_var_equals: [geld_eingeworfen, 1]
-      - set_state_var: [geld_eingeworfen, 0]
       - goto_message_state: "Ringo drückt den Startknopf."
         target_state: textadventure_start
     - geld:
@@ -256,15 +147,6 @@ textadventure_danach_erfolgreich:
       - goto_message_state: "Wortlos überreicht die Gestalt Ringo den Schraubschlüssel. Ringo freut sich: \"Was ein töfte R14 47 B.\""
         target_state: textadventure_gasse
 
-allee_meta:
-  text: Eine freundlich aussehende Allee führt einen kleinen Bach entlang.
-  responses:
-    - entlang gehen:
-      - description: die Allee entlang gehen
-      - goto: allee
-    - zurueck:
-      - goto: kreuzung_2
-
 allee:
   text: Am Ende der Allee steht ein mit weißen Luftballons geschmücktes Gebäude.
   responses:
@@ -273,6 +155,7 @@ allee:
       - only_visible_if_state_var_equals: [anzug_angezogen, 0]
       - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
       - set_state_var: [von_tuersteher_aufgehalten, 1]
       - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mit der Kleidung und dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
     - rein:
@@ -280,6 +163,7 @@ allee:
       - only_visible_if_state_var_equals: [anzug_angezogen, 0]
       - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
       - set_state_var: [von_tuersteher_aufgehalten, 1]
       - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Oh das Kleine wurde hübsch gemacht - und dennoch mit der Kleidung und dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
     - rein:
@@ -287,31 +171,23 @@ allee:
       - only_visible_if_state_var_equals: [anzug_angezogen, 1]
       - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
       - set_state_var: [von_tuersteher_aufgehalten, 1]
       - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Oh das Kleine wurde hübsch gemacht - und dennoch mit dem kleinen Rotzlöffel, kommst du hier nicht rein.\""
     - rein:
       - description: ins Gebäude gehen
-      - only_visible_if_state_var_equals: [anzug_angezogen, 1]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
-      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
-      - set_state_var: [von_tuersteher_aufgehalten, 1]
-      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mehr Dekoration? Geht klar - Heh! Moment mal, das ist doch immer noch dieser Rotzlöffel. Keine Kinder auf dieser Feier!\""
-    - rein:
-      - description: ins Gebäude gehen
       - only_visible_if_state_var_equals: [anzug_angezogen, 0]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
       - set_state_var: [von_tuersteher_aufgehalten, 1]
-      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mehr Dekoration? Geht klar - Heh! Moment mal, das ist doch immer noch dieser Rotzlöffel. Keine Kinder auf dieser Feier und dein Aufzug geht auch gar nicht.!\""
+      - goto_message_state: "Neben der Tür steht jemand und hält Ringo auf. \"Mehr Dekoration? Geht klar - Aber dein Aufzug geht gar nicht!\""
     - rein:
       - description: ins Gebäude gehen
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
-      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 1]
       - set_state_var: [von_tuersteher_aufgehalten, 1]
       - goto_message_states_from_list:
         - "Neben der Tür steht jemand und hält Ringo auf. \"Was soll das denn sein? Warum hast du Kondome an dein Baby gehängt? Nachträgliche Verhütung oder was? So kommt ihr hier ganz sicher nicht rein.\""
-        - "Ringo murmelt: \"Ich sollte die Luftballons befüllen.\""
+        - "Ringo murmelt: \"Ich sollte die Luftballons befüllen - irgendwo muss man doch Helium herbekommen. Ich glaube in der Nähe der Kirche gibt es eine Werkstatt, da sollte ich nachschauen\""
     - rein:
       - description: ins Gebäude gehen
       - only_visible_if_state_var_equals: [anzug_angezogen, 1]
@@ -322,7 +198,6 @@ allee:
     - rein:
       - description: ins Gebäude gehen
       - only_visible_if_state_var_equals: [anzug_angezogen, 1]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
       - goto_message_state: "Ringo darf ungestört ins Gebäude gehen."
         target_state: hochzeit_baby_ablegen
@@ -332,33 +207,26 @@ allee:
       - goto: anzug_anziehen_meta
     - baby:
       - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
       - goto: baby_verkleiden_meta
-    - baby:
-      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 1]
-      - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
-      - goto: baby_verkleiden_meta
-    - baby:
-      - only_visible_if_state_var_equals: [von_tuersteher_aufgehalten, 1]
-      - only_visible_if_state_var_equals: [schleife_dekoriert, 0]
-      - only_visible_if_state_var_equals: [luftballons_dekoriert, 1]
-      - goto: baby_verkleiden_meta
-    - allee:
-      - description: die Allee entlang gehen
-      - goto: kreuzung_2
+    - kirche:
+      - description: dem Weg zur Kirche folgen
+      - goto: strasse_vor_kirche
 
 baby_verkleiden_meta:
   text: "\"Ich muss das Baby irgendwie tarnen!\""
   responses:
     - rote farbe:
       - description: rote Farbe verwenden
+      - only_visible_if_state_var_equals: [farbe_dekoriert, 0]
       - only_visible_if_item_equals: [rote_farbe, 1]
+      - set_state_var: [farbe_dekoriert, 1]
       - goto_message_state: Ringo malt das Baby rot an.
     - lappen:
       - description: Lappen verwenden
       - only_visible_if_item_equals: [lappen, 1]
+      - only_visible_if_state_var_equals: [lappen_dekoriert, 0]
+      - set_state_var: [lappen_dekoriert, 1]
       - goto_message_state: Ringo legt dem Baby den Lappen auf den Kopf.
     - wein:
       - description: Wein verwenden
@@ -374,7 +242,6 @@ baby_verkleiden_meta:
       - description: Luftballons verwenden
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
       - only_visible_if_item_equals: [befuellte_luftballons, 1]
-      - only_visible_if_state_var_equals: [helium_in_ballons, 1]
       - set_state_var: [luftballons_dekoriert, 1]
       - goto_message_state: Ringo bindet die Luftballons am Baby fest. Es sieht der Dekoration an der Tür zum verwechseln ähnlich.
     - luftballons:
@@ -382,8 +249,7 @@ baby_verkleiden_meta:
       - only_visible_if_item_equals: [befuellte_luftballons, 0]
       - only_visible_if_item_equals: [luftballons, 1]
       - only_visible_if_state_var_equals: [luftballons_dekoriert, 0]
-      - set_state_var: [luftballons_leer_dekoriert, 0]
-      - only_visible_if_state_var_equals: [helium_in_ballons, 0]
+      - only_visible_if_state_var_equals: [luftballons_leer_dekoriert, 0]
       - set_state_var: [luftballons_leer_dekoriert, 1]
       - goto_message_state: Ringo bindet die Luftballons am Baby fest.
     - zurueck:
@@ -397,10 +263,11 @@ anzug_anziehen_meta:
       - goto_message_state: "\"Wow, was ein toller Stoff!\""
     - anziehen: 
       - description: den Anzug anziehen
+      - set_state_var: [anzug_angezogen, 1]
       - goto_message_state: Ringo zieht den Anzug an.
+        target_state: allee
     - zurueck:
       - goto: allee
-
 
 strasse_werkstatt:
   text: "Am Ende der Straße ist ein Gebäude mit der Aufschrift 'Metallverarbeitung Hans E. Jürgen'."
@@ -544,7 +411,7 @@ metallschere:
     - nehmen:
       - only_visible_if_item_equals: [metallschere, 0]
       - give_item: metallschere
-      - goto_message_state: "\"Wenn die mal nichts nützlich werden könnte.\""
+      - goto_message_state: "\"Wenn die mir mal nicht zu Reichtum verhelfen wird.\""
         target_state: werkzeuge
     - zurueck:
       - goto: werkzeuge

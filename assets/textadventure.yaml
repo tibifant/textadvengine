@@ -1,6 +1,7 @@
 textadventure_start:
   text: |
-    Welcome to this Text Adventure!\nCan you get out of this or will you be eaten by a grue?
+    Welcome to this Text Adventure!
+    Can you get out of this or will you be eaten by a grue?
 
     "Och nee, ein Text Adventure. Sind die nicht Ende der 80er aus der Mode gekommen? Naja, dann Augen zu und durch!"
   responses:
@@ -12,8 +13,7 @@ textadventure_start:
 
 ta_beginning:
   text: |
-    You startle awake from a deep sleep. Why are you not
-    in your bed? Instead, you find yourself sunny on a beach.
+    You startle awake from a deep sleep. Why are you not in your bed? Instead, you find yourself sunny on a beach.
     Wearing your pyjamas...
 
     Something feels odd - and somewhat familiar - about this...
@@ -201,7 +201,7 @@ ta_54_beach:
     - w:
       - only_visible_if_item_equals: [ta_torch, 0]
       - description: go towards the island
-      - goto_message_state: A tall cliff stretches the horizon. But there seems to be a large crack in the Rocks. You stare into the utter darkness of the cave. If you only had something that providing a bit of light, this would seem like an exciting adventure to go on in your pyjamas.
+      - goto_message_state: "A tall cliff stretches the horizon. \nBut there seems to be a large crack in the Rocks. You stare into the utter darkness of the cave. If you only had something that providing a bit of light, this would seem like an exciting adventure to go on in your pyjamas."
     - w:
       - only_visible_if_item_equals: [ta_torch, 1]
       - description: go towards the island
@@ -210,7 +210,7 @@ ta_54_beach:
     - t shell:
       - only_visible_if_item_equals: [ta_shell, 0]
       - give_item: ta_shell
-      - goto_message_state: You take a beautiful curled shell. The hermit crab living inside the shell seems to protest at first, but after a round of negititations he surrenders to its new purpose and hangs limp from your beautiful souvenir.
+      - goto_message_state: You take a beautiful curled shell. The hermit crab living inside the shell seems to protest at first, but after a round of negotiation he surrenders to its new purpose and hangs limp from your beautiful souvenir.
     - u branch:
       - description: use the branch
       - only_visible_if_item_equals: [ta_branch, 1]
@@ -281,6 +281,7 @@ ta_56_beach:
       - description: go towards the island
       - goto_message_state: A tall cliff stretches the horizon. You may be an experienced mountain climber, but without your Action Cam you wouldn't be able to share this experience with your 3 Instagram followers.
     - t branch:
+      - description: take branch
       - only_visible_if_item_equals: [ta_branch, 0]
       - give_item: ta_branch
       - goto_message_state: You pay little attention to the flock of rattle snakes hiding within the branches and simply grab the first branch you can reach. It's surprisingly bendy and slippery - what an interesting wood type this must be. You observe the scale-like bark pattern as you plan to make notes in your wood-journal once you'd return to your beloved home.
@@ -1072,7 +1073,7 @@ ta_25_jungle:
       - description: talk to the man
       - goto_message_states_from_list:
         - "\"Excuse me... \" you proclaim, \"I'm looking for an badly-smelling ork trading pills in the neighborhood, where can I find him.\""
-        - The man looks even more confused as before. your bare feet feel the cold stone floor of the building as you're awaiting his response.
+        - The man looks even more confused as before. Your bare feet feel the cold stone floor of the building as you're awaiting his response.
         - "As every good tourist would do, you slowly and loudly repeat your question\"I ' m   l o o k i n g   f o r   a n   o g r e   s e l l i n g   p i l l s!\""
         - "Finally, the man seems to understand and responds \"you're looking for an ogre selling pills in the jungle?\""
         - "\"Yes!\" - you're slightly annoyed by the question."

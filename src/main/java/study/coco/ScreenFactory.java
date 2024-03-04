@@ -63,6 +63,7 @@ public class ScreenFactory {
 
   final String GotoMessageStateAttribute = "goto_message_state";
   final String GotoMessageStatesFromListAttribute = "goto_message_states_from_list";
+  final String GotoMessageStatesFromListOnceAttribute = "goto_message_states_from_list_once";
   final String GotoMessageStateOnceAttribute = "goto_message_state_once";
   final String GotoMessageStateAttributeTargetState = "target_state";
 
@@ -100,6 +101,9 @@ public class ScreenFactory {
             case GotoMessageStatesFromListAttribute:
               targetScreen = createMessageScreensFromList((List<String>)item.getValue(), screenName);
               break;
+            case GotoMessageStatesFromListOnceAttribute:
+              targetScreen = createMessageScreensFromList((List<String>)item.getValue(), screenName, true);
+              break;
             case GotoMessageStateOnceAttribute:
               targetScreen = createMessageScreen((String)item.getValue(), screenName, true);
               break;
@@ -122,15 +126,20 @@ public class ScreenFactory {
               messageScreenTarget = (String)containedValues.get(GotoMessageStateAttributeTargetState);
 
             targetScreen = createMessageScreen(message, messageScreenTarget, containedValues.containsKey(GotoMessageStateOnceAttribute));
-          } else if (containedValues.containsKey(GotoMessageStatesFromListAttribute)) {
-            List<String> messages = (List<String>)containedValues.get(GotoMessageStatesFromListAttribute);
+          } else if (containedValues.containsKey(GotoMessageStatesFromListAttribute) || containedValues.containsKey(GotoMessageStatesFromListOnceAttribute)) {
+            List<String> messages = new ArrayList<>();
+
+            if (containedValues.containsKey(GotoMessageStatesFromListAttribute))
+              messages = (List<String>)containedValues.get(GotoMessageStatesFromListAttribute);
+            else
+              messages = (List<String>)containedValues.get(GotoMessageStatesFromListOnceAttribute);
 
             String messageScreenTarget = screenName;
 
             if (containedValues.containsKey(GotoMessageStateAttributeTargetState))
               messageScreenTarget = (String)containedValues.get(GotoMessageStateAttributeTargetState);
 
-            targetScreen = createMessageScreensFromList(messages, messageScreenTarget);
+            targetScreen = createMessageScreensFromList(messages, messageScreenTarget, containedValues.containsKey(GotoMessageStatesFromListOnceAttribute));
           } else {
             throw new InvalidParameterException("Unexpected attribute in " + screenName + ": '" + containedValues + "'.");
           }
@@ -211,17 +220,22 @@ public class ScreenFactory {
   }
 
   private String createMessageScreensFromList(List<String> messages, String targetState) {
+    return createMessageScreensFromList(messages, targetState, false);
+  }
+
+  private String createMessageScreensFromList(List<String> messages, String targetState, boolean showOnlyOnce) {
     // handle last screen separately as its targetScreen is already given
     String lastMessage = messages.remove(messages.size() - 1);
     String nextMessageScreen = createMessageScreen(lastMessage, targetState);
 
     // iterate remaining screens backwards to always set the following screen as the target of the former.
     for (int i = messages.size() - 1; i >= 0; i--)
-      nextMessageScreen = createMessageScreen(messages.get(i), nextMessageScreen);
+      nextMessageScreen = createMessageScreen(messages.get(i), nextMessageScreen, showOnlyOnce);
 
     // return first screen
     return nextMessageScreen;
   }
+
   private String createMessageScreen(String message, String targetState) {
     return createMessageScreen(message, targetState, false);
   }

@@ -9,15 +9,15 @@ treppenhaus_vor_unfall:
         target_state: rutschen
     - hoch:
       - description: nach oben gehen
-      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
+      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Tür hinter sich schließt.
         target_state: treppenhaus_oben
     - wohnzimmer:
       - description: ins Wohnzimmer gehen
-      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
+      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Tür hinter sich schließt.
         target_state: wohnzimmer
     - keller:
       - description: in den Keller gehen
-      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Badtür hinter sich schließt.
+      - goto_message_state_once: Ein dumpfes Geraeusch gefolgt von einem leisen Wimmern ist zu hoeren, waehrend Ringo die Tür hinter sich schließt.
         target_state: keller
     - garage:
       - description: in die Garage gehen
@@ -97,28 +97,40 @@ treppenhaus:
       - set_state_var: [katzenklappe_entdeckt, 1]
       - goto_message_state: "\"Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?\""
     - katzenklappe:
-      - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 0]
-      - set_state_var: [gel_idee, 1]
-      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+      - goto: katzenklappe_treppenhaus
     - katzenklappe:
       - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 1]
       - set_state_var: [baby_in_garage_gefunden, 1]
-      - goto_message_state_once:
-          "\"Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht.\"\n
-          Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.\n
-          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.\n
-          ...\n
-          Ehhem.\n
-          ...\n
-          Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten.\n
-          ...\n
-          \"Oh achso nach klar!\n  
-           Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?\"\n
-           Man hört ein leises Fauchen."
+      - goto: garage
+
+katzenklappe_treppenhaus:
+  text: In der Tür zur Garage ist eine Katzenklappe verbaut.
+  responses:
+    - verwenden:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - set_state_var: [gel_idee, 1]
+      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+    - verwenden:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 1]
+      - set_state_var: [baby_in_garage_gefunden, 1]
+      - goto_message_states_from_list_once:
+          - "\"Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht.\""
+          - Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.
+          - Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.
+          - "..."
+          - Ehhem.
+          - "..."
+          - "Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten."
+          - "..."
+          - "\"Oh achso nach klar!\""
+          - "\"Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?\"\nMan hört ein leises Fauchen."
         target_state: garage
     - pflaster:
       - description: Pflaster verwenden
@@ -134,7 +146,53 @@ treppenhaus:
       - only_visible_if_item_equals: [gel, 1]
       - remove_item: gel
       - set_state_var: [gel_benutzt, 1]
-      - goto_message_state: "\"Pui hihi das ist glipschig.\" Ringo schmiert die glibbrige Pampe über seinen gesamten Körper."
+      - goto_message_state: "\"Pui hihi das ist glipschig.\" Ringo schmiert die glibbrige Pampe über seinen gesamten Körper. \"Damit sollte ich durch alle Löcher gleiten können.\""
+    - zurueck:
+      - goto: treppenhaus
+
+katzenklappe_treppenhaus_sauber:
+  text: In der Tür zur Garage ist eine Katzenklappe verbaut.
+  responses:
+    - verwenden:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - set_state_var: [gel_idee, 1]
+      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+    - verwenden:
+      - description: Katzenklappe verwenden
+      - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 1]
+      - set_state_var: [baby_in_garage_gefunden, 1]
+      - goto_message_states_from_list_once:
+          - "\"Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht.\""
+          - Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.
+          - Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.
+          - "..."
+          - Ehhem.
+          - "..."
+          - "Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten."
+          - "..."
+          - "\"Oh achso nach klar!\""
+          - "\"Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?\"\nMan hört ein leises Fauchen."
+        target_state: garage
+    - pflaster:
+      - description: Pflaster verwenden
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [pflaster, 1]
+      - goto_message_state: "\"Zukleben? Wem soll das denn helfen?\""
+    - giesskanne:
+      - only_visible_if_item_equals: [giesskanne, 1]
+      - goto_message_state: "Ringo steckt den Hals der Gießkann durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
+    - gel:
+      - description: Gel verwenden
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_item_equals: [gel, 1]
+      - remove_item: gel
+      - set_state_var: [gel_benutzt, 1]
+      - goto_message_state: "\"Pui hihi das ist glipschig.\" Ringo schmiert die glibbrige Pampe über seinen gesamten Körper. \"Damit sollte ich durch alle Löcher gleiten können.\""
+    - zurueck:
+      - goto: treppenhaus_sauber
+
 
 treppenhaus_sauber:
   text: |
@@ -147,7 +205,7 @@ treppenhaus_sauber:
     - hoch:
       - description: nach oben gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
-      - goto_message_state: &message-state-patient "\"Erst muss ich den Patienten in Sicherheit bringen.\""
+      - goto_message_state: "\"Erst muss ich den Patienten in Sicherheit bringen.\""
     - keller:
       - description: in den Keller gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
@@ -190,41 +248,12 @@ treppenhaus_sauber:
       - set_state_var: [katzenklappe_entdeckt, 1]
       - goto_message_state: "\"Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?\""
     - katzenklappe:
-      - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 0]
-      - set_state_var: [gel_idee, 1]
-      - goto_message_state: "\"Ich bekomme meine Füße in die Luke, aber viel mehr ist da so nicht drin...\""
+      - goto: katzenklappe_treppenhaus_sauber
     - katzenklappe:
       - description: Katzenklappe verwenden
       - only_visible_if_state_var_equals: [katzenklappe_entdeckt, 1]
       - only_visible_if_state_var_equals: [gel_benutzt, 1]
       - set_state_var: [baby_in_garage_gefunden, 1]
-      - goto_message_state_once:
-          "\"Narghh... grmpf... ächtz... Mehr...Bauch...Einziehen...Geht...Nicht.\"\n
-          Ringo vollführt eine akrobatische Meisterleistung wie sie kein Zirkus je gesehen hat. Beeindruckende Gelenkigkeit.\n
-          Er robbt in die Garage und nach ein paar ächzenden Atemzügen ist der junge Mann aus Gummi auch schon wieder auf den Beinen und so gewissenhaft wie er seiner Aufgabe als Babysitter nachgeht, schaut er direkt nach dem Wohlbefinden des eben genannten.\n
-          ...\n
-          Ehhem.\n
-          ...\n
-          Ich sagte: schaut er direkt nach dem Wohlbefinden des eben genannten.\n
-          ...\n
-          \"Oh achso nach klar!\n  
-           Huch! Was machst du denn auf dem Schrank? Hat die Miezekatze dir etwas Angst gemacht?\"\n
-           Man hört ein leises Fauchen."
-        target_state: garage
-    - pflaster:
-      - description: Pflaster verwenden
-      - only_visible_if_state_var_equals: [gel_idee, 1]
-      - only_visible_if_item_equals: [pflaster, 1]
-      - goto_message_state: "\"Zukleben? Wem soll das denn helfen?\""
-    - giesskanne:
-      - only_visible_if_item_equals: [giesskanne, 1]
-      - goto_message_state: "Ringo steckt den Hals der Gießkann durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
-    - gel:
-      - description: Gel verwenden
-      - only_visible_if_state_var_equals: [gel_idee, 1]
-      - only_visible_if_item_equals: [gel, 1]
-      - remove_item: gel
-      - set_state_var: [gel_benutzt, 1]
-      - goto_message_state: "\"Pui hihi das ist glipschig.\" Ringo schmiert die glibbrige Pampe über seinen gesamten Körper." 
+      - goto: garage

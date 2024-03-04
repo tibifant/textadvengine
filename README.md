@@ -1,5 +1,5 @@
 # Die Kunst ein Kleinkind zu filettieren 
-## Ein "ganz normaler" Vormittag mit Ringo Ringelshirt
+### - Ein "ganz normaler" Vormittag mit Ringo Ringelshirt -
 
 Ringo Ringelshirt ist stets bemüht ein "normaler" Teenager zu sein. Leider macht ihm seine kreative Kombinationsfähigkeit oft dabei einen Strich durch die Rechnung.
 
@@ -11,3 +11,4 @@ Sobald du das Spiel gestartet hast werden dir alle Optionen, die Ringo Ringelshi
 Manchmal gibt es keine besonderen Aktionen, dann drück die Enter-Taste um fortzufahren.
 
 Petri Heil!
+

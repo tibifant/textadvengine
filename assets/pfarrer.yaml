@@ -19,8 +19,14 @@ pfarrer_eingang:
       - only_visible_if_state_var_equals: [brief_pfarrer_geoeffnet, 0]
       - goto: brief_pfarrer
     - zurueck:
-      - description: zurück zur Garage
+      - description: zurück zum Garten vor der Garage
+      - only_visible_if_item_equals: [anzug, 0]
       - goto_message_state: Ringo quetscht sich an den Ranken seiner Wahl vorbei und steht wieder im Garten vor der Garage.
+        target_state: garten
+    - zurueck:
+      - description: zurück zum Garten vor der Garage
+      - only_visible_if_item_equals: [anzug, 1]
+      - goto_message_state: "\"Mit dem Anzug gehe ich nicht nochmal durch die Dornen.\""
 
 brief_pfarrer:
   text: Im Briefumschlag scheint ein Gegenstand zu sein.
@@ -33,7 +39,7 @@ brief_pfarrer:
       - goto: pfarrer_eingang
 
 brief_pfarrer_offen:
-  text: 
+  text: Im Briefumschlag sind eine Nachricht, ein Ring und ein Schlüssel
   responses:
     - lesen:
       - description: Brief lesen
@@ -56,8 +62,10 @@ ring_pfarrer_meta:
   responses:
     - nehmen:
       - description: Ring nehmen
+      - only_visible_if_item_equals: [ring, 0]
       - give_item: ring
       - goto_message_state: "\"Das perfekte Geschenk für mein Date, es fehlen aber noch Blumen.\""
+        target_state: brief_pfarrer_offen
     - zurueck:
       - goto: brief_pfarrer_offen
 
@@ -81,13 +89,13 @@ pfarrer_briefkasten:
     - rausziehen:
       - description: Brief aus dem Briefkasten ziehen
       - only_visible_if_item_equals: [brief_pfarrer, 0]
-      - goto_message_state: "\"Meine Finger sind immer noch zu dick für schmale Öffnungen, das muss was anderes her - irgendwas langes biegsames.\""
+      - goto_message_state: "\"Meine Finger sind immer noch zu dick für schmale Öffnungen, das muss was anderes her - irgendwas langes biegsames, an der Decke der Garage gibt es vielleicht was passendes.\""
     - kabel:
       - description: mit dem Kabel nach dem Brief angeln
       - only_visible_if_item_equals: [kabel, 1]
       - give_item: brief_pfarrer
       - goto_message_state: "Ringo schiebt das Kabel durch die Öffnung und - \"Tada! Hab ich dich\" - hält den Brief in den Händen."
-        target_state: pfarrer_eingang
+        target_state: brief_pfarrer
     - besen:
       - description: mit dem Besen nach dem Brief angeln
       - only_visible_if_item_equals: [besen, 1]
@@ -146,7 +154,6 @@ pfarrer_im_flur:
     - gruen:
       - description: grüne Tür öffnen
       - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt.\""
-      - goto: pfarrer_bad
     - braun:
       - description: braune Tür öffnen
       - goto: pfarrer_garten
@@ -154,7 +161,6 @@ pfarrer_im_flur:
       - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - goto_message_state: "\"Unbemerkt komme ich da nicht vorbei.\""
-        target_state: kirche_vorraum
     - gang:
       - description: den Gang entlang
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 1]
@@ -166,9 +172,9 @@ pfarrer_im_flur:
     - pflaster:
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
       - goto: pfarrer_pflaster_flur
-    - parfum:
+    - parfuem:
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 0]
-      - goto: pfarrer_parfum_flur
+      - goto: pfarrer_parfuem_flur
     - rote farbe:
       - only_visible_if_item_equals: [rote_farbe, 1]
       - goto: pfarrer_farbe_flur
@@ -180,15 +186,34 @@ pfarrer_im_flur:
       - only_visible_if_item_equals: [wein, 1]
       - goto: pfarrer_wein_flur
 
-pfarrer_parfum_flur:
+pfarrer_im_flur_bewusstlos:
+  text: |
+    Der nackte Mann liegt bewusstlos auf dem Boden.
+  responses:
+    - gruen:
+      - description: grüne Tür öffnen
+      - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt.\""
+    - braun:
+      - description: braune Tür öffnen
+      - goto_message_state: "\"Das ist kein Weg der uns hier weg bringt.\""
+    - gang:
+      - description: den Gang entlang
+      - only_visible_if_state_var_equals: [pfarrer_bewusstlos, 1]
+      - goto_message_state: "\"Schnell lass uns verschwinden!\""
+        target_state: kirche_vorraum
+    - raus:
+      - description: vor das Haus
+      - goto_message_state: "\"Der Weg ist versperrt.\""
+
+pfarrer_parfuem_flur:
   text: "\"Mal schauen, ob das nur mich umwerfend macht.\""
   responses:
     - benutzen:
-      - description: Parfum benutzen
+      - description: Parfüm benutzen
       - set_state_var: [pfarrer_bewusstlos, 1]
       - goto_message_state: "\"Mal schauen, ob das nur mich umwerfend macht.\" Ringo sprueht den Mann an, dieser hustet und ehe er sich versieht liegt er auf dem Boden.\n\"Channel No 5 bietet einem ungeahnte Moeglichkeiten...\""
-        target_state: pfarrer_im_flur
-    - zurueck: &goto-pfarrer-im-flur
+        target_state: pfarrer_im_flur_bewusstlos
+    - zurueck:
       - goto: pfarrer_im_flur
 
 pfarrer_wein_flur:
@@ -198,7 +223,8 @@ pfarrer_wein_flur:
       - description: Wein benutzen
       - goto_message_state: "\"Hicks!\""
         target_state: pfarrer_im_flur
-    - zurueck: *goto-pfarrer-im-flur
+    - zurueck: 
+      - goto: pfarrer_im_flur
 
 pfarrer_buch_flur:
   text: "\"Vielleicht enthält das prakitsche Survival-Tipps für eine Situation wie diese.\""
@@ -207,8 +233,9 @@ pfarrer_buch_flur:
       - description: Buch benutzen
       - set_state_var: [pfarrer_bewusstlos, 1]
       - goto_message_state: "\"Mal sehen..\" Ringo schlaegt das Buch an einer zufaelligen Stelle auf.\n\"Und er verbrannte das Haus des HERRN und das Haus des Königs; und alle Häuser Jerusalems und jedes große Haus verbrannte er mit Feuer...\"\n\"Mein Vater spricht zu mir!\" vor Aufregung wird dem Guten ganz warm, er dreht sich einmal um die eigene Achse und sinkt langsam, leise murmelend zu Boden."
-        target_state: pfarrer_im_flur
-    - zurueck: *goto-pfarrer-im-flur
+        target_state: pfarrer_im_flur_bewusstlos
+    - zurueck:
+      - goto: pfarrer_im_flur
 
 pfarrer_farbe_flur:
   text: Man könnte ... etwas anmalen ...?
@@ -216,8 +243,9 @@ pfarrer_farbe_flur:
     - benutzen:
       - description: rote Farbe benutzen
       - goto_message_state: "\"Ich bin doch kein Anstreicher.\""
-        target_state: pfarrer_parfum_flur
-    - zurueck: *goto-pfarrer-im-flur
+        target_state: pfarrer_im_flur
+    - zurueck: 
+      - goto: pfarrer_im_flur
 
 pfarrer_pflaster_flur:
   text: "\"Man koennte ihm den Mund zukleben...\""
@@ -226,7 +254,8 @@ pfarrer_pflaster_flur:
       - description: Pflaster benutzen
       - goto_message_state: "Ringo naehert sich der Person, diese schreit auf, holt aus und Ringo sieht Sterne.\nEr findet sich in dem Garten wieder."
         target_state: pfarrer_garten
-    - zurueck: *goto-pfarrer-im-flur
+    - zurueck: 
+      - goto: pfarrer_im_flur
 
 ######################################################################################
 
@@ -318,7 +347,7 @@ pfarrer_bad:
 buerste_meta:
   text: Am Waschbecken liegt eine Bürste
   responses:
-    - kämmen:
+    - kaemmen:
       - description: Haare kämmen
       - set_state_var: [buerste_benutzt, 1]
       - only_visible_if_state_var_equals: [pfarrer_licht_aus, 0]
@@ -366,7 +395,7 @@ pfarrer_garten:
       - only_visible_if_state_var_equals: [handtuch_benutzt, 1]
       - only_visible_if_item_equals: [anzug, 1]
       - only_visible_if_state_var_equals: [pfarrer_bewusstlos_bad, 0]
-      - goto_message_state: "\"Oh oh da ist jemand und die Dusche scheint jetzt auch aus zu sein...\""
+      - goto_message_state: "\"Oh oh - da steht jemand! Und die Dusche scheint jetzt auch aus zu sein...\""
         target_state: pfarrer_im_flur
     - zurueck:
       - description: zurück ins Haus
@@ -427,5 +456,6 @@ baby_pfarrer_garten:
       - set_state_var: [handtuch_benutzt, 1]
       - remove_item: handtuch
       - goto_message_state: "\"Schon besser, aber ich sollte dich noch irgendwo waschen.\""
+        target_state: pfarrer_garten
     - zurueck:
       - goto: pfarrer_garten
