@@ -7,8 +7,7 @@ Was eigentlich nur ein entspannter Nachmittag beim Babysitten sein sollte eskali
 
 Begleite Ringo bei einem seiner vielen Abenteuer und navigiere die Abgründe, Einbrüche und Heckenschützen seines ganz normalen Samstagvormittags. Gott stehe dir bei.
 
-Sobald du das Spiel gestartet hast werden dir alle Optionen, die Ringo Ringelshirt zur Auswahl stehen farblich hervorgehoben angezeigt. Gib eine dieser Möglichkeiten ein, drücke die Enter-Taste,  und sieh welches Chaos ihr beide anrichten werdet.
+Sobald du das Spiel gestartet hast werden dir alle Optionen, die Ringo Ringelshirt zur Auswahl stehen farblich hervorgehoben angezeigt. Vor dem Schlüsselwort steht eine dazu gehörende Zahl. Gib entweder das Schlüsselwort oder die Nummer einer dieser Möglichkeiten ein, drücke die Enter-Taste, und sieh welches Chaos ihr beide anrichten werdet.
 Manchmal gibt es keine besonderen Aktionen, dann drück die Enter-Taste um fortzufahren.
 
 Petri Heil!
-

@@ -71,27 +71,31 @@ treppenhaus:
       - description: ins Wohnzimmer gehen
       - only_visible_if_item_equals: [pflaster, 1]
       - set_state_var: [baby_nicht_in_wohnzimmer_bemerkt, 1]
-      - goto_message_state: "Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. \"Oh ähh ohje! Wo bist du nur hin?\""
+      - goto_message_state: "Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. \"Oh ähh ohje! Wo bist du nur hin?\" Man hört leise Geräusche aus Richtung der Garage."
         target_state: wohnzimmer
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - goto_message_state: "\"Erst muss ich den Patienten in Sicherheit bringen.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
       - goto_message_state: "\"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
       - set_state_var: [katzenklappe_entdeckt, 1]
@@ -136,10 +140,14 @@ katzenklappe_treppenhaus:
       - description: Pflaster verwenden
       - only_visible_if_state_var_equals: [gel_idee, 1]
       - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
       - goto_message_state: "\"Zukleben? Wem soll das denn helfen?\""
     - giesskanne:
+      - description: Gießkanne verwenden
       - only_visible_if_item_equals: [giesskanne, 1]
-      - goto_message_state: "Ringo steckt den Hals der Gießkann durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - goto_message_state: "Ringo steckt den Hals der Gießkanne durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
     - gel:
       - description: Gel verwenden
       - only_visible_if_state_var_equals: [gel_idee, 1]
@@ -179,10 +187,14 @@ katzenklappe_treppenhaus_sauber:
       - description: Pflaster verwenden
       - only_visible_if_state_var_equals: [gel_idee, 1]
       - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
       - goto_message_state: "\"Zukleben? Wem soll das denn helfen?\""
     - giesskanne:
+      - description: Gießkanne verwenden
       - only_visible_if_item_equals: [giesskanne, 1]
-      - goto_message_state: "Ringo steckt den Hals der Gießkann durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
+      - only_visible_if_state_var_equals: [gel_idee, 1]
+      - only_visible_if_state_var_equals: [gel_benutzt, 0]
+      - goto_message_state: "Ringo steckt den Hals der Gießkanne durch die Katzenklappe. \"Und jetzt?\" Ringo zieht die Gießkanne wieder zurück. \"Das hat uns kein Stück weiter gebracht.\""
     - gel:
       - description: Gel verwenden
       - only_visible_if_state_var_equals: [gel_idee, 1]
@@ -222,28 +234,32 @@ treppenhaus_sauber:
       - description: ins Wohnzimmer gehen
       - only_visible_if_item_equals: [pflaster, 1]
       - set_state_var: [baby_nicht_in_wohnzimmer_bemerkt, 1]
-      - goto_message_state: "Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. \"Oh ähh ohje! Wo bist du nur hin?\""
+      - goto_message_state: "Dort wo Ringo vorhin den Winzling abgelegt hatte, ist jetzt nur noch gähnende Leere. \"Oh ähh ohje! Wo bist du nur hin?\" Man hört leise Geräusche aus Richtung der Garage."
         target_state: wohnzimmer
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_abgelegt, 0]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - goto_message_state: "\"Erst muss ich den Patienten in Sicherheit bringen.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_item_equals: [pflaster, 0]
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - goto_message_state: "\"Die Tuer ist verschlossen. Aber es gibt eine Katzenklappe\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
       - goto_message_state: "\"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
       - only_visible_if_item_equals: [pflaster, 1]
+      - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 1]
       - set_state_var: [katzenklappe_entdeckt, 1]
       - goto_message_state: "\"Den Geräuschen zu Folge scheint das Baby in der Garage zu sein. Die Tür ist fest verschlossen. Bestimmt ist es durch die Katzenklappe geklettert. Wer hat denn auch eine Katzenklappe zur Garage?\""

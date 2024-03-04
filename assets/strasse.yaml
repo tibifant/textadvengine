@@ -129,9 +129,11 @@ textadventure_automat:
     - geld:
       - description: Geld einwerfen
       - only_visible_if_item_equals: [geld, 0]
+      - only_visible_if_state_var_equals: [geld_eingeworfen, 0]
       - goto_message_state: "Ringo greift in seine Hosentaschen. Da ist vieles drin, aber Geld findet er nicht."
     - geld:
       - description: Geld einwerfen
+      - only_visible_if_state_var_equals: [geld_eingeworfen, 0]
       - only_visible_if_item_equals: [geld, 1]
       - set_state_var: [geld_eingeworfen, 1]
       - goto_message_state: "Ringo kramt nach einer Münze und schiebt sie durch den Münzschlitz."

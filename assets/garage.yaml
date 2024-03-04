@@ -150,7 +150,13 @@ leiter_meta:
     - benutzen:
       - description: Leiter benutzen
       - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - only_visible_if_state_var_equals: [leiter_verschoben, 1]
       - goto_message_state: Gähnende Leere auf dem Schrank.
+    - benutzen:
+      - description: Leiter benutzen
+      - only_visible_if_state_var_equals: [spur_gefunden, 1]
+      - only_visible_if_state_var_equals: [leiter_verschoben, 0]
+      - goto: leiter_an_decke
     - zurueck:
       - goto: garage
 
@@ -180,10 +186,10 @@ kabel_meta:
       - give_item: kabel
       - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
       
-        Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
+          Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
       
-        Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
-      target_state: leiter_an_decke
+          Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+        target_state: leiter_an_decke
     - zurueck:
       - goto: leiter_an_decke
 
@@ -369,9 +375,9 @@ kabel_meta_suche:
       - give_item: kabel
       - goto_message_state: "Ringo streckt das Kaninchen dem Kabel entgegen. \"Keine Sorge, das Kabel ist harmlos, na los, knabber schon.\"
       
-        Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
+          Tatsächlich fängt das Kaninchen prompt an das Kabel mit seinen Zähnen zu bearbeiten. Ein wahrer Tierflüsterer unser Ringo.
       
-        Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
-      taeget_state: garage_suche
+          Nach einem kurzen hektischen Gemümmel, hält Ringo das Kabel in der Hand. Dem Kaninchen stehen die Haare zu Berge und es streckt seine Zunge aus dem Mund."
+        target_state: garage_suche
     - zurueck:
       - goto: leiter_an_decke_suche

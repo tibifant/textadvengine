@@ -111,7 +111,7 @@ schublade_nachttisch:
       - goto: gel_schlafzimmer_meta
     - schliessen:
       - description: Schublade schliessen
-      - goto: nachttisch
+      - goto: schlafzimmer
 
 gel_schlafzimmer_meta:
   text: "In der Flasche ist eine dickflüssige transparente Pampe - \"Ob das wohl Haargel ist?\" - 'sentual' stand darauf.\n\"Das muss wohl eine Frisur sein. Perfekt fuer meine Zwecke, mit sowas stehen einem alle Türen offen!\""
@@ -420,12 +420,12 @@ schublade_kueche:
       - goto: kueche
 
 bad_schrank_schluessel_meta:
-  text: Ein kleiner Schlüssel liegt zwischen den Messern.
+  text: Ein kleiner Schlüssel mit Anhänger liegt zwischen den Messern.
   responses:
     - nehmen:
       - description: den Schlüssel nehmen
       - give_item: bad_schrank_schluessel
-      - goto_message_state: "\"Ein Schlüssel bei den Messern? Wo der wohl drauf passt.\" Ringo steckt den Schlüssel ein."
+      - goto_message_state: "\"Ein Schlüssel bei den Messern? Wo der wohl drauf passt. Einen kleines Kreuz ist auf dem Anhänger.\" Ringo steckt den Schlüssel ein."
         target_state: kueche
     - zurueck:
       - goto: kueche
@@ -435,9 +435,8 @@ bad_schrank_schluessel_meta:
 zahlenschloss:
   text: Das Schloss hat drei Stellen. #583
   responses:
-    - "0": &falsch-eins 
+    - "1": &falsch-eins
       - goto: falsch_stelle_2
-    - "1": *falsch-eins
     - "2": *falsch-eins
     - "3": *falsch-eins
     - "4": *falsch-eins
@@ -447,15 +446,15 @@ zahlenschloss:
     - "7": *falsch-eins
     - "8": *falsch-eins
     - "9": *falsch-eins
+    - "0": *falsch-eins
     - zurueck:
       - goto: schublade_kueche_meta
 
 richtig_stelle_2:
   text: Zweite Stelle. #583
   responses:
-    - "0": &falsch-zwei
+    - "1": &falsch-zwei
       - goto: falsch_stelle_3
-    - "1": *falsch-zwei
     - "2": *falsch-zwei
     - "3": *falsch-zwei
     - "4": *falsch-zwei
@@ -465,6 +464,7 @@ richtig_stelle_2:
     - "8":
       - goto: richtig_stelle_3
     - "9": *falsch-zwei
+    - "0": *falsch-zwei
     - zurueck:
       - description: zurück zu Stelle 1
       - goto: zahlenschloss
@@ -475,9 +475,8 @@ richtig_stelle_2:
 falsch_stelle_2:
   text: Zweite Stelle. #583
   responses:
-    - "0": &falsch-zwei
+    - "1": &falsch-zwei
       - goto: falsch_stelle_3
-    - "1": *falsch-zwei
     - "2": *falsch-zwei
     - "3": *falsch-zwei
     - "4": *falsch-zwei
@@ -486,6 +485,7 @@ falsch_stelle_2:
     - "7": *falsch-zwei
     - "8": *falsch-zwei
     - "9": *falsch-zwei
+    - "0": *falsch-zwei
     - zurueck:
       - description: zurück zu Stelle 1
       - goto: zahlenschloss
@@ -496,10 +496,9 @@ falsch_stelle_2:
 richtig_stelle_3:
   text: Dritte Stelle. #583
   responses:
-    - "0": &falsch
+    - "1": &falsch
       - goto_message_state: Der Code war falsch. Das Schloss geht nicht auf.
         target_state: schublade_kueche_meta
-    - "1": *falsch
     - "2": *falsch
     - "3":
       - set_state_var: [kueche_richtiger_code, 1]
@@ -511,6 +510,7 @@ richtig_stelle_3:
     - "7": *falsch
     - "8": *falsch
     - "9": *falsch
+    - "0": *falsch
     - zurueck:
       - description: zurück zu Stelle 2
       - goto: richtig_stelle_2
@@ -521,7 +521,6 @@ richtig_stelle_3:
 falsch_stelle_3:
   text: Dritte Stelle. #583
   responses:
-    - "0": *falsch
     - "1": *falsch
     - "2": *falsch
     - "3": *falsch
@@ -531,6 +530,7 @@ falsch_stelle_3:
     - "7": *falsch
     - "8": *falsch
     - "9": *falsch
+    - "0": *falsch
     - zurueck:
       - description: zurück zu Stelle 2
       - goto: falsch_stelle_2
@@ -823,10 +823,12 @@ kellertuer:
     - arm:
       - description: mit dem Arm nach dem Schlüssel angeln
       - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 1]
+      - only_visible_if_item_equals: [schluessel_keller, 0]
       - goto_message_state: "\"Mist! Mein Arm ist zu kurz. In der Garage gibt es allerhand großen Krempel, bestimmt finde ich da was nützliches.\""
     - besen:
       - description: mit dem Besen nach dem Schlüssel angeln
       - only_visible_if_item_equals: [besen, 1]
+      - only_visible_if_item_equals: [schluessel_keller, 0]
       - only_visible_if_state_var_equals: [schluessel_aus_dem_loch_geschoben, 1]
       - give_item: schluessel_keller
       - goto_message_states_from_list: 
