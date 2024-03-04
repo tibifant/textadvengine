@@ -73,7 +73,6 @@ bad:
       - goto: schrank_bad_meta
     - treppenhaus:
       - description: ins Treppenhaus gehen
-      - only_visible_if_item_equals: [luftballons, 1]
       - goto: treppenhaus_oben
 
 lappen_meta:
@@ -363,6 +362,7 @@ kueche:
         target_state: kuehlschrank
     - schublade:
       - description: Küchenschublade
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
       - goto: schublade_kueche_meta
     - fleischwolf:
       - description: Fleischwolf
@@ -413,6 +413,7 @@ schublade_kueche:
   text: In der Schublade liegt ein Haufen Messer und ein kleiner Schlüssel.
   responses:
     - schluessel:
+      - only_visible_if_item_equals: [bad_schrank_schluessel, 0]
       - description: Schlüssel
       - goto: bad_schrank_schluessel_meta
     - schliessen:

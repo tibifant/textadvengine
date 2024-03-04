@@ -15,11 +15,13 @@ garage:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
+      - only_visible_if_item_equals: [parfuem, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 0]
       - goto: treppenhaus
     - haus:
       - description: durch die Katzenklappe ins Haus gehen
       - only_visible_if_state_var_equals: [zerkratzt, 0]
+      - only_visible_if_item_equals: [parfuem, 0]
       - only_visible_if_state_var_equals: [leim_gefuettert, 0]
       - only_visible_if_state_var_equals: [treppenhaus_sauber, 1]
       - goto: treppenhaus_sauber

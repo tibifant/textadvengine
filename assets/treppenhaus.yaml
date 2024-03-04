@@ -91,7 +91,7 @@ treppenhaus:
       - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
-      - goto_message_state: "\"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
+      - goto_message_state: "Aus der Garage ertönt ein Weinen. \"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
@@ -254,7 +254,7 @@ treppenhaus_sauber:
       - only_visible_if_item_equals: [pflaster, 1]
       - only_visible_if_state_var_equals: [baby_in_garage_gefunden, 0]
       - only_visible_if_state_var_equals: [baby_nicht_in_wohnzimmer_bemerkt, 0]
-      - goto_message_state: "\"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
+      - goto_message_state: "Aus der Garage ertönt ein Weinen. \"Ich kann mich gerade nicht um das Gejaule kümmern, erst muss ich den Patienten verarzten.\""
     - garage:
       - description: in die Garage gehen
       - only_visible_if_state_var_equals: [baby_abgelegt, 1]
